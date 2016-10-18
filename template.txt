@@ -1,0 +1,21 @@
+if(state == LexerState.STANJE && input.matches("^(REGULARNI_IZRAZ).*$")){
+			int length = 0;
+			String tokenName = "";
+			
+			Pattern pattern = Pattern.compile("^(REGULARNI_IZRAZ)");
+			Matcher matcher = pattern.matcher(input);
+			if (matcher.find())
+			{
+				tokenName = matcher.group(1);
+				length = tokenName.length();
+			}
+
+			if(length > maxLen){				
+				maxLen = length;
+				nextTokenName = tokenName;
+				
+				NIZ_AKCIJA 				
+			}
+			
+			
+		}
