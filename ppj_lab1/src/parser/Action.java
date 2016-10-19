@@ -5,11 +5,11 @@ package parser;
  */
 public enum Action {
 
-    NOVI_REDAK("dodati akciju", false),
+    NOVI_REDAK("nextLineNum = lineNum + 1;", false),
 
-    UDJI_U_STANJE("dodati akciju", true),
+    UDJI_U_STANJE("nextState = LexerState.", true),
 
-    VRATI_SE("dodati akciju", true);
+    VRATI_SE("nextCurrIndex -=", true);
 
     private String action;
     private boolean arg;

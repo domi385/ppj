@@ -15,7 +15,7 @@ public class LA {
 		String input = args[0];
 		int currIndex = 0;
 		int lineNum = 1;
-		LexerState state = LexerState.BEGIN;
+		LexerState state = LexerState.S_pocetno;
 		
 		while(input.length() > currIndex){
 			

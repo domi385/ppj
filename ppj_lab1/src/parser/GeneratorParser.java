@@ -1,13 +1,10 @@
 package parser;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,11 +42,11 @@ public class GeneratorParser {
     public static Map<String, String> definitions = new HashMap<>();
 
     //unaprijed zadano?
-    static {
-        definitions.put("sviZnakovi",
-                "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
-        definitions.put("bjelina", "\\\\t|\\\\n");
-    }
+//    static {
+//        definitions.put("sviZnakovi",
+//                "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
+//        definitions.put("bjelina", "\\\\t|\\\\n");
+//    }
 
     /**
      * Lista stanja
@@ -67,8 +64,11 @@ public class GeneratorParser {
     //linija u dokumentu (zbog liste linija)
     static int lineNum = 0;
 
-    public static void parse(String path) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8);
+    public static void parse(Scanner sc){
+    	List<String> lines = new ArrayList<String>();
+    	while(sc.hasNextLine()){
+    		lines.add(sc.nextLine());
+    	}
         parse(lines);
     }
 
@@ -118,7 +118,7 @@ public class GeneratorParser {
             Action action = Action.valueOf(data[0]);
             String arg = null;
             if (action.isArg()) {
-                arg = data[1];
+                arg = data[1] + ";";
             }
 
             actions.put(action, arg);
