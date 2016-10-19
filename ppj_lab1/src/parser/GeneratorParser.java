@@ -12,28 +12,59 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Dominik on 19.10.2016..
+ * Razred koji parsira datoteku s pravilima potrebnim za generiranje leksičkog analizatora.
+ *
+ * @author Dominik
  */
 public class GeneratorParser {
+    /**
+     * Regularni izraz koji predstavlja naziv regularne definicije
+     */
     private static final Pattern DEFINITION_NAME = Pattern.compile("\\{(\\w+)\\}");
+    /**
+     * Izraz koji predstavlja regularnu definiciju
+     */
     private static final Pattern DEFINITION =
             Pattern.compile("^" + DEFINITION_NAME + " (.+)$");
+    /**
+     * Izraz koji predstavlja stanje
+     */
     private static final Pattern STATE = Pattern.compile("S_\\w+");
+    /**
+     * Izraz koji predstavlja leksičku jedinku
+     */
     private static final Pattern TOKEN = Pattern.compile("\\w+");
+    /**
+     * Početni redak zadanog pravila
+     */
     private static final Pattern RULE_DEFINITION = Pattern.compile("^<(" + STATE + ")>(.+)$");
 
+    /**
+     * Mapirane definicije u obliku (ime, regex)
+     */
     public static Map<String, String> definitions = new HashMap<>();
 
+    //unaprijed zadano?
     static {
         definitions.put("sviZnakovi",
                 "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
         definitions.put("bjelina", "\\\\t|\\\\n");
     }
 
+    /**
+     * Lista stanja
+     */
     public static List<String> states = new ArrayList<>();
+    /**
+     * Lista jedinki
+     */
     public static List<String> tokens = new ArrayList<>();
+    /**
+     * Lista pravila
+     */
     public static List<Rule> rules = new ArrayList<>();
 
+    //linija u dokumentu (zbog liste linija)
     static int lineNum = 0;
 
     public static void parse(String path) throws IOException {
@@ -41,7 +72,7 @@ public class GeneratorParser {
         parse(lines);
     }
 
-    public static void parse(List<String> lines) {
+    static void parse(List<String> lines) {
         Tuple<String, String> def = getDefinition(lines.get(lineNum));
         while (def != null) {
             definitions.put(def.left, def.right);
@@ -122,6 +153,7 @@ public class GeneratorParser {
 
         boolean matches = matcher.matches();
         if (!matches) {
+            //došli do kraja definicija
             return null;
         }
 
@@ -132,6 +164,12 @@ public class GeneratorParser {
         return new Tuple<>(name, regex);
     }
 
+    /**
+     * Metoda koja zamjenjuje imena definicija s njihovim regexima (unutar regexa).
+     *
+     * @param regex pročitani regex
+     * @return "čisti regex" - bez imena regularnih definicija u njemu
+     */
     static String cleanRegex(String regex) {
         Matcher matcher = DEFINITION_NAME.matcher(regex);
         StringBuffer sb = new StringBuffer();
