@@ -27,7 +27,7 @@ public class GeneratorParser {
     static {
         definitions.put("sviZnakovi",
                 "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
-        definitions.put("bjelina", "\t|\n");
+        definitions.put("bjelina", "\\\\t|\\\\n");
     }
 
     public static List<String> states = new ArrayList<>();
@@ -70,6 +70,7 @@ public class GeneratorParser {
         String token;
         lineNum += 2;
 
+        //obavezna linija
         String line = lines.get(lineNum).trim();
         if (line.equals("-")) {
             token = "REJECT";
@@ -79,6 +80,7 @@ public class GeneratorParser {
         lineNum++;
         line = lines.get(lineNum).trim();
 
+        //opcionalne akcije
         Map<Action, String> actions = new HashMap<>();
         while (!line.equals("}")) {
             String[] data = line.split(" ");
