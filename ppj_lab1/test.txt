@@ -1,0 +1,46 @@
+{oktalnaZnamenka} 0|1|2|3|4|5|6|7
+{dekadskaZnamenka} {oktalnaZnamenka}|8|9
+{hexZnamenka} a|b|c|d|e|f|{dekadskaZnamenka}|A|B|C|D|E|F
+%X S_pocetno S_komentar S_unarniMinus
+%L IDENTIFIKATOR brojcanaKonstanta znakovnaKonstanta OP_PLUS
+<S_pocetno>#\|
+{
+-
+UDJI_U_STANJE S_komentar
+}
+<S_komentar>\|#
+{
+-
+UDJI_U_STANJE S_pocetno
+}
+<S_komentar>\n
+{
+-
+NOVI_REDAK
+}
+<S_komentar>{sviZnakovi}
+{
+-
+}
+<S_pocetno>-{bjelina}*-
+{
+OP_MINUS
+UDJI_U_STANJE S_unarni
+VRATI_SE 1
+}
+<S_pocetno>\({bjelina}*-
+{
+LIJEVA_ZAGRADA
+UDJI_U_STANJE S_unarni
+VRATI_SE 1
+}
+<S_unarni>-
+{
+UMINUS
+UDJI_U_STANJE S_pocetno
+}
+<S_unarni>-{bjelina}*-
+{
+UMINUS
+VRATI_SE 1
+}
