@@ -55,7 +55,10 @@ public class GA {
 			for (Rule rule : rules) {
 				String actionState = rule.getState();
 				String actionRegex = rule.getRegex();
+				String tokenType = rule.getToken();	
 				String actions = "";
+				
+							
 				
 				Map<Action, String> actionMap = rule.getActions();
 				Set<Action> actionSet = actionMap.keySet();
@@ -63,7 +66,7 @@ public class GA {
 					actions += act.generateAction(actionMap.get(act));
 				}
 				
-				cases += generateCase(actionState, actionRegex, actions);
+				cases += generateCase(tokenType, actionState, actionRegex, actions);
 			}
 			
 			String analyzerFile = new String(Files.readAllBytes(Paths.get("src/analizator/AnalyzerTemplate.java")),StandardCharsets.UTF_8);
@@ -88,7 +91,7 @@ public class GA {
 
 	}
 
-	public static String generateCase(String state, String regex, String actions){
+	public static String generateCase(String tokenType, String state, String regex, String actions){
 		return 
 		"if(state == LexerState." + state +
 		" && input.matches(\"^(" + regex +
@@ -104,6 +107,7 @@ public class GA {
 		"} \n"+
 		"if(length > maxLen){ \n" +			
 		"maxLen = length; \n" +	
+		"nextTokenType = TokenType." + tokenType + "; \n" +
 		"nextTokenName = tokenName; \n" +
 		"nextCurrIndex = currIndex + length;" + actions + 
 		"\n } \n }";	

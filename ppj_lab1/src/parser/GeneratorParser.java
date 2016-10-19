@@ -42,11 +42,11 @@ public class GeneratorParser {
     public static Map<String, String> definitions = new HashMap<>();
 
     //unaprijed zadano?
-//    static {
-//        definitions.put("sviZnakovi",
-//                "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
-//        definitions.put("bjelina", "\\\\t|\\\\n");
-//    }
+    static {
+        definitions.put("sviZnakovi",
+                "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
+        definitions.put("bjelina", "\\\\t|\\\\n");
+    }
 
     /**
      * Lista stanja
@@ -179,8 +179,11 @@ public class GeneratorParser {
             matcher.appendReplacement(sb, "(" + definitions.get(name) + ")");
         }
         matcher.appendTail(sb);
+        
+        String reg = sb.toString();
+        reg = reg.replace("\\", "\\\\");
 
-        return sb.toString();
+        return reg;
     }
 
     public static class Tuple<T, U> {

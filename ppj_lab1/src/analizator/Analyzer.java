@@ -29,10 +29,10 @@ public class Analyzer {
 		String nextTokenName= null;
 		TokenType nextTokenType = null;
 		
-		if(state == LexerState.S_pocetno && input.matches("^(#\|).*$")){ 
+		if(state == LexerState.S_pocetno && input.matches("^(#\\|).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(#\|)"); 
+Pattern pattern = Pattern.compile("^(#\\|)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -40,13 +40,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_komentar;
  } 
- }if(state == LexerState.S_komentar && input.matches("^(\|#).*$")){ 
+ }if(state == LexerState.S_komentar && input.matches("^(\\|#).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\|#)"); 
+Pattern pattern = Pattern.compile("^(\\|#)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -54,13 +55,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_pocetno;
  } 
- }if(state == LexerState.S_komentar && input.matches("^(\n).*$")){ 
+ }if(state == LexerState.S_komentar && input.matches("^(\\n).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\n)"); 
+Pattern pattern = Pattern.compile("^(\\n)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -68,13 +70,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;
  } 
- }if(state == LexerState.S_komentar && input.matches("^((null)).*$")){ 
+ }if(state == LexerState.S_komentar && input.matches("^((\\(|\\)|\\{|\\}|\\||\\\\|\\*|\\$)).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^((null))"); 
+Pattern pattern = Pattern.compile("^((\\(|\\)|\\{|\\}|\\||\\\\|\\*|\\$))"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -82,13 +85,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(-(null)*-).*$")){ 
+ }if(state == LexerState.S_pocetno && input.matches("^(-(\\t|\\n)*-).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-(null)*-)"); 
+Pattern pattern = Pattern.compile("^(-(\\t|\\n)*-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -96,13 +100,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.OP_MINUS; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex -=1;
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(\((null)*-).*$")){ 
+ }if(state == LexerState.S_pocetno && input.matches("^(\\((\\t|\\n)*-).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\((null)*-)"); 
+Pattern pattern = Pattern.compile("^(\\((\\t|\\n)*-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -110,6 +115,7 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.LIJEVA_ZAGRADA; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex -=1;
  } 
@@ -124,13 +130,14 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.UMINUS; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_pocetno;
  } 
- }if(state == LexerState.S_unarni && input.matches("^(-(null)*-).*$")){ 
+ }if(state == LexerState.S_unarni && input.matches("^(-(\\t|\\n)*-).*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-(null)*-)"); 
+Pattern pattern = Pattern.compile("^(-(\\t|\\n)*-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -138,6 +145,7 @@ length = tokenName.length();
 } 
 if(length > maxLen){ 
 maxLen = length; 
+nextTokenType = TokenType.UMINUS; 
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextCurrIndex -=1;
  } 
