@@ -1,5 +1,3 @@
-package parser;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Razred koji parsira datoteku s pravilima potrebnim za generiranje leksičkog analizatora.
+ * Razred koji parsira datoteku s pravilima potrebnim za generiranje leksičkog
+ * analizatora.
  *
  * @author Dominik
  */
@@ -17,12 +16,13 @@ public class GeneratorParser {
     /**
      * Regularni izraz koji predstavlja naziv regularne definicije
      */
-    private static final Pattern DEFINITION_NAME = Pattern.compile("\\{(\\w+)\\}");
+    private static final Pattern DEFINITION_NAME = Pattern
+            .compile("\\{(\\w+)\\}");
     /**
      * Izraz koji predstavlja regularnu definiciju
      */
-    private static final Pattern DEFINITION =
-            Pattern.compile("^" + DEFINITION_NAME + " (.+)$");
+    private static final Pattern DEFINITION = Pattern.compile("^"
+            + DEFINITION_NAME + " (.+)$");
     /**
      * Izraz koji predstavlja stanje
      */
@@ -34,19 +34,20 @@ public class GeneratorParser {
     /**
      * Početni redak zadanog pravila
      */
-    private static final Pattern RULE_DEFINITION = Pattern.compile("^<(" + STATE + ")>(.+)$");
+    private static final Pattern RULE_DEFINITION = Pattern
+            .compile("^<(" + STATE + ")>(.+)$");
 
     /**
      * Mapirane definicije u obliku (ime, regex)
      */
     public static Map<String, String> definitions = new HashMap<>();
 
-    //unaprijed zadano?
-//    static {
-//        definitions.put("sviZnakovi",
-//                "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
-//        definitions.put("bjelina", "\\\\t|\\\\n");
-//    }
+    // unaprijed zadano?
+    /*
+     * static { definitions .put("sviZnakovi",
+     * "\\\\\\(|\\\\\\)|\\\\\\{|\\\\\\}|\\\\\\||\\\\\\\\|\\\\\\*|\\\\\\$");
+     * definitions.put("bjelina", "\\\\t|\\\\n"); }
+     */
 
     /**
      * Lista stanja
@@ -61,14 +62,14 @@ public class GeneratorParser {
      */
     public static List<Rule> rules = new ArrayList<>();
 
-    //linija u dokumentu (zbog liste linija)
+    // linija u dokumentu (zbog liste linija)
     static int lineNum = 0;
 
-    public static void parse(Scanner sc){
-    	List<String> lines = new ArrayList<String>();
-    	while(sc.hasNextLine()){
-    		lines.add(sc.nextLine());
-    	}
+    public static void parse(Scanner sc) {
+        List<String> lines = new ArrayList<String>();
+        while (sc.hasNextLine()) {
+            lines.add(sc.nextLine());
+        }
         parse(lines);
     }
 
@@ -97,11 +98,14 @@ public class GeneratorParser {
         Matcher m = RULE_DEFINITION.matcher(lines.get(lineNum));
         m.matches();
         String state = m.group(1);
-        String regex = cleanRegex(m.group(2)).replace("\\","\\\\").replace("\"", "\\\"");
+        String regex = cleanRegex(m.group(2)).replace("\\_", " ")
+                .replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("+", "\\\\+").replace("?", "\\\\?")
+                .replace("$", "").replace("-", "\\\\-");
         String token;
         lineNum += 2;
 
-        //obavezna linija
+        // obavezna linija
         String line = lines.get(lineNum).trim();
         if (line.equals("-")) {
             token = "REJECT";
@@ -111,14 +115,14 @@ public class GeneratorParser {
         lineNum++;
         line = lines.get(lineNum).trim();
 
-        //opcionalne akcije
+        // opcionalne akcije
         Map<Action, String> actions = new HashMap<>();
         while (!line.equals("}")) {
             String[] data = line.split(" ");
             Action action = Action.valueOf(data[0]);
             String arg = null;
             if (action.isArg()) {
-                arg = data[1] + ";";
+                arg = data[1];
             }
 
             actions.put(action, arg);
@@ -153,7 +157,7 @@ public class GeneratorParser {
 
         boolean matches = matcher.matches();
         if (!matches) {
-            //došli do kraja definicija
+            // došli do kraja definicija
             return null;
         }
 
@@ -165,9 +169,11 @@ public class GeneratorParser {
     }
 
     /**
-     * Metoda koja zamjenjuje imena definicija s njihovim regexima (unutar regexa).
+     * Metoda koja zamjenjuje imena definicija s njihovim regexima (unutar
+     * regexa).
      *
-     * @param regex pročitani regex
+     * @param regex
+     *            pročitani regex
      * @return "čisti regex" - bez imena regularnih definicija u njemu
      */
     static String cleanRegex(String regex) {
@@ -176,7 +182,8 @@ public class GeneratorParser {
 
         while (matcher.find()) {
             String name = matcher.group(1);
-            matcher.appendReplacement(sb, "(" + definitions.get(name) + ")");
+            matcher.appendReplacement(sb, "");
+            sb.append("(" + definitions.get(name) + ")");
         }
         matcher.appendTail(sb);
 

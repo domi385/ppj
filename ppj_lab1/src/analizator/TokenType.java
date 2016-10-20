@@ -1,1 +1,1 @@
-package analizator; public enum TokenType {REJECT,IDENTIFIKATOR,brojcanaKonstanta,znakovnaKonstanta,OP_PLUS}
+package analizator; public enum TokenType {REJECT,OPERAND,OP_MINUS,UMINUS,LIJEVA_ZAGRADA,DESNA_ZAGRADA}

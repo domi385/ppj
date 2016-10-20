@@ -1,4 +1,4 @@
-package analizator;
+
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,10 +29,10 @@ public class Analyzer {
 		String nextTokenName= null;
 		TokenType nextTokenType = null;
 		
-		if(state == LexerState.S_pocetno && input.matches("^(\\t|\\_)(.|\\s)*$")){ 
+		if(state == LexerState.S_pocetno && input.matches("^(\\t| )(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\\t|\\_)"); 
+Pattern pattern = Pattern.compile("^(\\t| )"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -57,7 +57,7 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;
+nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;;
  } 
  }if(state == LexerState.S_pocetno && input.matches("^(#\\|)(.|\\s)*$")){ 
 int length = 0; 
@@ -102,12 +102,12 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;
+nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;;
  } 
- }if(state == LexerState.S_komentar && input.matches("^(((|)|\\{|}|||*|\\|$|t|n|_|!|\"|#|%|&|'|+|,|-|.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|[|]|^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~))(.|\\s)*$")){ 
+ }if(state == LexerState.S_komentar && input.matches("^((\\(|\\)|\\{|\\}|\\||\\*|\\\\|\\|\\t|\\n| |!|\"|#|%|&|'|\\+|,|\\-|.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|\\?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|[|]|^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~))(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(((|)|\\{|}|||*|\\|$|t|n|_|!|\"|#|%|&|'|+|,|-|.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|[|]|^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~))"); 
+Pattern pattern = Pattern.compile("^((\\(|\\)|\\{|\\}|\\||\\*|\\\\|\\|\\t|\\n| |!|\"|#|%|&|'|\\+|,|\\-|.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|\\?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|[|]|^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~))"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -164,10 +164,10 @@ nextTokenType = TokenType.DESNA_ZAGRADA;
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(-)(.|\\s)*$")){ 
+ }if(state == LexerState.S_pocetno && input.matches("^(\\-)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-)"); 
+Pattern pattern = Pattern.compile("^(\\-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -179,10 +179,10 @@ nextTokenType = TokenType.OP_MINUS;
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(-(t|n|_)*-)(.|\\s)*$")){ 
+ }if(state == LexerState.S_pocetno && input.matches("^(\\-(\\t|\\n| )*\\-)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-(t|n|_)*-)"); 
+Pattern pattern = Pattern.compile("^(\\-(\\t|\\n| )*\\-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -192,12 +192,12 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.OP_MINUS; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex = currIndex + 1;
+nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex = currIndex + 1; nextTokenName = nextTokenName.substring(0,1);
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(\\((t|n|_)*-)(.|\\s)*$")){ 
+ }if(state == LexerState.S_pocetno && input.matches("^(\\((\\t|\\n| )*\\-)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\\((t|n|_)*-)"); 
+Pattern pattern = Pattern.compile("^(\\((\\t|\\n| )*\\-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -207,12 +207,12 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.LIJEVA_ZAGRADA; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex = currIndex + 1;
+nextCurrIndex = currIndex + length;nextState = LexerState.S_unarni;nextCurrIndex = currIndex + 1; nextTokenName = nextTokenName.substring(0,1);
  } 
- }if(state == LexerState.S_unarni && input.matches("^(\\t|\\_)(.|\\s)*$")){ 
+ }if(state == LexerState.S_unarni && input.matches("^(\\t| )(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(\\t|\\_)"); 
+Pattern pattern = Pattern.compile("^(\\t| )"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -237,12 +237,12 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;
+nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;;
  } 
- }if(state == LexerState.S_unarni && input.matches("^(-)(.|\\s)*$")){ 
+ }if(state == LexerState.S_unarni && input.matches("^(\\-)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-)"); 
+Pattern pattern = Pattern.compile("^(\\-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -254,10 +254,10 @@ nextTokenType = TokenType.UMINUS;
 nextTokenName = tokenName; 
 nextCurrIndex = currIndex + length;nextState = LexerState.S_pocetno;
  } 
- }if(state == LexerState.S_unarni && input.matches("^(-(t|n|_)*-)(.|\\s)*$")){ 
+ }if(state == LexerState.S_unarni && input.matches("^(\\-(\\t|\\n| )*\\-)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
-Pattern pattern = Pattern.compile("^(-(t|n|_)*-)"); 
+Pattern pattern = Pattern.compile("^(\\-(\\t|\\n| )*\\-)"); 
 Matcher matcher = pattern.matcher(input); 
 if (matcher.find()){ 
 tokenName = matcher.group(1); 
@@ -267,7 +267,7 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.UMINUS; 
 nextTokenName = tokenName; 
-nextCurrIndex = currIndex + length;nextCurrIndex = currIndex + 1;
+nextCurrIndex = currIndex + length;nextCurrIndex = currIndex + 1; nextTokenName = nextTokenName.substring(0,1);
  } 
  }
 		

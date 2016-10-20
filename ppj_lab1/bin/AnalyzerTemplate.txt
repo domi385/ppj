@@ -1,0 +1,60 @@
+
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Većina koda razreda generira se ovisno o ulaznoj datoteci. 
+ * Prolazi kroz sve kombinacije stanja i njima odgovarajućih regularnih izraza i provjerava
+ * odgovara li početak niza zadanom regularnom izrazu, a trenutno stanje traženom stanju. 
+ * Ukoliko odgovara, provjerava se je li to najdulji do sad pronađen niz. Podaci iz akcije
+ * najduljeg niza se spremaju i na kraju ispisuju i vraćaju pozivatelju metode.
+ *
+ * @author dunja
+ *
+ */
+public class Analyzer {
+	
+
+	public static LAState analyze(String input, int lineNum, LexerState state, int currIndex) {
+		
+		if(input.length() == 0){
+			return new LAState(lineNum, state, currIndex);
+		}
+		
+		LexerState nextState = state;
+		int nextLineNum = lineNum;
+		int maxLen = 0;
+		int nextCurrIndex = currIndex;
+		String nextTokenName= null;
+		TokenType nextTokenType = null;
+		
+		#ACTIONS
+		
+		//Ostatak koda ostaje uvijek isti
+		
+		//Ispis
+		if(nextTokenType != null){
+			
+			if(nextTokenType != TokenType.REJECT){
+				System.out.println(nextTokenType + " " + lineNum + " " + nextTokenName);
+			}
+			
+			lineNum = nextLineNum;
+			state = nextState;
+			currIndex = nextCurrIndex;
+			
+			return new LAState(lineNum, state, currIndex);
+			
+		//Oporavak od pogreške
+		}else{
+			
+			System.err.print(input.substring(0, 1));
+			
+			return Analyzer.analyze(input.substring(1, input.length()), lineNum, state, currIndex+1);
+		}
+		
+		
+	}
+
+}
