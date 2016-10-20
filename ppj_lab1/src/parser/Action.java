@@ -9,7 +9,7 @@ public enum Action {
 
     UDJI_U_STANJE("nextState = LexerState.", true),
 
-    VRATI_SE("nextCurrIndex -=", true);
+    VRATI_SE("nextCurrIndex = currentIndex + ", true);
 
     private String action;
     private boolean arg;
