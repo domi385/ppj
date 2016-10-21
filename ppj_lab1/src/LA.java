@@ -19,7 +19,7 @@ public class LA {
         String input = null;
         try {
             input = new String(Files.readAllBytes(Paths
-                    .get("integration/minusLang.in")),
+                    .get("integration/simplePpjLang.in")),
                     StandardCharsets.UTF_8);
         } catch (IOException e) {
             // TODO Auto-generated catch block

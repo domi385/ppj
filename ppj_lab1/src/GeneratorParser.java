@@ -101,7 +101,9 @@ public class GeneratorParser {
         String regex = cleanRegex(m.group(2)).replace("\\_", " ")
                 .replace("\\", "\\\\").replace("\"", "\\\"")
                 .replace("+", "\\\\+").replace("?", "\\\\?")
-                .replace("$", "").replace("-", "\\\\-");
+                .replace("$", "").replace("-", "\\\\-")
+                .replace("[", "\\\\[").replace("]", "\\\\]")
+                .replace("^", "\\\\^").replace("\'", "\\\'");
         String token;
         lineNum += 2;
 

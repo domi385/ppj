@@ -57,4 +57,12 @@ public class Analyzer {
 		
 	}
 
+ public static String findLongest(String input, String regex){
+        String s = input;
+        while(!s.matches("^("+regex+")$")){
+            s=s.substring(0, s.length()-1);
+        }
+        return s;
+    }
+
 }

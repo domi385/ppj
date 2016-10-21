@@ -23,7 +23,7 @@ public class GA {
         try {
 
             System.setIn(new FileInputStream(
-                    "integration/minusLang.lan"));
+                    "integration/simplePpjLang.lan"));
 
             Scanner sc = new Scanner(System.in);
             GeneratorParser.parse(sc);
@@ -101,17 +101,12 @@ public class GA {
                 + " && input.matches(\"^(" + regex
                 + ")(.|\\\\s)*$\")){ \n" + "int length = 0; \n"
                 + "String tokenName = \"\"; \n"
-                + "Pattern pattern = Pattern.compile(\"^(" + regex
-                + ")\"); \n"
-                + "Matcher matcher = pattern.matcher(input); \n"
-                + "if (matcher.find())" + "{ \n"
-                + "tokenName = matcher.group(1); \n"
-                + "length = tokenName.length(); \n" + "} \n"
+                + "tokenName = findLongest(input, \"(" + regex
+                + ")\"); \n" + "length = tokenName.length(); \n"
                 + "if(length > maxLen){ \n" + "maxLen = length; \n"
                 + "nextTokenType = TokenType." + tokenType + "; \n"
                 + "nextTokenName = tokenName; \n"
                 + "nextCurrIndex = currIndex + length;" + actions
                 + "\n } \n }";
     }
-
 }
