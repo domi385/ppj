@@ -1,7 +1,7 @@
 {oktalnaZnamenka} 0|1|2|3|4|5|6|7
 {dekadskaZnamenka} {oktalnaZnamenka}|8|9
 {hexZnamenka} a|b|c|d|e|f|{dekadskaZnamenka}|A|B|C|D|E|F
-%X S_pocetno S_komentar S_unarniMinus
+%X S_pocetno S_komentar S_unarni
 %L IDENTIFIKATOR brojcanaKonstanta znakovnaKonstanta OP_PLUS
 <S_pocetno>#\|
 {
