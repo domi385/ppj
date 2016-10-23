@@ -1,5 +1,3 @@
-package parser;
-
 /**
  * Created by Dominik on 19.10.2016..
  */
@@ -9,7 +7,7 @@ public enum Action {
 
     UDJI_U_STANJE("nextState = LexerState.", true),
 
-    VRATI_SE("nextCurrIndex = currIndex + ", true);
+    VRATI_SE("A", true);
 
     private String action;
     private boolean arg;
@@ -20,7 +18,11 @@ public enum Action {
     }
 
     public String generateAction(String arg) {
-        return action + (arg != null ? arg : "");
+    	
+    	if(action.equals("A") )return "nextCurrIndex = currIndex + " + arg +
+    			"; nextTokenName = nextTokenName.substring(0," + arg + ");";
+    	
+        return action + (arg != null ? arg : "") + ";";
     }
 
     public boolean isArg() {
