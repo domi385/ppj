@@ -38,6 +38,11 @@ public abstract class Symbol implements Serializable{
         return symbol.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return symbol;
+    }
+
     public static class Nonterminal extends Symbol {
         private static final long serialVersionUID = 2806461921546415986L;
 
@@ -46,18 +51,29 @@ public abstract class Symbol implements Serializable{
         }
     }
 
-    @Override
-    public String toString() {
-        return symbol;
-    }
-
     public static class Terminal extends Symbol {
+        public static final Terminal END_MARKER = new Terminal("^");
+
         private static final long serialVersionUID = -1278880143337778970L;
 
         public boolean isSynchronizationSymbol;
 
         public Terminal(String symbol) {
             super(symbol);
+        }
+    }
+
+    public static class Epsilon extends Symbol {
+        private static final long serialVersionUID = -6346119283837290123L;
+
+        private static Epsilon epsilon = new Epsilon();
+
+        private Epsilon() {
+            super("$");
+        }
+
+        public static Epsilon getEpsilon() {
+            return epsilon;
         }
     }
 }

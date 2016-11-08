@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Razred koji predstavlja gramatiku.
@@ -50,8 +52,27 @@ class Grammar implements Serializable {
 
     private Set<Item> getItems() {
         Set<Item> items = new HashSet<>();
-        productions.forEach(production -> items.addAll(production.getItems()));
+        productions.forEach(production -> items.addAll(production.getItems(terminals)));
 
         return items;
+    }
+
+    public Set<Production> getProductions(Symbol.Nonterminal nonterminal) {
+        return productions.stream().filter(p -> p.getLeft().equals(nonterminal))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public Set<Symbol.Terminal> getTerminals() {
+        return new HashSet<>(terminals);
+    }
+
+    public Set<Symbol> getSymbols() {
+        Set<Symbol> symbols = new LinkedHashSet<>(terminals);
+        symbols.addAll(nonterminals);
+        return symbols;
+    }
+
+    public Production getProduction(int index) {
+        return productions.get(index);
     }
 }

@@ -9,8 +9,8 @@ import java.util.Set;
 public class Production implements Serializable {
     private static final long serialVersionUID = -1405079230500381873L;
 
-    private Symbol.Nonterminal left;
-    private List<Symbol> right;
+    protected Symbol.Nonterminal left;
+    protected List<Symbol> right;
 
     public Production(Symbol.Nonterminal left, List<Symbol> right) {
         this.left = left;
@@ -21,8 +21,20 @@ public class Production implements Serializable {
         return left;
     }
 
-    public List<Symbol> getRight() {
-        return right;
+    public boolean isEpsilon() {
+        return right.contains(Symbol.Epsilon.getEpsilon());
+    }
+
+    public int size() {
+        return isEpsilon() ? 0 : right.size();
+    }
+
+    public Symbol getSymbol(int index) {
+        if (isEpsilon() || index < 0 || index >= right.size()) {
+            throw new IllegalArgumentException("Illegal position");
+        }
+
+        return right.get(index);
     }
 
     @Override
@@ -56,12 +68,14 @@ public class Production implements Serializable {
         return sb.toString();
     }
 
-    public Set<Item> getItems() {
+    public Set<Item> getItems(Set<Symbol.Terminal> terminals) {
         Set<Item> items = new HashSet<>();
 
-        int size = right.size();
-        for(int i = 0; i <= size; i++) {
-            items.add(new Item(this, i));
+        int size = size();
+        for (int i = 0; i <= size; i++) {
+            for (Symbol.Terminal terminal : terminals) {
+                items.add(new Item(this, i, terminal));
+            }
         }
 
         return items;
