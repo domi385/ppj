@@ -1,5 +1,7 @@
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Razred koji predstavlja produkciju
@@ -52,5 +54,16 @@ public class Production implements Serializable {
         right.forEach(sb::append);
 
         return sb.toString();
+    }
+
+    public Set<Item> getItems() {
+        Set<Item> items = new HashSet<>();
+
+        int size = right.size();
+        for(int i = 0; i <= size; i++) {
+            items.add(new Item(this, i));
+        }
+
+        return items;
     }
 }

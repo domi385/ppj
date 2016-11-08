@@ -2,14 +2,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Razred koji predstavlja gramatiku.
  */
-class Grammar implements Serializable{
-
+class Grammar implements Serializable {
 
     private static final String AUGMENTED_START_NAME = "AS";
     private static final long serialVersionUID = -5503090513562391586L;
@@ -46,5 +46,12 @@ class Grammar implements Serializable{
 
         productions.add(production);
         return true;
+    }
+
+    private Set<Item> getItems() {
+        Set<Item> items = new HashSet<>();
+        productions.forEach(production -> items.addAll(production.getItems()));
+
+        return items;
     }
 }
