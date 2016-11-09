@@ -16,6 +16,14 @@ public class Pair implements Serializable {
         this.symbol = symbol;
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -62,12 +62,15 @@ public class GSA {
                 Set<Item> items = canonical.get(i);
 
                 boolean isShift = checkShiftAction(items, terminal, i);
-                if (isShift) {
-                    continue;
-                }
 
                 boolean isReduce = checkReduceAction(items, terminal, i);
                 if (isReduce) {
+                    if (isShift) {
+                        System.err
+                                .println("Pomakni/reduciraj nejednoznačnost. Stanje: " + i + ", terminal: " + terminal);
+                    }
+                }
+                if (isShift || isReduce) {
                     continue;
                 }
 
@@ -112,9 +115,10 @@ public class GSA {
             }
 
             actions.put(new Pair(position, terminal), new Action(Action.ActionEnum.SHIFT, index));
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private static boolean checkReduceAction(Set<Item> items, Symbol.Terminal terminal, int position) {
