@@ -5,12 +5,10 @@ import java.io.Serializable;
  *
  * @author Dominik Stanojevic
  */
-public abstract class Symbol implements Serializable{
+public abstract class Symbol implements Serializable {
     private static final long serialVersionUID = -6221509207717815993L;
 
     private String symbol;
-
-
 
     public Symbol(String symbol) {
         this.symbol = symbol;
@@ -19,8 +17,6 @@ public abstract class Symbol implements Serializable{
     public String getSymbol() {
         return symbol;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -56,7 +52,7 @@ public abstract class Symbol implements Serializable{
     }
 
     public static class Terminal extends Symbol {
-        public static final Terminal END_MARKER = new Terminal("^");
+        public static final Terminal END_MARKER = new Terminal("÷");
 
         private static final long serialVersionUID = -1278880143337778970L;
 
@@ -70,19 +66,23 @@ public abstract class Symbol implements Serializable{
     public static class Epsilon extends Symbol {
         private static final long serialVersionUID = -6346119283837290123L;
 
-        private static Epsilon epsilon = new Epsilon();
+        private static final Epsilon EPSILON = new Epsilon();
 
         private Epsilon() {
             super("$");
         }
 
         public static Epsilon getEpsilon() {
-            return epsilon;
+            return EPSILON;
         }
 
         @Override
         public String toString() {
             return "$";
+        }
+
+        private Object readResolve() {
+            return EPSILON;
         }
     }
 }

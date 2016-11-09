@@ -81,7 +81,7 @@ public class Item implements Serializable {
     }
 
     public boolean dotBefore(Symbol symbol) {
-        if(production.isEpsilon() || dotPosition == production.size()) {
+        if (production.isEpsilon() || dotPosition == production.size()) {
             return false;
         }
 
@@ -101,26 +101,43 @@ public class Item implements Serializable {
         StringBuilder sb = new StringBuilder("[" + production.getLeft() + "->");
         int size = production.size();
 
-        for(int i = 0; i <= size; i++) {
-            if(dotPosition == i) {
+        for (int i = 0; i <= size; i++) {
+            if (dotPosition == i) {
                 sb.append("*");
             }
 
-            if(i < size) {
+            if (i < size) {
                 sb.append(production.getSymbol(i));
             }
         }
         sb.append(", " + terminal + "]");
 
-
         return sb.toString();
     }
 
     public boolean dotAtEnd() {
-        if(production.isEpsilon() || dotPosition == production.size()) {
+        if (production.isEpsilon() || dotPosition == production.size()) {
             return true;
         }
 
         return false;
+    }
+
+    public boolean dotBeforeTerminal() {
+        if (dotPosition == production.size()) {
+            return false;
+        }
+
+        Symbol symbol = production.getSymbol(dotPosition);
+
+        return symbol instanceof Symbol.Terminal;
+    }
+
+    public Symbol getAtDot() {
+        if(dotAtEnd()) {
+            return null;
+        }
+
+        return production.getSymbol(dotPosition);
     }
 }

@@ -1,5 +1,6 @@
 import analizator.Action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,15 +24,17 @@ public class GSA {
     public static Map<Pair, Action> actions = new HashMap<>();
     public static Map<Pair, Integer> goTos = new HashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         grammar = new GSAParser(readLines()).getGrammar().getAugmentedGrammar();
 
-        first = computeFirst();
+        computeFirst();
         canonical();
 
         defineActions();
         defineGoTos();
-        System.out.println();
+
+        SAData data = new SAData(grammar, first, actions, goTos);
+        data.writeData("src/analizator/data.ser");
     }
 
     private static void defineGoTos() {
@@ -58,27 +61,46 @@ public class GSA {
             for (int i = 0; i < size; i++) {
                 Set<Item> items = canonical.get(i);
 
-                checkShiftAction(items, terminal, i);
+                boolean isShift = checkShiftAction(items, terminal, i);
+                if (isShift) {
+                    continue;
+                }
 
-                checkReduceAction(items, terminal, i);
+                boolean isReduce = checkReduceAction(items, terminal, i);
+                if (isReduce) {
+                    continue;
+                }
 
                 if (terminal.equals(Symbol.Terminal.END_MARKER)) {
-                    checkAcceptAction(items, i);
+                    boolean isAccepted = checkAcceptAction(items, i);
+                    if (isAccepted) {
+                        continue;
+                    }
                 }
+
+                errorAction(terminal, i);
             }
         }
     }
 
-    private static void checkAcceptAction(Set<Item> items, int position) {
+    private static void errorAction(Symbol.Terminal terminal, int position) {
+        actions.put(new Pair(position, terminal), new Action(Action.ActionEnum.ERROR, -1));
+    }
+
+    private static boolean checkAcceptAction(Set<Item> items, int position) {
         boolean contains = items.stream().anyMatch(it -> it.getProduction().equals(grammar.getProduction(0)) &&
                                                          it.getTerminal().equals(Symbol.Terminal.END_MARKER) &&
                                                          it.dotAtEnd());
         if (contains) {
             actions.put(new Pair(position, Symbol.Terminal.END_MARKER), new Action(Action.ActionEnum.ACCEPT, 0));
+
+            return true;
         }
+
+        return false;
     }
 
-    private static void checkShiftAction(Set<Item> items, Symbol.Terminal terminal, int position) {
+    private static boolean checkShiftAction(Set<Item> items, Symbol.Terminal terminal, int position) {
         boolean contains = items.stream().anyMatch(it -> it.dotBefore(terminal) && !terminal.equals(it.getTerminal()));
 
         if (contains) {
@@ -86,14 +108,16 @@ public class GSA {
             int index = canonical.indexOf(goTo);
 
             if (index == -1) {
-                return;
+                return false;
             }
 
             actions.put(new Pair(position, terminal), new Action(Action.ActionEnum.SHIFT, index));
         }
+
+        return true;
     }
 
-    private static void checkReduceAction(Set<Item> items, Symbol.Terminal terminal, int position) {
+    private static boolean checkReduceAction(Set<Item> items, Symbol.Terminal terminal, int position) {
         Optional<Item> item = items.stream().filter((it -> it.dotAtEnd() && terminal.equals(it.getTerminal()) &&
                                                            !it.getProduction().left.equals(Grammar.augmentedStart)))
                 .sorted((it1, ite2) -> Integer
@@ -103,7 +127,11 @@ public class GSA {
         if (item.isPresent()) {
             actions.putIfAbsent(new Pair(position, terminal),
                     new Action(Action.ActionEnum.REDUCE, grammar.indexOf(item.get().getProduction())));
+
+            return true;
         }
+
+        return false;
     }
 
     private static List<String> readLines() {
@@ -120,60 +148,65 @@ public class GSA {
         return lines;
     }
 
-    private static Map<Symbol, Set<Symbol>> computeFirst() {
-        first.put(Symbol.Epsilon.getEpsilon(), Collections.singleton(Symbol.Epsilon.getEpsilon()));
+    private static void computeFirst() {
+        grammar.getSymbols().forEach(s -> first.put(s, new HashSet<>()));
 
-        for (Symbol s : grammar.getSymbols()) {
-            if (s instanceof Symbol.Terminal) {
-                first.put(s, Collections.singleton(s));
-                continue;
-            } else if (s instanceof Symbol.Epsilon) {
-                first.put(s, Collections.singleton(s));
-                continue;
-            }
-            Set<Symbol> firstForNonterminal = getFirstNonterminal((Symbol.Nonterminal) s);
-            first.put(s, firstForNonterminal);
-        }
-
-        return first;
-    }
-
-    private static Set<Symbol> getFirstNonterminal(Symbol.Nonterminal nonterminal) {
-        Set<Symbol> f = new HashSet<>();
-        Set<Production> productions = grammar.getProductions(nonterminal);
-
-        for (Production p : productions) {
-            if (p.isEpsilon()) {
-                f.add(Symbol.Epsilon.getEpsilon());
-                continue;
-            }
-
-            int size = p.size();
-            for (int i = 0; i < size; i++) {
-                Symbol s = p.getSymbol(i);
-
-                Set<Symbol> firstForS = first.get(s);
-                if (firstForS == null) {
-                    Symbol.Nonterminal nt = (Symbol.Nonterminal) s;
-                    firstForS = getFirstNonterminal(nt);
+        boolean added = false;
+        do {
+            added = false;
+            for (Symbol symbol : grammar.getSymbols()) {
+                boolean tempAdded = false;
+                if (symbol instanceof Symbol.Terminal) {
+                    tempAdded = first.get(symbol).add(symbol);
+                } else {
+                    tempAdded = firstForNonterminal((Symbol.Nonterminal) symbol);
                 }
 
-                firstForS.forEach(symbol -> {
-                    if (!symbol.equals(Symbol.Epsilon.getEpsilon())) {
-                        f.add(symbol);
+                if (!added && tempAdded) {
+                    added = tempAdded;
+                }
+            }
+        } while (added);
+    }
+
+    private static boolean firstForNonterminal(Symbol.Nonterminal symbol) {
+        boolean added = false;
+
+        Set<Symbol> fX = first.get(symbol);
+
+        Set<Production> productions = grammar.getProductions(symbol);
+        for (Production production : productions) {
+            if (production.isEpsilon()) {
+                added = first.get(symbol).add(Symbol.Epsilon.getEpsilon());
+                continue;
+            }
+
+            int size = production.size();
+            for (int i = 0; i < size; i++) {
+                Set<Symbol> fY = first.get(production.getSymbol(i));
+
+                for (Symbol s : fY) {
+                    if (s.equals(Symbol.Epsilon.getEpsilon())) {
+                        continue;
                     }
-                });
-                if (!firstForS.contains(Symbol.Epsilon.getEpsilon())) {
+
+                    boolean tempBoolean = fX.add(s);
+                    if (!added && tempBoolean) {
+                        added = true;
+                    }
+                }
+
+                if (!fY.contains(Symbol.Epsilon.getEpsilon())) {
                     break;
                 }
 
-                if (i == size - 1) {
-                    f.add(Symbol.Epsilon.getEpsilon());
+                if (i == size - 1 && !fX.contains(Symbol.Epsilon.getEpsilon())) {
+                    added = fX.add(Symbol.Epsilon.getEpsilon());
                 }
             }
         }
 
-        return f;
+        return added;
     }
 
     private static Set<Symbol> getFirst(List<Symbol> symbols) {
@@ -210,6 +243,8 @@ public class GSA {
             added = false;
             Set<Item> temp = closure.stream().filter(i -> i.isBeforeNonterminal()).collect(Collectors.toSet());
             for (Item item : temp) {
+                boolean tempAdded;
+
                 Symbol.Nonterminal nonTerminal = item.getNonterminal();
                 List<Symbol> after = item.getAfterNonterminal();
                 after.add(item.getTerminal());
@@ -220,11 +255,15 @@ public class GSA {
                     Set<Symbol.Terminal> t = getFirst(after).stream().filter(s -> s instanceof Symbol.Terminal)
                             .map(symbol -> (Symbol.Terminal) symbol).collect(Collectors.toSet());
                     for (Symbol.Terminal terminal : t) {
-                        added = closure.add(new Item(production, 0, terminal));
+                        tempAdded = closure.add(new Item(production, 0, terminal));
+
+                        if (!added && tempAdded) {
+                            added = tempAdded;
+                        }
                     }
                 }
             }
-        } while (added == true);
+        } while (added);
 
         return closure;
     }
@@ -247,7 +286,7 @@ public class GSA {
         boolean added;
         do {
             added = false;
-            List<Set<Item>> copy = new ArrayList<>(canonical);
+            Set<Set<Item>> copy = new HashSet<>(canonical);
             for (Set<Item> c : copy) {
                 for (Symbol s : grammar.getSymbols()) {
                     Set<Item> goTo = goTo(c, s);
@@ -259,5 +298,4 @@ public class GSA {
             }
         } while (added);
     }
-
 }

@@ -31,6 +31,7 @@ public class Grammar implements Serializable {
 
     public Grammar getAugmentedGrammar() {
         Production production = new Production(augmentedStart, Collections.singletonList(startSymbol));
+        nonterminals.add(augmentedStart);
 
         ArrayList<Production> newProductions = new ArrayList<>(productions);
         newProductions.add(0, production);

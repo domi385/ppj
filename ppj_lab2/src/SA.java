@@ -1,5 +1,6 @@
 import analizator.Action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,20 +12,21 @@ import java.util.Stack;
  * Created by Dominik on 8.11.2016..
  */
 public class SA {
-    public static void main(String[] args) {
-        GSA.main(args);
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        SAData data = new SAData("src/analizator/data.ser");
+        
 
         Stack<Object> stack = new Stack<>();
         stack.push(0);
 
         Node root = null;
 
-        List<Token> tokens = getTokens(readLines());
+        List<Token> tokens = getTokens(data, readLines());
         Iterator<Token> iterator = tokens.iterator();
         Token token = iterator.next();
         while(true) {
             int state = (int) stack.peek();
-            Action action = GSA.actions.get(new Pair(state, token.getType()));
+            Action action = data.actions.get(new Pair(state, token.getType()));
             if(action.getAction() == Action.ActionEnum.SHIFT) {
                 Node node = new Node(token);
                 stack.push(node);
@@ -32,7 +34,7 @@ public class SA {
                 stack.push(action.getParameter());
                 token = iterator.next();
             } else if (action.getAction() == Action.ActionEnum.REDUCE) {
-                Production production = GSA.grammar.getProduction(action.getParameter());
+                Production production = data.grammar.getProduction(action.getParameter());
                 Node head = new Node(production.getLeft());
                 if(production.isEpsilon()) {
                     head.addChild(new Node(Symbol.Epsilon.getEpsilon()));
@@ -48,28 +50,27 @@ public class SA {
                 }
                 state = (int) stack.peek();
                 stack.push(head);
-                stack.push(GSA.goTos.get(new Pair(state, production.getLeft())));
+                stack.push(data.goTos.get(new Pair(state, production.getLeft())));
             } else if (action.getAction() == Action.ActionEnum.ACCEPT) {
-                System.out.println("uspih");
                 break;
             } else {
-                throw new RuntimeException("Jebiga");
+
             }
         }
 
         root.visitNode(0);
     }
 
-    private static List<Token> getTokens(List<String> lines) {
+    private static List<Token> getTokens(SAData data, List<String> lines) {
         List<Token> tokens = new ArrayList<>();
 
         for (String line : lines) {
-            String[] data = line.split(" ", 3);
+            String[] lineData = line.split(" ", 3);
 
             Symbol.Terminal terminal =
-                    GSA.grammar.getTerminals().stream().filter(t -> t.getSymbol().equals(data[0])).findFirst().get();
-            int row = Integer.parseInt(data[1]);
-            String string = data[2];
+                    data.grammar.getTerminals().stream().filter(t -> t.getSymbol().equals(lineData[0])).findFirst().get();
+            int row = Integer.parseInt(lineData[1]);
+            String string = lineData[2];
 
             tokens.add(new Token(terminal, row, string));
         }
