@@ -110,7 +110,7 @@ public class Item implements Serializable {
                 sb.append(production.getSymbol(i));
             }
         }
-        sb.append(", " + terminal + "]");
+        sb.append(", ").append(terminal).append("]");
 
         return sb.toString();
     }
@@ -121,23 +121,5 @@ public class Item implements Serializable {
         }
 
         return false;
-    }
-
-    public boolean dotBeforeTerminal() {
-        if (dotPosition == production.size()) {
-            return false;
-        }
-
-        Symbol symbol = production.getSymbol(dotPosition);
-
-        return symbol instanceof Symbol.Terminal;
-    }
-
-    public Symbol getAtDot() {
-        if(dotAtEnd()) {
-            return null;
-        }
-
-        return production.getSymbol(dotPosition);
     }
 }

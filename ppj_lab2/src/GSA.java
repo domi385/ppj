@@ -17,15 +17,19 @@ import java.util.stream.Collectors;
  */
 public class GSA {
     public static Grammar grammar;
-    public static Map<Symbol, Set<Symbol>> first = new HashMap<>();
+    public static Map<Symbol, Set<Symbol>> first;
 
-    public static List<Set<Item>> canonical = new ArrayList<>();
+    public static List<Set<Item>> canonical;
 
-    public static Map<Pair, Action> actions = new HashMap<>();
-    public static Map<Pair, Integer> goTos = new HashMap<>();
+    public static Map<Pair, Action> actions;
+    public static Map<Pair, Integer> goTos;
 
     public static void main(String[] args) throws IOException {
         grammar = new GSAParser(readLines()).getGrammar().getAugmentedGrammar();
+        first = new HashMap<>();
+        canonical = new ArrayList<>();
+        actions = new HashMap<>();
+        goTos = new HashMap<>();
 
         computeFirst();
         canonical();
@@ -34,7 +38,7 @@ public class GSA {
         defineGoTos();
 
         SAData data = new SAData(grammar, first, actions, goTos);
-        data.writeData("src/analizator/data.ser");
+        data.writeData(SA.DATA_PATH);
     }
 
     private static void defineGoTos() {
@@ -74,6 +78,7 @@ public class GSA {
                     continue;
                 }
 
+
                 if (terminal.equals(Symbol.Terminal.END_MARKER)) {
                     boolean isAccepted = checkAcceptAction(items, i);
                     if (isAccepted) {
@@ -104,7 +109,7 @@ public class GSA {
     }
 
     private static boolean checkShiftAction(Set<Item> items, Symbol.Terminal terminal, int position) {
-        boolean contains = items.stream().anyMatch(it -> it.dotBefore(terminal) && !terminal.equals(it.getTerminal()));
+        boolean contains = items.stream().anyMatch(it -> it.dotBefore(terminal));
 
         if (contains) {
             Set<Item> goTo = goTo(items, terminal);
@@ -142,12 +147,9 @@ public class GSA {
         Scanner sc = new Scanner(System.in);
         List<String> lines = new ArrayList<>();
 
-        String line = sc.nextLine();
-        while (!line.trim().isEmpty()) {
-            lines.add(line);
-            line = sc.nextLine();
+        while(sc.hasNextLine()) {
+            lines.add(sc.nextLine());
         }
-        sc.nextLine();
 
         return lines;
     }
@@ -155,11 +157,11 @@ public class GSA {
     private static void computeFirst() {
         grammar.getSymbols().forEach(s -> first.put(s, new HashSet<>()));
 
-        boolean added = false;
+        boolean added;
         do {
             added = false;
             for (Symbol symbol : grammar.getSymbols()) {
-                boolean tempAdded = false;
+                boolean tempAdded;
                 if (symbol instanceof Symbol.Terminal) {
                     tempAdded = first.get(symbol).add(symbol);
                 } else {
@@ -167,7 +169,7 @@ public class GSA {
                 }
 
                 if (!added && tempAdded) {
-                    added = tempAdded;
+                    added = true;
                 }
             }
         } while (added);
@@ -245,7 +247,7 @@ public class GSA {
         boolean added;
         do {
             added = false;
-            Set<Item> temp = closure.stream().filter(i -> i.isBeforeNonterminal()).collect(Collectors.toSet());
+            Set<Item> temp = closure.stream().filter(Item::isBeforeNonterminal).collect(Collectors.toSet());
             for (Item item : temp) {
                 boolean tempAdded;
 
@@ -262,7 +264,7 @@ public class GSA {
                         tempAdded = closure.add(new Item(production, 0, terminal));
 
                         if (!added && tempAdded) {
-                            added = tempAdded;
+                            added = true;
                         }
                     }
                 }

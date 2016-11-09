@@ -13,7 +13,6 @@ public class GSAParser {
     private Set<Symbol.Nonterminal> nonterminals;
     private Symbol.Nonterminal startSymbol;
     private Set<Symbol.Terminal> terminals;
-    private Set<Symbol.Terminal> syncronizationSymbols;
 
     private int lineNum;
 
@@ -46,7 +45,7 @@ public class GSAParser {
             String s = lines.get(i);
             if (s.startsWith("<")) {
                 Symbol.Nonterminal left = new Symbol.Nonterminal(s.trim());
-                List<Symbol> right = null;
+                List<Symbol> right;
 
                 i++;
                 if (i >= lines.size()) {
@@ -93,7 +92,6 @@ public class GSAParser {
         s = s.replace("%Syn ", "");
 
         String[] syncSymbols = s.split(" ");
-        syncronizationSymbols = new HashSet<>();
 
         for (String symbol : syncSymbols) {
             terminals.stream().filter(t -> t.getSymbol().equals(symbol))

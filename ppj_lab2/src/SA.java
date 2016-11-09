@@ -13,12 +13,15 @@ import java.util.stream.Collectors;
  * Created by Dominik on 8.11.2016..
  */
 public class SA {
+    public static final String DATA_PATH = "src/analizator/data.ser";
+
     private static SAData data;
     private static List<Token> tokens;
-    private static int currentToken = 0;
+    private static int currentToken ;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        data = new SAData("src/analizator/data.ser");
+        currentToken = 0;
+        data = new SAData(DATA_PATH);
 
         Stack<Object> stack = new Stack<>();
         stack.push(0);
@@ -64,17 +67,21 @@ public class SA {
                 }
 
                 Action tempAction = data.actions.get(new Pair(state, token.getType()));
-                int tempState = state;
+                if (tempAction.getAction() != Action.ActionEnum.ERROR) {
+                    continue;
+                }
+
+
+                stack.pop();
                 while (tempAction.getAction() == Action.ActionEnum.ERROR) {
-                    Object top = stack.pop();
+                    Object top = stack.peek();
                     while (!(top instanceof Integer)) {
-                        top = stack.pop();
+                        stack.pop();
+                        top = stack.peek();
                     }
 
-                    tempState = (int) top;
-                    tempAction = data.actions.get(new Pair(tempState, token.getType()));
+                    tempAction = data.actions.get(new Pair((int) top, token.getType()));
                 }
-                stack.push(tempState);
             } else {
                 throw new RuntimeException("Jebiga");
             }
@@ -122,10 +129,8 @@ public class SA {
         Scanner sc = new Scanner(System.in);
         List<String> lines = new ArrayList<>();
 
-        String line = sc.nextLine();
-        while (!line.trim().isEmpty()) {
-            lines.add(line);
-            line = sc.nextLine();
+        while (sc.hasNextLine()) {
+            lines.add(sc.nextLine());
         }
 
         return lines;

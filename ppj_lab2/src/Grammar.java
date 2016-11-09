@@ -42,20 +42,12 @@ public class Grammar implements Serializable {
         return augmentedGrammar;
     }
 
-    public boolean addProduction(Production production) {
+    public void addProduction(Production production) {
         if (productions.contains(production)) {
-            return false;
+            return;
         }
 
         productions.add(production);
-        return true;
-    }
-
-    private Set<Item> getItems() {
-        Set<Item> items = new HashSet<>();
-        productions.forEach(production -> items.addAll(production.getItems(terminals)));
-
-        return items;
     }
 
     public Set<Production> getProductions(Symbol.Nonterminal nonterminal) {

@@ -1,5 +1,3 @@
-import analizator.Action;
-
 import java.io.Serializable;
 
 /**

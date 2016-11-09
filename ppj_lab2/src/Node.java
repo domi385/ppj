@@ -17,17 +17,13 @@ public class Node {
         value = token.toString();
     }
 
-    public List<Node> getChildren() {
-        return children;
-    }
-
     public void addChild(Node node) {
         children.add(0, node);
     }
 
     public void visitNode(int level) {
-        String print = (level != 0 ? String.format("%" + level + "c", ' ') : "") + value;
-        System.out.println(print);
+        String print = (level != 0 ? String.format("%" + level + "c", ' ') : "") + value + "\n";
+        System.out.print(print);
         for(Node child : children) {
             child.visitNode(level + 1);
         }
