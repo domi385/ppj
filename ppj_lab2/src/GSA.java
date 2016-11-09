@@ -1,10 +1,12 @@
+import analizator.Action;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,37 +15,113 @@ import java.util.stream.Collectors;
  * Created by Dominik on 8.11.2016..
  */
 public class GSA {
-    private static Grammar grammar;
-    private static Map<Symbol, Set<Symbol>> first = new HashMap<>();
+    public static Grammar grammar;
+    public static Map<Symbol, Set<Symbol>> first = new HashMap<>();
+
+    public static List<Set<Item>> canonical = new ArrayList<>();
+
+    public static Map<Pair, Action> actions = new HashMap<>();
+    public static Map<Pair, Integer> goTos = new HashMap<>();
 
     public static void main(String[] args) {
         grammar = new GSAParser(readLines()).getGrammar().getAugmentedGrammar();
 
         first = computeFirst();
-        Set<Set<Item>> canonical = new LinkedHashSet<>();
-        canonical(canonical);
+        canonical();
+
+        defineActions();
+        defineGoTos();
         System.out.println();
+    }
+
+    private static void defineGoTos() {
+        int size = canonical.size();
+        for (Symbol.Nonterminal nonterminal : grammar.getNonterminals()) {
+            for (int i = 0; i < size; i++) {
+                Set<Item> items = canonical.get(i);
+
+                Set<Item> goTo = goTo(items, nonterminal);
+                int index = canonical.indexOf(goTo);
+
+                if (index == -1) {
+                    continue;
+                }
+
+                goTos.put(new Pair(i, nonterminal), index);
+            }
+        }
+    }
+
+    private static void defineActions() {
+        int size = canonical.size();
+        for (Symbol.Terminal terminal : grammar.getTerminals()) {
+            for (int i = 0; i < size; i++) {
+                Set<Item> items = canonical.get(i);
+
+                checkShiftAction(items, terminal, i);
+
+                checkReduceAction(items, terminal, i);
+
+                if (terminal.equals(Symbol.Terminal.END_MARKER)) {
+                    checkAcceptAction(items, i);
+                }
+            }
+        }
+    }
+
+    private static void checkAcceptAction(Set<Item> items, int position) {
+        boolean contains = items.stream().anyMatch(it -> it.getProduction().equals(grammar.getProduction(0)) &&
+                                                         it.getTerminal().equals(Symbol.Terminal.END_MARKER) &&
+                                                         it.dotAtEnd());
+        if (contains) {
+            actions.put(new Pair(position, Symbol.Terminal.END_MARKER), new Action(Action.ActionEnum.ACCEPT, 0));
+        }
+    }
+
+    private static void checkShiftAction(Set<Item> items, Symbol.Terminal terminal, int position) {
+        boolean contains = items.stream().anyMatch(it -> it.dotBefore(terminal) && !terminal.equals(it.getTerminal()));
+
+        if (contains) {
+            Set<Item> goTo = goTo(items, terminal);
+            int index = canonical.indexOf(goTo);
+
+            if (index == -1) {
+                return;
+            }
+
+            actions.put(new Pair(position, terminal), new Action(Action.ActionEnum.SHIFT, index));
+        }
+    }
+
+    private static void checkReduceAction(Set<Item> items, Symbol.Terminal terminal, int position) {
+        Optional<Item> item = items.stream().filter((it -> it.dotAtEnd() && terminal.equals(it.getTerminal()) &&
+                                                           !it.getProduction().left.equals(Grammar.augmentedStart)))
+                .sorted((it1, ite2) -> Integer
+                        .compare(grammar.indexOf(it1.getProduction()), grammar.indexOf(ite2.getProduction())))
+                .findFirst();
+
+        if (item.isPresent()) {
+            actions.putIfAbsent(new Pair(position, terminal),
+                    new Action(Action.ActionEnum.REDUCE, grammar.indexOf(item.get().getProduction())));
+        }
     }
 
     private static List<String> readLines() {
         Scanner sc = new Scanner(System.in);
         List<String> lines = new ArrayList<>();
 
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            if (line.trim().isEmpty()) {
-                break;
-            }
-
+        String line = sc.nextLine();
+        while (!line.trim().isEmpty()) {
             lines.add(line);
+            line = sc.nextLine();
         }
+        sc.nextLine();
 
         return lines;
     }
 
     private static Map<Symbol, Set<Symbol>> computeFirst() {
         first.put(Symbol.Epsilon.getEpsilon(), Collections.singleton(Symbol.Epsilon.getEpsilon()));
-        first.put(Symbol.Terminal.END_MARKER, Collections.singleton(Symbol.Terminal.END_MARKER));
 
         for (Symbol s : grammar.getSymbols()) {
             if (s instanceof Symbol.Terminal) {
@@ -161,7 +239,7 @@ public class GSA {
         return closure(result);
     }
 
-    private static void canonical(Set<Set<Item>> canonical) {
+    private static void canonical() {
         Set<Item> closure =
                 closure(Collections.singleton(new Item(grammar.getProduction(0), 0, Symbol.Terminal.END_MARKER)));
         canonical.add(closure);
@@ -169,15 +247,17 @@ public class GSA {
         boolean added;
         do {
             added = false;
-            Set<Set<Item>> copy = new HashSet<>(canonical);
+            List<Set<Item>> copy = new ArrayList<>(canonical);
             for (Set<Item> c : copy) {
                 for (Symbol s : grammar.getSymbols()) {
                     Set<Item> goTo = goTo(c, s);
                     if (!goTo.isEmpty() && !canonical.contains(goTo)) {
-                        added = canonical.add(goTo);
+                        canonical.add(goTo);
+                        added = true;
                     }
                 }
             }
         } while (added);
     }
+
 }

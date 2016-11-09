@@ -115,4 +115,12 @@ public class Item implements Serializable {
 
         return sb.toString();
     }
+
+    public boolean dotAtEnd() {
+        if(production.isEpsilon() || dotPosition == production.size()) {
+            return true;
+        }
+
+        return false;
+    }
 }

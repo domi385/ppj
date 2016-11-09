@@ -3,12 +3,14 @@ import java.io.Serializable;
 /**
  * Created by Dominik on 8.11.2016..
  */
-public class Token implements Serializable {
+public class Token implements Serializable{
     private static final long serialVersionUID = -2918507670494398991L;
 
     private Symbol.Terminal type;
     private int row;
     private String value;
+
+
 
     public Token(Symbol.Terminal type, int row, String value) {
         this.type = type;
@@ -26,5 +28,10 @@ public class Token implements Serializable {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return type + " " + row + " " + value;
     }
 }

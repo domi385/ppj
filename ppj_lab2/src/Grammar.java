@@ -1,6 +1,5 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -11,9 +10,9 @@ import java.util.stream.Collectors;
 /**
  * Razred koji predstavlja gramatiku.
  */
-class Grammar implements Serializable {
+public class Grammar implements Serializable {
 
-    private static final String AUGMENTED_START_NAME = "AS";
+    public static final Symbol.Nonterminal augmentedStart = new Symbol.Nonterminal("AS");
     private static final long serialVersionUID = -5503090513562391586L;
 
     private Set<Symbol.Terminal> terminals;
@@ -24,12 +23,13 @@ class Grammar implements Serializable {
     public Grammar(
             Set<Symbol.Terminal> terminals, Set<Symbol.Nonterminal> nonterminals, Symbol.Nonterminal startSymbol) {
         this.terminals = terminals;
+        terminals.add(Symbol.Terminal.END_MARKER);
+
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
     }
 
     public Grammar getAugmentedGrammar() {
-        Symbol.Nonterminal augmentedStart = new Symbol.Nonterminal(AUGMENTED_START_NAME);
         Production production = new Production(augmentedStart, Collections.singletonList(startSymbol));
 
         ArrayList<Production> newProductions = new ArrayList<>(productions);
@@ -74,5 +74,13 @@ class Grammar implements Serializable {
 
     public Production getProduction(int index) {
         return productions.get(index);
+    }
+
+    public int indexOf(Production production) {
+        return productions.indexOf(production);
+    }
+
+    public Set<Symbol.Nonterminal> getNonterminals() {
+        return new HashSet<>(nonterminals);
     }
 }

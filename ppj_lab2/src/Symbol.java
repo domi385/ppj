@@ -10,6 +10,8 @@ public abstract class Symbol implements Serializable{
 
     private String symbol;
 
+
+
     public Symbol(String symbol) {
         this.symbol = symbol;
     }
@@ -17,6 +19,8 @@ public abstract class Symbol implements Serializable{
     public String getSymbol() {
         return symbol;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -74,6 +78,11 @@ public abstract class Symbol implements Serializable{
 
         public static Epsilon getEpsilon() {
             return epsilon;
+        }
+
+        @Override
+        public String toString() {
+            return "$";
         }
     }
 }
