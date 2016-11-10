@@ -24,8 +24,10 @@ public class SA {
         data = new SAData(DATA_PATH);
 
         Stack<Object> stack = new Stack<>();
+        //početno stanje parsera je stanje u kojem se nalazi živi prefiks [S' -> S, $]
         stack.push(0);
 
+        //čvor za ispis
         Node root = null;
 
         tokens = getTokens(data, readLines());
@@ -41,11 +43,13 @@ public class SA {
                 token = nextToken();
             } else if (action.getAction() == Action.ActionEnum.REDUCE) {
                 Production production = data.grammar.getProduction(action.getParameter());
+
                 Node head = new Node(production.getLeft());
                 if (production.isEpsilon()) {
                     head.addChild(new Node(Symbol.Epsilon.getEpsilon()));
                 }
                 root = head;
+
                 int size = 2 * production.size();
                 while (size > 0) {
                     Object poped = stack.pop();
