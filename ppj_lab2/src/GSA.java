@@ -51,7 +51,7 @@ public class GSA {
 
     private static void defineGoTos() {
         /**
-         * Algoritam: "Za svaki nezavršni znak gramatike A i skup živih prefiksa iz kanonskog skupa I (koji čine
+         * Algoritam: "Za svaki nezavršni znak gramatike A i skup stavki iz kanonskog skupa I (koji čine
          * jedno stanje)  provjeriti da li u kanonskom skupu postoji skup (i stanje) definiran relacijom GOTO(I, A).
          * Ako postoji radimo novu akciju NovoStanje(staroStanje, A, NovoStanje)
          */
@@ -122,7 +122,7 @@ public class GSA {
 
     private static boolean checkAcceptAction(Set<Item> items, int position) {
         /**
-         * Izaberi akciju prihvati u slučaju da postoji živi prefiks u skupu za koji vrijedi:
+         * Izaberi akciju prihvati u slučaju da postoji stavka u skupu za koji vrijedi:
          * [S'->S×, $] (ovdje je $ kraj niza), a pročitani znak je također $
          */
         boolean contains = items.stream().anyMatch(it -> it.getProduction().equals(grammar.getProduction(0)) &&
@@ -163,11 +163,11 @@ public class GSA {
     private static boolean checkReduceAction(Set<Item> items, Symbol.Terminal terminal, int position) {
         /**
          * Akcija reduciraj je definirana u slučaju kada za stanje i, završni znak a vrijedi:
-         * 1. U skupu postoji živi prefiks oblika [A -> alpha×, a]
+         * 1. U skupu postoji stavka oblika [A -> alpha×, a]
          * 2. Lijeva strana produkcije nije S'
          * Definira se akcija Reduciraj(i, a) = j, gdje je j redni broj produkcije u gramatici
          *
-         * Napomena: Ovdje izbjegavamo nejednoznačnost reduciraj/reduciraj tako da produkcije (tj. žive prefikse koji
+         * Napomena: Ovdje izbjegavamo nejednoznačnost reduciraj/reduciraj tako da produkcije (tj. stavke koji
          * sadrže produkcije) sortiramo prema rednom broju unutar gramatike te izaberemo najmanji
          */
         Optional<Item> item = items.stream().filter((it -> it.dotAtEnd() && terminal.equals(it.getTerminal()) &&
@@ -301,11 +301,11 @@ public class GSA {
     private static Set<Item> closure(Set<Item> items) {
         Set<Item> closure = new HashSet<>(items);
 
-        //petlja se ponavlja dok je moguće dodati novi živi prefiks u skup
+        //petlja se ponavlja dok je moguće dodati novu stavku u skup
         boolean added;
         do {
             added = false;
-            //izdvajamo sve žive prefikse oblika [X -> alpha ×A ß, a]
+            //izdvajamo sve stavke oblika [X -> alpha ×A ß, a]
             Set<Item> temp = closure.stream().filter(Item::isBeforeNonterminal).collect(Collectors.toSet());
             for (Item item : temp) {
                 boolean tempAdded;
@@ -323,7 +323,7 @@ public class GSA {
                     //pronalazi se skup ZapočinjeZnakom(ßa)
                     Set<Symbol.Terminal> t = getFirst(after).stream().filter(s -> s instanceof Symbol.Terminal)
                             .map(symbol -> (Symbol.Terminal) symbol).collect(Collectors.toSet());
-                    //za svaki završni znak gradi se živi prefiks oblika [A -> ×gamma, a] i dodaje se u skup
+                    //za svaki završni znak gradi se stavka oblika [A -> ×gamma, a] i dodaje se u skup
                     for (Symbol.Terminal terminal : t) {
                         tempAdded = closure.add(new Item(production, 0, terminal));
 
@@ -340,9 +340,9 @@ public class GSA {
 
     private static Set<Item> goTo(Set<Item> items, Symbol symbol) {
         /**
-         *  Za svaki skup živih prefiksa I i znak X definira se GOTO(I,X) na sljedeći način:
-         *  1. Pronađi sve žive prefikse oblika [A -> alpha *X ß, a]
-         *  2. U rezultatni skup R dodaj novi živi prefiks oblika [A -> alpha X* ß, a]
+         *  Za svaki skup stavki I i znak X definira se GOTO(I,X) na sljedeći način:
+         *  1. Pronađi sve stavke oblika [A -> alpha *X ß, a]
+         *  2. U rezultatni skup R dodaj novi stavku oblika [A -> alpha X* ß, a]
          *  3. Za rezultatni skup pronađi CLOSURE(R)
          */
         Set<Item> result = new HashSet<>();
