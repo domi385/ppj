@@ -1,15 +1,61 @@
 package sa.rule.def;
 
+import java.util.List;
+
 import sa.Environment;
+import sa.PropertyType;
+import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class InitDeclarator extends RuleStrategy {
 
+    @SuppressWarnings("unchecked")
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
-        // TODO Auto-generated method stub
+        if (node.getChildNodeNumber() == 1) {
 
+            NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
+            directDeclarator.getProperty(PropertyType.N_TYPE).setValue(
+                    node.getProperty(PropertyType.N_TYPE).getValue());
+            directDeclarator.visitNode(environment);
+            RuleUtility.checkNotType(directDeclarator, Types.CONST_T);
+            RuleUtility.checkNotType(directDeclarator, Types.ARRAY_CONST_T);
+        } else if (node.getChildNodeNumber() == 3) {
+            NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
+            directDeclarator.getProperty(PropertyType.N_TYPE).setValue(
+                    node.getProperty(PropertyType.N_TYPE).getValue());
+            directDeclarator.visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            Types directDeclaratorType = (Types) directDeclarator.getProperty(PropertyType.TYPE)
+                    .getValue();
+            if (RuleUtility.checkType(directDeclaratorType, Types.CONST_T)
+                    || RuleUtility.checkType(directDeclaratorType, Types.T)) {
+                RuleUtility.checkType(node.getChidlAt(2), Types.T);
+            } else if (RuleUtility.checkType(directDeclaratorType, Types.ARRAY_CONST_T)
+                    || RuleUtility.checkType(directDeclaratorType, Types.ARRAY_T)) {
+                NonTerminalNode initializer = ((NonTerminalNode) node.getChidlAt(2));
+                Integer initializerElementNumber = initializer.getProperty(PropertyType.NUM_ELEM)
+                        .getValue();
+                Integer directDeclaratorElementNumber = directDeclarator.getProperty(
+                        PropertyType.NUM_ELEM).getValue();
+                if (initializerElementNumber > directDeclaratorElementNumber) {
+                    throw new RuntimeException();
+                }
+                List<Types> initializerElementTypes = (List<Types>) initializer
+                        .getProperty(PropertyType.TYPES);
+                for (Types type : initializerElementTypes) {
+                    // TODO check
+                    RuleUtility.checkType(type, Types.T);
+                }
+            } else {
+                throw new RuntimeException();
+            }
+
+        } else {
+            // loša produkcija
+        }
     }
-
 }

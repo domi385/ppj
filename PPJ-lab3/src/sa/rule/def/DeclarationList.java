@@ -8,8 +8,14 @@ public class DeclarationList extends RuleStrategy {
 
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
-        // TODO Auto-generated method stub
-
+        if (node.getChildNodeNumber() == 1) {
+            node.getChidlAt(0).visitNode(environment);
+        } else if (node.getChildNodeNumber() == 3) {
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(1).visitNode(environment);
+        } else {
+            // loša produkcija
+        }
     }
 
 }

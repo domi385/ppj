@@ -6,7 +6,6 @@ import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.node.TerminalNode;
 import sa.rule.RuleStrategy;
-import sa.rule.RuleUtility;
 
 public class PrimaryExpression extends RuleStrategy {
 
@@ -26,15 +25,15 @@ public class PrimaryExpression extends RuleStrategy {
                         ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                                 PropertyType.L_EXPRESSION).getValue());
             } else if (childNode.getSymbol().getSymbol().equals("BROJ")) {
-                RuleUtility.checkIntValue(childNode.getValue());
+                checkIntValue(childNode.getValue());
                 node.getProperty(PropertyType.TYPE).setValue(Types.INT);
                 node.getProperty(PropertyType.L_EXPRESSION).setValue("0");
             } else if (childNode.getSymbol().getSymbol().equals("ZNAK")) {
-                RuleUtility.checkCharValue(childNode.getValue());
+                checkCharValue(childNode.getValue());
                 node.getProperty(PropertyType.TYPE).setValue(Types.CHAR);
                 node.getProperty(PropertyType.L_EXPRESSION).setValue("0");
             } else if (childNode.getSymbol().getSymbol().equals("NIZ_ZNAKOVA")) {
-                RuleUtility.checkConstCharArray(childNode.getValue());
+                checkConstCharArray(childNode.getValue());
                 node.getProperty(PropertyType.TYPE).setValue(Types.ARRAY_CONST_CHAR);
                 node.getProperty(PropertyType.L_EXPRESSION).setValue("0");
             } else {
@@ -51,5 +50,20 @@ public class PrimaryExpression extends RuleStrategy {
         } else {
             // loša produkcija
         }
+    }
+
+    public static void checkCharValue(String value) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public static void checkConstCharArray(String value) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public static void checkIntValue(String value) {
+        // TODO Auto-generated method stub
+
     }
 }

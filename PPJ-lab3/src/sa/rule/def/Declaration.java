@@ -15,6 +15,7 @@ public class Declaration extends RuleStrategy {
             NonTerminalNode initDeclarators = (NonTerminalNode) node.getChidlAt(1);
             initDeclarators.getProperty(PropertyType.N_TYPE).setValue(
                     typeName.getProperty(PropertyType.TYPE).getValue());
+            initDeclarators.visitNode(environment);
         } else {
             // loša produkcija
         }

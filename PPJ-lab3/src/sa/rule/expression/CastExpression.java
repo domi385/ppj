@@ -5,7 +5,6 @@ import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
-import sa.rule.RuleUtility;
 
 public class CastExpression extends RuleStrategy {
 
@@ -29,7 +28,7 @@ public class CastExpression extends RuleStrategy {
             Types castedType = (Types) ((NonTerminalNode) node.getChidlAt(1)).getProperty(
                     PropertyType.TYPE).getValue();
 
-            RuleUtility.isCastable(originalType, castedType);
+            isCastable(originalType, castedType);
 
             node.getProperty(PropertyType.TYPE).setValue(castedType);
             node.getProperty(PropertyType.L_EXPRESSION).setValue(0);
@@ -37,6 +36,11 @@ public class CastExpression extends RuleStrategy {
         } else {
             // loša produkcija
         }
+    }
+
+    public static void isCastable(Types originalType, Types castedType) {
+        // TODO Auto-generated method stub
+
     }
 
 }

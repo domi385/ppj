@@ -1,9 +1,39 @@
 package sa;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class describes code environment (scope).
+ */
 public class Environment {
+
+    /**
+     * Reference to parent environment.
+     */
+    private Environment parentEnvironment;
+
+    /**
+     * Identificator table.
+     */
+    private Map<String, TableEntry> identificatorTable;
+
+    /**
+     * Function identificator table
+     */
+    private Map<String, FunctionTableEntry> functionsTable;
+
+    /**
+     *
+     * @param parentEnvironment
+     */
+    public Environment(Environment parentEnvironment) {
+        super();
+        this.parentEnvironment = parentEnvironment;
+        identificatorTable = new HashMap<>();
+        functionsTable = new HashMap<>();
+    }
 
     public static Environment getGlobalEnvironment(Environment environment) {
         Environment currEnvironment = environment;
@@ -11,17 +41,6 @@ public class Environment {
             currEnvironment = currEnvironment.parentEnvironment;
         }
         return currEnvironment;
-    }
-
-    private Environment parentEnvironment;
-
-    private Map<String, TableEntry> identificatorTable;
-
-    private Map<String, FunctionTableEntry> functionsTable;
-
-    public Environment(Environment parentEnvironment) {
-        super();
-        this.parentEnvironment = parentEnvironment;
     }
 
     public boolean checkFunctionDeclaration(String name, Types returnType,
@@ -139,6 +158,14 @@ public class Environment {
             super();
             this.name = name;
             this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Types getType() {
+            return type;
         }
 
     }

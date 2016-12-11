@@ -19,14 +19,15 @@ public class FunctionDefinition extends RuleStrategy {
             node.getChidlAt(0).visitNode(environment);
             RuleUtility.checkNotType(node.getChidlAt(0), Types.CONST_T);
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
-            if (environment.isDefinedFunction(functionName)) {
+            if (Environment.getGlobalEnvironment(environment).isDefinedFunction(functionName)) {
                 throw new RuntimeException();
             }
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
             RuleUtility.checkFunctionsDeclarations(functionName, functionReturnType,
                     new ArrayList<Types>(), environment);
-            environment.defineFunction(functionName, functionReturnType, new ArrayList<Types>());
+            Environment.getGlobalEnvironment(environment).defineFunction(functionName,
+                    functionReturnType, new ArrayList<Types>());
             node.getChidlAt(5).visitNode(environment);
         } else if (node.getChildNodeNumber() == 6) {
             node.getChidlAt(0).visitNode(environment);
@@ -40,14 +41,27 @@ public class FunctionDefinition extends RuleStrategy {
                     PropertyType.TYPE).getValue();
             List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                     PropertyType.TYPES).getValue();
+            List<String> parameterNames = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+                    PropertyType.NAMES).getValue();
             RuleUtility.checkFunctionsDeclarations(functionName, functionReturnType,
                     parameterTypes, environment);
-            environment.defineFunction(functionName, functionReturnType, parameterTypes);
-            // TODO
-            node.getChidlAt(5).visitNode(environment);
+            Environment.getGlobalEnvironment(environment).defineFunction(functionName,
+                    functionReturnType, parameterTypes);
+            Environment augmentedEnvironment = new Environment(environment);
+            for (int i = 0, end = parameterNames.size(); i < end; i++) {
+                augmentedEnvironment.declareIdentificator(parameterNames.get(i),
+                        parameterTypes.get(i));
+            }
+            node.getChidlAt(5).visitNode(augmentedEnvironment);
         } else {
 
         }
+
+    }
+
+    public static void checkFunctionsDeclarations(String functionName, Types functionReturnType,
+            List<Types> parameterTypes, Environment environment2) {
+        // TODO Auto-generated method stub
 
     }
 
