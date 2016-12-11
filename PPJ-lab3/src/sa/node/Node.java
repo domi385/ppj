@@ -2,6 +2,7 @@ package sa.node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import sa.Environment;
 import sa.Symbol;
@@ -46,4 +47,20 @@ public abstract class Node {
     // return value;
     // }
 
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(" ");
+        sj.add(getSymbol().getSymbol());
+        sj.add("::=");
+        for (Node childNode : childNodes) {
+            if (childNode instanceof NonTerminalNode) {
+                sj.add(childNode.getSymbol().getSymbol());
+            } else {
+                TerminalNode currNode = (TerminalNode) childNode;
+                sj.add(currNode.getSymbol().getSymbol() + "(" + currNode.getRow() + ","
+                        + currNode.getValue() + ")");
+            }
+        }
+        return sj.toString() + "\n";
+    }
 }

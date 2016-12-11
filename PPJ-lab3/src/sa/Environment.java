@@ -24,10 +24,6 @@ public class Environment {
      */
     private Map<String, FunctionTableEntry> functionsTable;
 
-    /**
-     *
-     * @param parentEnvironment
-     */
     public Environment(Environment parentEnvironment) {
         super();
         this.parentEnvironment = parentEnvironment;
