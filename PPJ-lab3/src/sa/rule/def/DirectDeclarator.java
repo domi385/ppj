@@ -52,7 +52,8 @@ public class DirectDeclarator extends RuleStrategy {
                 String functionName = ((TerminalNode) node.getChidlAt(0)).getValue();
                 Types returnType = node.getProperty(PropertyType.N_TYPE).getValue();
                 if (environment.isDeclaredLocaly(functionName)) {
-                    if (!checkFunctionDeclaration(functionName, returnType, Arrays.asList())) {
+                    if (!checkFunctionDeclaration(functionName, returnType, Arrays.asList(),
+                            environment)) {
                         throw new SemanticException(node.toString());
                     }
                 } else {
@@ -66,7 +67,8 @@ public class DirectDeclarator extends RuleStrategy {
                 List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                         PropertyType.TYPES).getValue();
                 if (environment.isDeclaredLocaly(functionName)) {
-                    if (!checkFunctionDeclaration(functionName, returnType, parameterTypes)) {
+                    if (!checkFunctionDeclaration(functionName, returnType, parameterTypes,
+                            environment)) {
                         throw new SemanticException(node.toString());
                     }
                 } else {
@@ -82,10 +84,8 @@ public class DirectDeclarator extends RuleStrategy {
     }
 
     private boolean checkFunctionDeclaration(String functionName, Types returnType,
-            List<Types> parameterTypes) {
-        return true;
-        // TODO Auto-generated method stub
-
+            List<Types> parameterTypes, Environment environment) {
+        return environment.isDeclared(functionName)
+                && !environment.checkFunctionDeclaration(functionName, returnType, parameterTypes);
     }
-
 }

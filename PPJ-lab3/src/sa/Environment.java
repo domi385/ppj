@@ -1,5 +1,6 @@
 package sa;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,18 @@ public class Environment {
      */
     private Map<String, FunctionTableEntry> functionsTable;
 
+    private List<Environment> childrenEnvironments;
+
     public Environment(Environment parentEnvironment) {
         super();
         this.parentEnvironment = parentEnvironment;
         identificatorTable = new HashMap<>();
         functionsTable = new HashMap<>();
+        childrenEnvironments = new ArrayList<Environment>();
+    }
+
+    public void addChildrenEvironment(Environment childEnvironment) {
+        childrenEnvironments.add(childEnvironment);
     }
 
     public static Environment getGlobalEnvironment(Environment environment) {
@@ -167,8 +175,15 @@ public class Environment {
     }
 
     public Types getIdentificatorType(String identificatorName) {
-        // TODO Auto-generated method stub
+        Environment currEnvironment = this;
+        while (currEnvironment != null) {
+            if (currEnvironment.functionsTable.containsKey(identificatorName)) {
+                return Types.FUNCTION;
+            } else if (currEnvironment.identificatorTable.containsKey(identificatorName)) {
+                return currEnvironment.identificatorTable.get(identificatorName).getType();
+            }
+            currEnvironment = currEnvironment.parentEnvironment;
+        }
         return null;
     }
-
 }

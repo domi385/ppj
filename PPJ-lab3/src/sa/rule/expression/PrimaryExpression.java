@@ -60,7 +60,7 @@ public class PrimaryExpression extends RuleStrategy {
 
     private Integer isLExpression(Environment environment, String identificatorName) {
         // TODO Auto-generated method stub
-        return null;
+        return 0;
     }
 
     public static boolean checkCharValue(String value) {
@@ -79,8 +79,8 @@ public class PrimaryExpression extends RuleStrategy {
     }
 
     public static boolean checkConstCharArray(String value) {
-        // TODO
-        return false;
+        return !value.replace("\\t", "").replace("\\n", "").replace("\\0", "").replace("\\'", "")
+                .replace("\\\"", "").replace("\\\\", "").contains("\\");
     }
 
     public static boolean checkIntValue(String value) {

@@ -19,6 +19,20 @@ public class PostfixExpression extends RuleStrategy {
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
             node.setProperty(PropertyType.L_EXPRESSION,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
+        } else if (node.getChildNodeNumber() == 2) {
+            node.getChidlAt(0).visitNode(environment);
+            if (!RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0),
+                    PropertyType.L_EXPRESSION, 1)
+                    || !RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0),
+                            PropertyType.TYPE, Types.INT)) {
+                throw new SemanticException(node.toString());
+            }
+
+            node.setProperty(PropertyType.TYPE, new Property(Types.INT));
+            node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
+        } else if (node.getChildNodeNumber() == 3) {
+            node.getChidlAt(0).visitNode(environment);
+            // TODO
         } else if (node.getChildNodeNumber() == 4) {
             node.getChidlAt(0).visitNode(environment);
             if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
@@ -36,5 +50,4 @@ public class PostfixExpression extends RuleStrategy {
         }
 
     }
-
 }

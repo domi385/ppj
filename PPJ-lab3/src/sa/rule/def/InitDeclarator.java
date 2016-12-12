@@ -19,7 +19,7 @@ public class InitDeclarator extends RuleStrategy {
 
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
             directDeclarator
-                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
+            .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
             if (!RuleUtility.checkNotType(directDeclarator, Types.CONST_T)
                     || !RuleUtility.checkNotType(directDeclarator, Types.ARRAY_CONST_T)) {
@@ -28,7 +28,7 @@ public class InitDeclarator extends RuleStrategy {
         } else if (node.getChildNodeNumber() == 3) {
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
             directDeclarator
-                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
+            .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
             node.getChidlAt(2).visitNode(environment);
 
@@ -52,7 +52,7 @@ public class InitDeclarator extends RuleStrategy {
                 List<Types> initializerElementTypes = (List<Types>) initializer
                         .getProperty(PropertyType.TYPES);
                 for (Types type : initializerElementTypes) {
-                    // TODO check
+
                     if (!RuleUtility.checkType(type, Types.T)) {
                         throw new SemanticException(node.toString());
                     }

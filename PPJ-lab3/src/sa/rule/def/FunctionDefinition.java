@@ -21,16 +21,19 @@ public class FunctionDefinition extends RuleStrategy {
                 && node.getChidlAt(3).getSymbol().getSymbol().equals("KR_VOID")) {
             node.getChidlAt(0).visitNode(environment);
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.CONST_T)) {
+
                 throw new SemanticException(node.toString());
             }
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
             if (Environment.getGlobalEnvironment(environment).isDefinedFunction(functionName)) {
+
                 throw new SemanticException(node.toString());
             }
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
             if (!checkFunctionsDeclarations(functionName, functionReturnType,
                     new ArrayList<Types>(), environment)) {
+
                 throw new SemanticException(node.toString());
             }
             Environment.getGlobalEnvironment(environment).defineFunction(functionName,
@@ -70,10 +73,16 @@ public class FunctionDefinition extends RuleStrategy {
     }
 
     public static boolean checkFunctionsDeclarations(String functionName, Types functionReturnType,
-            List<Types> parameterTypes, Environment environment2) {
-        return true;
-        // TODO Auto-generated method stub
-
+            List<Types> parameterTypes, Environment environment) {
+        Environment globalEnvironment = Environment.getGlobalEnvironment(environment);
+        if (!globalEnvironment.isDeclared(functionName)) {
+            return true;
+        }
+        if (globalEnvironment.checkFunctionDeclaration(functionName, functionReturnType,
+                parameterTypes)) {
+            return true;
+        }
+        return false;
     }
 
 }

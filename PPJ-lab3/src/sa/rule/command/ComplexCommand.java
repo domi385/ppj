@@ -13,7 +13,7 @@ public class ComplexCommand extends RuleStrategy {
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
         Environment localEnvironment = new Environment(environment);
-
+        environment.addChildrenEvironment(localEnvironment);
         if (node.hasProperty(PropertyType.PARAMETER_NAMES)
                 && node.hasProperty(PropertyType.PARAMETER_TYPES)) {
             List<String> parameterNames = node.getProperty(PropertyType.PARAMETER_NAMES).getValue();

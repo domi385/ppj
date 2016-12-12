@@ -5,6 +5,7 @@ import sa.PropertyType;
 import sa.SemanticException;
 import sa.Symbol;
 import sa.Types;
+import sa.node.Node;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
 
@@ -36,8 +37,14 @@ public class JumpCommand extends RuleStrategy {
     }
 
     public static boolean checkParent(NonTerminalNode node, String parentNonTerminalNodeName) {
-        return true;
-        // TODO Auto-generated method stub
+        Node currNode = node;
+        while (currNode != null) {
+            currNode = node.getParentNode();
+            if (currNode.getSymbol().getSymbol().equals(parentNonTerminalNodeName)) {
+                return true;
+            }
+        }
+        return false;
 
     }
 

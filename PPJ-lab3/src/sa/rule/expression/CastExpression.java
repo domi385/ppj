@@ -7,6 +7,7 @@ import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class CastExpression extends RuleStrategy {
 
@@ -41,9 +42,13 @@ public class CastExpression extends RuleStrategy {
     }
 
     public static boolean isCastable(Types originalType, Types castedType) {
-        return true;
-        // TODO Auto-generated method stub
-
+        if (RuleUtility.checkType(originalType, castedType)) {
+            return true;
+        }
+        if (originalType.equals(Types.INT) && castedType.equals(Types.CHAR)) {
+            return true;
+        }
+        return false;
     }
 
 }

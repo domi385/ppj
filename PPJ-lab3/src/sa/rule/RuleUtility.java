@@ -112,8 +112,8 @@ public class RuleUtility {
     }
 
     private static boolean checkFunctionDeclarations(Environment globalEnvironment) {
-        // TODO Auto-generated method stub
         return true;
+        // TODO
     }
 
     private static boolean checkMain(Environment globalEnvironment) {
@@ -123,8 +123,21 @@ public class RuleUtility {
     }
 
     public static boolean checkNotType(NonTerminalNode node, Types type) {
-        return true;
+        Types currType = node.getProperty(PropertyType.TYPE).getValue();
+        if (type.equals(Types.VOID)) {
+            return !currType.equals(Types.VOID);
+        } else if (type.equals(Types.CONST_T)) {
+            switch (currType) {
+            case CONST_CHAR:
+            case CONST_INT:
+            case CONST_T:
+                return false;
+            default:
+                return true;
 
+            }
+        }
+        return true;
     }
 
     public static boolean checkType(NonTerminalNode node, Types type) {
@@ -132,13 +145,46 @@ public class RuleUtility {
         return checkType(nodeType, type);
     }
 
+    /**
+     * Implicitna promjena
+     *
+     * @param originalType
+     * @param finalType
+     * @return
+     */
     public static boolean checkType(Types originalType, Types finalType) {
-        // TODO
-        return true;
+        if (originalType.equals(Types.CHAR) && finalType.equals(Types.CONST_CHAR)
+                || originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.CHAR)) {
+            return true;
+        }
+        if (originalType.equals(Types.INT) && finalType.equals(Types.CONST_INT)
+                || originalType.equals(Types.CONST_INT) && finalType.equals(Types.INT)) {
+            return true;
+        }
+        if (originalType.equals(Types.T) && finalType.equals(Types.CONST_T)
+                || originalType.equals(Types.CONST_T) && finalType.equals(Types.T)) {
+            return true;
+        }
+        if (originalType.equals(Types.CHAR) && finalType.equals(Types.INT)
+                || originalType.equals(Types.CHAR) && finalType.equals(Types.CONST_INT)) {
+            return true;
+        }
+        if (originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.CONST_INT)
+                || originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.INT)) {
+            return true;
+        }
+        if (originalType.equals(Types.ARRAY_T) && finalType.equals(Types.ARRAY_CONST_T)
+                || originalType.equals(Types.ARRAY) && finalType.equals(Types.ARRAY_CONST_T)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean checkProperty(NonTerminalNode node, PropertyType type, Object value) {
         Property property = node.getProperty(type);
+        if (type.equals(PropertyType.TYPE)) {
+            return RuleUtility.checkType(property.getValue(), (Types) value);
+        }
         return property.getValue().equals(value);
     }
 }
