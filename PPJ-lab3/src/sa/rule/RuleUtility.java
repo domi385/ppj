@@ -21,7 +21,7 @@ public class RuleUtility {
 
     }
 
-    public static boolean checkType(Node chidlAt, Types i) {
+    public static boolean checkType(Node chidlAt, Types type) {
         // TODO Auto-generated method stub
         return false;
     }

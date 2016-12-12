@@ -1,7 +1,7 @@
 package sa;
 
 public enum Types {
-    VOID, CHAR, INT, CONST_T, CONST_CHAR, CONST_INT, ARRAY, ARRAY_CONST_CHAR, ARRAY_CONST_T, T, ARRAY_T;
+    VOID, CHAR, INT, CONST_T, CONST_CHAR, CONST_INT, ARRAY, ARRAY_CONST_CHAR, ARRAY_CONST_T, T, ARRAY_T, FUNCTION;
 
     public static Types getConstType(Types value) {
         switch (value) {

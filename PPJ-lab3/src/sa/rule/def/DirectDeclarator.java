@@ -1,5 +1,8 @@
 package sa.rule.def;
 
+import java.util.Arrays;
+import java.util.List;
+
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
@@ -42,15 +45,38 @@ public class DirectDeclarator extends RuleStrategy {
                 node.setProperty(PropertyType.TYPE, new Property(type));
                 node.setProperty(PropertyType.NUM_ELEM, new Property(numberValue));
             } else if (thirdChildNode.getSymbol().getSymbol().equals("KR_VOID")) {
-                // TODO
+                String functionName = ((TerminalNode) node.getChidlAt(0)).getValue();
+                Types returnType = node.getProperty(PropertyType.N_TYPE).getValue();
+                if (environment.isDeclaredLocaly(functionName)) {
+                    checkFunctionDeclaration(functionName, returnType, Arrays.asList());
+                } else {
+                    environment.declareFunction(functionName, returnType, Arrays.asList());
+                }
+                node.setProperty(PropertyType.TYPE, new Property(Types.FUNCTION));
             } else if (thirdChildNode.getSymbol().getSymbol().equals("<lista_parametara>")) {
-                // TODO
+                node.getChidlAt(2).visitNode(environment);
+                String functionName = ((TerminalNode) node.getChidlAt(0)).getValue();
+                Types returnType = node.getProperty(PropertyType.N_TYPE).getValue();
+                List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+                        PropertyType.TYPES).getValue();
+                if (environment.isDeclaredLocaly(functionName)) {
+                    checkFunctionDeclaration(functionName, returnType, parameterTypes);
+                } else {
+                    environment.declareFunction(functionName, returnType, parameterTypes);
+                }
+                node.setProperty(PropertyType.TYPE, new Property(Types.FUNCTION));
             } else {
                 // loša produkcija
             }
         } else {
             // loša produkcija
         }
+    }
+
+    private void checkFunctionDeclaration(String functionName, Types returnType,
+            List<Types> parameterTypes) {
+        // TODO Auto-generated method stub
+
     }
 
 }

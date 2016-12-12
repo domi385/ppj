@@ -6,7 +6,8 @@ import sa.Symbol;
 public class TerminalNode extends Node {
 
     private Symbol.Terminal type;
-    private int row;
+    private final int row;
+    private String value;
 
     public Symbol.Terminal getType() {
         return type;
@@ -15,8 +16,6 @@ public class TerminalNode extends Node {
     public int getRow() {
         return row;
     }
-
-    private String value;
 
     public TerminalNode(String value, int depth, Node parent) {
         super(value, depth, parent);

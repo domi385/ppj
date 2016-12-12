@@ -8,7 +8,7 @@ import sa.rule.RuleStrategy;
 import sa.rule.RuleUtility;
 
 public class PostfixExpression extends RuleStrategy {
-
+    // TODO dovršiti pravila za postfix izraz
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
@@ -25,7 +25,6 @@ public class PostfixExpression extends RuleStrategy {
             node.getChidlAt(2).visitNode(environment);
             RuleUtility.checkType(node.getChidlAt(2), Types.INT);
 
-            // TODO postfix izraz pridjeljivanje svojstava
             node.getProperty(PropertyType.TYPE).setValue(Types.INT);
             node.getProperty(PropertyType.L_EXPRESSION).setValue(0);
         } else {

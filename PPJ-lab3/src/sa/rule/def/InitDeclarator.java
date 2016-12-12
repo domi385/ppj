@@ -4,6 +4,7 @@ import java.util.List;
 
 import sa.Environment;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
@@ -42,7 +43,7 @@ public class InitDeclarator extends RuleStrategy {
                 Integer directDeclaratorElementNumber = directDeclarator.getProperty(
                         PropertyType.NUM_ELEM).getValue();
                 if (initializerElementNumber > directDeclaratorElementNumber) {
-                    throw new RuntimeException();
+                    throw new SemanticException(node.toString());
                 }
                 List<Types> initializerElementTypes = (List<Types>) initializer
                         .getProperty(PropertyType.TYPES);
