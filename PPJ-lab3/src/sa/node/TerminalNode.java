@@ -22,7 +22,7 @@ public class TerminalNode extends Node {
         String[] valueParts = value.split(" ");
         type = new Symbol.Terminal(valueParts[0]);
         row = Integer.parseInt(valueParts[1]);
-        value = valueParts[2];
+        this.value = valueParts[2];
     }
 
     @Override
