@@ -38,14 +38,14 @@ public abstract class Node {
 
     public abstract void visitNode(Environment environment);
 
-    // public String treeString() {
-    // String value = (depth != 0 ? String.format("%" + depth + "c", ' ') : "")
-    // + tmpValue + "\n";
-    // for (Node node : childNodes) {
-    // value += node.toString();
-    // }
-    // return value;
-    // }
+    public String treeString() {
+        String value = (depth != 0 ? String.format("%" + depth + "c", ' ') : "")
+                + getSymbol().getSymbol() + "\n";
+        for (Node node : childNodes) {
+            value += node.toString();
+        }
+        return value;
+    }
 
     @Override
     public String toString() {

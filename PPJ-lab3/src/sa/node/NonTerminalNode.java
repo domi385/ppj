@@ -41,4 +41,8 @@ public class NonTerminalNode extends Node {
         evaluationStrategy.evaluate(this, environment);
     }
 
+    public boolean hasProperty(PropertyType propertyType) {
+        return properties.containsKey(propertyType);
+    }
+
 }

@@ -10,7 +10,12 @@ public class SemantickiAnalizator {
 
         Node root = NodeUtility.buildTree();
         Environment environment = new Environment(null);
-        root.visitNode(environment);
-        RuleUtility.checkEnvironment(environment);
+        try {
+            root.visitNode(environment);
+            RuleUtility.checkEnvironment(environment);
+        } catch (SemanticException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 }

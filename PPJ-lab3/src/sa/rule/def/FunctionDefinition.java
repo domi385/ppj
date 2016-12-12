@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -24,8 +25,8 @@ public class FunctionDefinition extends RuleStrategy {
             }
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
-            RuleUtility.checkFunctionsDeclarations(functionName, functionReturnType,
-                    new ArrayList<Types>(), environment);
+            checkFunctionsDeclarations(functionName, functionReturnType, new ArrayList<Types>(),
+                    environment);
             Environment.getGlobalEnvironment(environment).defineFunction(functionName,
                     functionReturnType, new ArrayList<Types>());
             node.getChidlAt(5).visitNode(environment);
@@ -43,16 +44,15 @@ public class FunctionDefinition extends RuleStrategy {
                     PropertyType.TYPES).getValue();
             List<String> parameterNames = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                     PropertyType.NAMES).getValue();
-            RuleUtility.checkFunctionsDeclarations(functionName, functionReturnType,
-                    parameterTypes, environment);
+            checkFunctionsDeclarations(functionName, functionReturnType, parameterTypes,
+                    environment);
             Environment.getGlobalEnvironment(environment).defineFunction(functionName,
                     functionReturnType, parameterTypes);
-            Environment augmentedEnvironment = new Environment(environment);
-            for (int i = 0, end = parameterNames.size(); i < end; i++) {
-                augmentedEnvironment.declareIdentificator(parameterNames.get(i),
-                        parameterTypes.get(i));
-            }
-            node.getChidlAt(5).visitNode(augmentedEnvironment);
+
+            node.setProperty(PropertyType.PARAMETER_NAMES, new Property(parameterNames));
+            node.setProperty(PropertyType.PARAMETER_TYPES, new Property(parameterTypes));
+
+            node.getChidlAt(5).visitNode(environment);
         } else {
 
         }
