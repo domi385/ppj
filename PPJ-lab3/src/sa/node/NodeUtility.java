@@ -22,7 +22,7 @@ public class NodeUtility {
             stack.peek().addChildNode(currNode);
             stack.add(currNode);
         }
-
+        sc.close();
         return root;
 
     }

@@ -31,7 +31,9 @@ public class JoiningExpression extends RuleStrategy {
             Types postfixExpressionType = (Types) ((NonTerminalNode) node.getChidlAt(0))
                     .getProperty(PropertyType.TYPE).getValue();
 
-            RuleUtility.checkType(joiningExpressionType, postfixExpressionType);
+            if (!RuleUtility.checkType(joiningExpressionType, postfixExpressionType)) {
+                throw new SemanticException(node.toString());
+            }
 
             node.setProperty(PropertyType.TYPE,
                     ((NonTerminalNode) node.getChidlAt(2)).getProperty(PropertyType.TYPE));

@@ -3,6 +3,7 @@ package sa.rule.def;
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.node.TerminalNode;
@@ -23,7 +24,9 @@ public class ParameterDeclaration extends RuleStrategy {
 
         } else if (node.getChildNodeNumber() == 5) {
             node.getChidlAt(0).visitNode(environment);
-            RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID);
+            if (!RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID)) {
+                throw new SemanticException(node.toString());
+            }
             node.setProperty(
                     PropertyType.TYPE,
                     new Property(Types.getArrayType(((NonTerminalNode) node.getChidlAt(0))

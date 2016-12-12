@@ -3,6 +3,7 @@ package sa.rule.expression;
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
@@ -27,7 +28,9 @@ public class CastExpression extends RuleStrategy {
             Types castedType = (Types) ((NonTerminalNode) node.getChidlAt(1)).getProperty(
                     PropertyType.TYPE).getValue();
 
-            isCastable(originalType, castedType);
+            if (!isCastable(originalType, castedType)) {
+                throw new SemanticException(node.toString());
+            }
 
             node.setProperty(PropertyType.TYPE, new Property(castedType));
             node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
@@ -37,7 +40,8 @@ public class CastExpression extends RuleStrategy {
         }
     }
 
-    public static void isCastable(Types originalType, Types castedType) {
+    public static boolean isCastable(Types originalType, Types castedType) {
+        return false;
         // TODO Auto-generated method stub
 
     }

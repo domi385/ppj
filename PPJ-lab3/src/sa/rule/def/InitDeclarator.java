@@ -19,7 +19,7 @@ public class InitDeclarator extends RuleStrategy {
 
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
             directDeclarator
-                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
+            .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
             if (!RuleUtility.checkNotType(directDeclarator, Types.CONST_T)
                     || !RuleUtility.checkNotType(directDeclarator, Types.ARRAY_CONST_T)) {
@@ -28,7 +28,7 @@ public class InitDeclarator extends RuleStrategy {
         } else if (node.getChildNodeNumber() == 3) {
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
             directDeclarator
-                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
+            .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
             node.getChidlAt(2).visitNode(environment);
 
@@ -36,7 +36,9 @@ public class InitDeclarator extends RuleStrategy {
                     .getValue();
             if (RuleUtility.checkType(directDeclaratorType, Types.CONST_T)
                     || RuleUtility.checkType(directDeclaratorType, Types.T)) {
-                RuleUtility.checkType(node.getChidlAt(2), Types.T);
+                if (!RuleUtility.checkType(node.getChidlAt(2), Types.T)) {
+                    throw new SemanticException(node.toString());
+                }
             } else if (RuleUtility.checkType(directDeclaratorType, Types.ARRAY_CONST_T)
                     || RuleUtility.checkType(directDeclaratorType, Types.ARRAY_T)) {
                 NonTerminalNode initializer = ((NonTerminalNode) node.getChidlAt(2));
@@ -51,10 +53,12 @@ public class InitDeclarator extends RuleStrategy {
                         .getProperty(PropertyType.TYPES);
                 for (Types type : initializerElementTypes) {
                     // TODO check
-                    RuleUtility.checkType(type, Types.T);
+                    if (!RuleUtility.checkType(type, Types.T)) {
+                        throw new SemanticException(node.toString());
+                    }
                 }
             } else {
-                throw new RuntimeException();
+                throw new SemanticException(node.toString());
             }
 
         } else {

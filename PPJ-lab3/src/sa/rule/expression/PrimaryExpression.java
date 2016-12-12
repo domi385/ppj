@@ -22,19 +22,26 @@ public class PrimaryExpression extends RuleStrategy {
                 }
                 Types identificatorType = environment.getIdentificatorType(childNode.getValue());
                 node.setProperty(PropertyType.TYPE, new Property(identificatorType));
-                // TODO nije nužno 0
-                node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
+
+                node.setProperty(PropertyType.L_EXPRESSION,
+                        new Property(isLExpression(environment, childNode.getValue())));
 
             } else if (childNode.getSymbol().getSymbol().equals("BROJ")) {
-                checkIntValue(childNode.getValue());
+                if (!checkIntValue(childNode.getValue())) {
+                    throw new SemanticException(node.toString());
+                }
                 node.setProperty(PropertyType.TYPE, new Property(Types.INT));
                 node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
             } else if (childNode.getSymbol().getSymbol().equals("ZNAK")) {
-                checkCharValue(childNode.getValue());
+                if (!checkCharValue(childNode.getValue())) {
+                    throw new SemanticException(node.toString());
+                }
                 node.setProperty(PropertyType.TYPE, new Property(Types.CHAR));
                 node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
             } else if (childNode.getSymbol().getSymbol().equals("NIZ_ZNAKOVA")) {
-                checkConstCharArray(childNode.getValue());
+                if (!checkConstCharArray(childNode.getValue())) {
+                    throw new SemanticException(node.toString());
+                }
                 node.setProperty(PropertyType.TYPE, new Property(Types.ARRAY_CONST_CHAR));
                 node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
             } else {
@@ -51,17 +58,25 @@ public class PrimaryExpression extends RuleStrategy {
         }
     }
 
-    public static void checkCharValue(String value) {
+    private Integer isLExpression(Environment environment, String identificatorName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static boolean checkCharValue(String value) {
+        return false;
         // TODO Auto-generated method stub
 
     }
 
-    public static void checkConstCharArray(String value) {
+    public static boolean checkConstCharArray(String value) {
+        return false;
         // TODO Auto-generated method stub
 
     }
 
-    public static void checkIntValue(String value) {
+    public static boolean checkIntValue(String value) {
+        return false;
         // TODO Auto-generated method stub
 
     }

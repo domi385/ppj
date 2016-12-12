@@ -3,6 +3,7 @@ package sa.rule.expression;
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
@@ -18,7 +19,9 @@ public class TypeNameExpression extends RuleStrategy {
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
         } else if (node.getChildNodeNumber() == 2) {
             node.getChidlAt(0).visitNode(environment);
-            RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID);
+            if (!RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID)) {
+                throw new SemanticException(node.toString());
+            }
 
             node.setProperty(
                     PropertyType.TYPE,

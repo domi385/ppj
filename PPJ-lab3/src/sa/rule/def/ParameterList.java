@@ -1,7 +1,6 @@
 package sa.rule.def;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import sa.Environment;
@@ -18,13 +17,16 @@ public class ParameterList extends RuleStrategy {
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
-            node.getProperty(PropertyType.TYPES).setValue(
-                    new ArrayList<Types>(Arrays.asList(((NonTerminalNode) node.getChidlAt(0))
-                            .getProperty(PropertyType.TYPE).getValue())));
-            node.setProperty(
-                    PropertyType.NAMES,
-                    new Property(new ArrayList<Types>(Arrays.asList(((NonTerminalNode) node
-                            .getChidlAt(0)).getProperty(PropertyType.NAME).getValue()))));
+            List<Types> parameterTypes = new ArrayList<Types>();
+            parameterTypes.add(((NonTerminalNode) node.getChidlAt(0))
+                    .getProperty(PropertyType.TYPE).getValue());
+
+            node.setProperty(PropertyType.TYPES, new Property(parameterTypes));
+
+            List<String> parameterNames = new ArrayList<String>();
+            parameterNames.add(((NonTerminalNode) node.getChidlAt(0))
+                    .getProperty(PropertyType.NAME).getValue());
+            node.setProperty(PropertyType.NAMES, new Property(parameterNames));
 
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(0).visitNode(environment);

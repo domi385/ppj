@@ -6,6 +6,7 @@ import java.util.List;
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.Node;
 import sa.node.NonTerminalNode;
@@ -20,7 +21,7 @@ public class DirectDeclarator extends RuleStrategy {
             TerminalNode identificator = (TerminalNode) node.getChidlAt(0);
             if (identificator.getSymbol().getSymbol().equals(Types.VOID.toString())
                     || environment.isDeclaredLocaly(identificator.getValue())) {
-                throw new RuntimeException();
+                throw new SemanticException(node.toString());
             }
             Types type = Types.getType(identificator.getSymbol().getSymbol());
             environment.declareIdentificator(identificator.getValue(), type);
@@ -32,12 +33,16 @@ public class DirectDeclarator extends RuleStrategy {
                 TerminalNode identificator = (TerminalNode) node.getChidlAt(0);
                 if (identificator.getSymbol().getSymbol().equals(Types.VOID.toString())
                         || environment.isDeclaredLocaly(identificator.getValue())) {
-                    throw new RuntimeException();
+                    throw new SemanticException(node.toString());
                 }
-                Integer numberValue = Integer.parseInt(((TerminalNode) node.getChidlAt(2))
-                        .getValue());
+                Integer numberValue = 0;
+                try {
+                    numberValue = Integer.parseInt(((TerminalNode) node.getChidlAt(2)).getValue());
+                } catch (NumberFormatException ex) {
+                    throw new SemanticException(node.toString());
+                }
                 if (numberValue < 1 || numberValue > 1024) {
-                    throw new RuntimeException();
+                    throw new SemanticException(node.toString());
                 }
                 Types type = Types.getArrayType(Types
                         .getType(identificator.getSymbol().getSymbol()));
@@ -48,7 +53,9 @@ public class DirectDeclarator extends RuleStrategy {
                 String functionName = ((TerminalNode) node.getChidlAt(0)).getValue();
                 Types returnType = node.getProperty(PropertyType.N_TYPE).getValue();
                 if (environment.isDeclaredLocaly(functionName)) {
-                    checkFunctionDeclaration(functionName, returnType, Arrays.asList());
+                    if (!checkFunctionDeclaration(functionName, returnType, Arrays.asList())) {
+                        throw new SemanticException(node.toString());
+                    }
                 } else {
                     environment.declareFunction(functionName, returnType, Arrays.asList());
                 }
@@ -60,7 +67,9 @@ public class DirectDeclarator extends RuleStrategy {
                 List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                         PropertyType.TYPES).getValue();
                 if (environment.isDeclaredLocaly(functionName)) {
-                    checkFunctionDeclaration(functionName, returnType, parameterTypes);
+                    if (!checkFunctionDeclaration(functionName, returnType, parameterTypes)) {
+                        throw new SemanticException(node.toString());
+                    }
                 } else {
                     environment.declareFunction(functionName, returnType, parameterTypes);
                 }
@@ -73,8 +82,9 @@ public class DirectDeclarator extends RuleStrategy {
         }
     }
 
-    private void checkFunctionDeclaration(String functionName, Types returnType,
+    private boolean checkFunctionDeclaration(String functionName, Types returnType,
             List<Types> parameterTypes) {
+        return false;
         // TODO Auto-generated method stub
 
     }

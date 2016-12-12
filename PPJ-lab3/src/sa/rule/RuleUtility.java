@@ -22,7 +22,9 @@ import sa.rule.def.FunctionDefinition;
 import sa.rule.def.InitDeclarator;
 import sa.rule.def.InitDeclaratorList;
 import sa.rule.def.Initializer;
+import sa.rule.def.JoinmentExpressionList;
 import sa.rule.def.ParameterDeclaration;
+import sa.rule.def.ParameterList;
 import sa.rule.expression.AditiveExpression;
 import sa.rule.expression.ArgumentListExpression;
 import sa.rule.expression.BinaryAndExpression;
@@ -81,7 +83,7 @@ public class RuleUtility {
 
         // definitions and declarations
         ruleStrategyMap.put("<definicija_funkcije>", new FunctionDefinition());
-        // ruleStrategyMap.put("<lista_paramterata>", new ParameterList());
+        ruleStrategyMap.put("<lista_paramterata>", new ParameterList());
         ruleStrategyMap.put("<deklaracija_parametara>", new ParameterDeclaration());
         ruleStrategyMap.put("<lista_deklaracija>", new DeclarationList());
         ruleStrategyMap.put("<deklaracija>", new Declaration());
@@ -89,8 +91,7 @@ public class RuleUtility {
         ruleStrategyMap.put("<init_deklarator>", new InitDeclarator());
         ruleStrategyMap.put("<izravni_deklarator>", new DirectDeclarator());
         ruleStrategyMap.put("<inicijalizator>", new Initializer());
-        // ruleStrategyMap.put("<lista_izraza_pridruzivanja>", new
-        // JoinmentExpressionList());
+        ruleStrategyMap.put("<lista_izraza_pridruzivanja>", new JoinmentExpressionList());
     }
 
     public static RuleStrategy getRule(String symbolValue) {
