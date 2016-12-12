@@ -18,6 +18,14 @@ public abstract class Node {
         this.depth = depth;
     }
 
+    public List<Node> getChildNodes() {
+        return childNodes;
+    }
+
+    public Node getParentNode() {
+        return parentNode;
+    }
+
     public void addChildNode(Node currNode) {
         childNodes.add(currNode);
     }

@@ -64,20 +64,32 @@ public class PrimaryExpression extends RuleStrategy {
     }
 
     public static boolean checkCharValue(String value) {
-        return false;
-        // TODO Auto-generated method stub
-
+        if (value.length() == 1) {
+            return true;
+        }
+        try {
+            int intValue = Integer.parseInt(value);
+            if (intValue < 0 || intValue > 255) {
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
     }
 
     public static boolean checkConstCharArray(String value) {
+        // TODO
         return false;
-        // TODO Auto-generated method stub
-
     }
 
     public static boolean checkIntValue(String value) {
-        return false;
-        // TODO Auto-generated method stub
+        try {
+            Integer.parseInt(value);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
 
     }
 }

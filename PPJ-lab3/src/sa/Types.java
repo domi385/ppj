@@ -25,8 +25,4 @@ public enum Types {
         }
     }
 
-    public static Types getType(String symbol) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

@@ -5,7 +5,6 @@ import sa.Property;
 import sa.PropertyType;
 import sa.SemanticException;
 import sa.Types;
-import sa.node.Node;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
 import sa.rule.RuleUtility;
@@ -21,12 +20,11 @@ public class UnaryExpression extends RuleStrategy {
             node.setProperty(PropertyType.L_EXPRESSION,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
         } else if (node.getChildNodeNumber() == 2) {
-            Node firstChild = node.getChidlAt(0);
             NonTerminalNode secondChild = (NonTerminalNode) node.getChidlAt(1);
             if (secondChild.getSymbol().getSymbol().equals("<unarni_izraz>")) {
                 secondChild.visitNode(environment);
-                if (!RuleUtility.checkProperty(secondChild, PropertyType.TYPE, Types.INT)
-                        || !RuleUtility.checkProperty(secondChild, PropertyType.L_EXPRESSION, 1)) {
+                if (!checkProperty(secondChild, PropertyType.TYPE, Types.INT)
+                        || !checkProperty(secondChild, PropertyType.L_EXPRESSION, 1)) {
                     throw new SemanticException(node.toString());
                 }
 
@@ -45,5 +43,10 @@ public class UnaryExpression extends RuleStrategy {
         } else {
             // loša produkcija
         }
+    }
+
+    public static boolean checkProperty(NonTerminalNode node, PropertyType type, Object value) {
+        Property property = node.getProperty(type);
+        return property.getValue().equals(value);
     }
 }

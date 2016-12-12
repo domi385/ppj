@@ -23,7 +23,7 @@ public class DirectDeclarator extends RuleStrategy {
                     || environment.isDeclaredLocaly(identificator.getValue())) {
                 throw new SemanticException(node.toString());
             }
-            Types type = Types.getType(identificator.getSymbol().getSymbol());
+            Types type = node.getProperty(PropertyType.N_TYPE).getValue();
             environment.declareIdentificator(identificator.getValue(), type);
             node.setProperty(PropertyType.TYPE, new Property(type));
 

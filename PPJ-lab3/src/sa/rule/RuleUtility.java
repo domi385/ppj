@@ -5,7 +5,7 @@ import java.util.HashMap;
 import sa.Environment;
 import sa.PropertyType;
 import sa.Types;
-import sa.node.Node;
+import sa.node.NonTerminalNode;
 import sa.rule.command.BranchCommand;
 import sa.rule.command.Command;
 import sa.rule.command.CommandList;
@@ -102,21 +102,15 @@ public class RuleUtility {
         // TODO Auto-generated method stub
     }
 
-    public static boolean checkNotType(Node chidlAt, Types void1) {
+    public static boolean checkNotType(NonTerminalNode node, Types type) {
+        // TODO
         return false;
-        // TODO Auto-generated method stub
 
     }
 
-    public static boolean checkProperty(Node node, PropertyType type, Object i) {
-        return false;
-        // TODO Auto-generated method stub
-
-    }
-
-    public static boolean checkType(Node chidlAt, Types type) {
-        // TODO Auto-generated method stub
-        return false;
+    public static boolean checkType(NonTerminalNode node, Types type) {
+        Types nodeType = node.getProperty(PropertyType.TYPE).getValue();
+        return checkType(nodeType, type);
     }
 
     public static boolean checkType(Types originalType, Types finalType) {
