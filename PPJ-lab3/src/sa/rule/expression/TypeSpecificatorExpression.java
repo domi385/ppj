@@ -1,6 +1,7 @@
 package sa.rule.expression;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -14,14 +15,11 @@ public class TypeSpecificatorExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             TerminalNode childNode = (TerminalNode) node.getChidlAt(0);
             if (childNode.getSymbol().getSymbol().equals("KR_VOID")) {
-                node.getProperty(PropertyType.TYPE).setValue(Types.VOID);
-
+                node.setProperty(PropertyType.TYPE, new Property(Types.VOID));
             } else if (childNode.getSymbol().getSymbol().equals("KR_CHAR")) {
-                node.getProperty(PropertyType.TYPE).setValue(Types.CHAR);
-
+                node.setProperty(PropertyType.TYPE, new Property(Types.CHAR));
             } else if (childNode.getSymbol().getSymbol().equals("KR_INT")) {
-                node.getProperty(PropertyType.TYPE).setValue(Types.INT);
-
+                node.setProperty(PropertyType.TYPE, new Property(Types.INT));
             } else {
                 // loša produkcija
             }

@@ -1,6 +1,7 @@
 package sa.rule.expression;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -13,12 +14,10 @@ public class CastExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
 
-            node.getProperty(PropertyType.TYPE).setValue(
-                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE)
-                    .getValue());
-            node.getProperty(PropertyType.L_EXPRESSION).setValue(
-                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION)
-                    .getValue());
+            node.setProperty(PropertyType.TYPE,
+                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
+            node.setProperty(PropertyType.L_EXPRESSION,
+                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
         } else if (node.getChildNodeNumber() == 4) {
             node.getChidlAt(1).visitNode(environment);
             node.getChidlAt(3).visitNode(environment);
@@ -30,8 +29,8 @@ public class CastExpression extends RuleStrategy {
 
             isCastable(originalType, castedType);
 
-            node.getProperty(PropertyType.TYPE).setValue(castedType);
-            node.getProperty(PropertyType.L_EXPRESSION).setValue(0);
+            node.setProperty(PropertyType.TYPE, new Property(castedType));
+            node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
 
         } else {
             // loša produkcija

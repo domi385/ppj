@@ -18,15 +18,17 @@ public class InitDeclarator extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
 
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
-            directDeclarator.getProperty(PropertyType.N_TYPE).setValue(
-                    node.getProperty(PropertyType.N_TYPE).getValue());
+            directDeclarator
+                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
-            RuleUtility.checkNotType(directDeclarator, Types.CONST_T);
-            RuleUtility.checkNotType(directDeclarator, Types.ARRAY_CONST_T);
+            if (!RuleUtility.checkNotType(directDeclarator, Types.CONST_T)
+                    || !RuleUtility.checkNotType(directDeclarator, Types.ARRAY_CONST_T)) {
+                throw new SemanticException(node.toString());
+            }
         } else if (node.getChildNodeNumber() == 3) {
             NonTerminalNode directDeclarator = (NonTerminalNode) node.getChidlAt(0);
-            directDeclarator.getProperty(PropertyType.N_TYPE).setValue(
-                    node.getProperty(PropertyType.N_TYPE).getValue());
+            directDeclarator
+                    .setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             directDeclarator.visitNode(environment);
             node.getChidlAt(2).visitNode(environment);
 

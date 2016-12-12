@@ -8,6 +8,7 @@ import sa.Property;
 import sa.PropertyType;
 import sa.Symbol;
 import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class NonTerminalNode extends Node {
 
@@ -19,7 +20,7 @@ public class NonTerminalNode extends Node {
     public NonTerminalNode(String value, int depth, Node parent) {
         super(value, depth, parent);
         symbol = new Symbol.Nonterminal(value);
-        evaluationStrategy = RuleStrategy.getRule(value);
+        evaluationStrategy = RuleUtility.getRule(value);
         properties = new HashMap<PropertyType, Property>();
     }
 

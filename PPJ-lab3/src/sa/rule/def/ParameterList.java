@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -20,9 +21,10 @@ public class ParameterList extends RuleStrategy {
             node.getProperty(PropertyType.TYPES).setValue(
                     new ArrayList<Types>(Arrays.asList(((NonTerminalNode) node.getChidlAt(0))
                             .getProperty(PropertyType.TYPE).getValue())));
-            node.getProperty(PropertyType.NAMES).setValue(
-                    new ArrayList<Types>(Arrays.asList(((NonTerminalNode) node.getChidlAt(0))
-                            .getProperty(PropertyType.NAME).getValue())));
+            node.setProperty(
+                    PropertyType.NAMES,
+                    new Property(new ArrayList<Types>(Arrays.asList(((NonTerminalNode) node
+                            .getChidlAt(0)).getProperty(PropertyType.NAME).getValue()))));
 
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(0).visitNode(environment);
@@ -44,12 +46,12 @@ public class ParameterList extends RuleStrategy {
             List<Types> types = new ArrayList<>();
             types.addAll(parameterListTypes);
             types.add(parameterDeclarationType);
-            node.getProperty(PropertyType.TYPES).setValue(types);
+            node.setProperty(PropertyType.TYPES, new Property(types));
 
             List<Types> names = new ArrayList<>();
             names.addAll(parameterListNames);
             names.add(parameterDeclarationName);
-            node.getProperty(PropertyType.NAMES).setValue(names);
+            node.setProperty(PropertyType.NAMES, new Property(names));
         } else {
             // loša produkcija
         }

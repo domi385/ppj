@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -26,7 +27,7 @@ public class Initializer extends RuleStrategy {
 
             Integer expressionListElementNumber = ((NonTerminalNode) node.getChidlAt(1))
                     .getProperty(PropertyType.NUM_ELEM).getValue();
-            node.getProperty(PropertyType.NUM_ELEM).setValue(expressionListElementNumber);
+            node.setProperty(PropertyType.NUM_ELEM, new Property(expressionListElementNumber));
         } else {
             // loša produkcija
         }

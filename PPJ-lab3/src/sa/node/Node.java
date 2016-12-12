@@ -42,7 +42,7 @@ public abstract class Node {
         String value = (depth != 0 ? String.format("%" + depth + "c", ' ') : "")
                 + getSymbol().getSymbol() + "\n";
         for (Node node : childNodes) {
-            value += node.toString();
+            value += node.treeString();
         }
         return value;
     }

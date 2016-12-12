@@ -16,7 +16,8 @@ public class FunctionDefinition extends RuleStrategy {
 
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
-        if (node.getChildNodeNumber() == 5) {
+        if (node.getChildNodeNumber() == 6
+                && node.getChidlAt(3).getSymbol().getSymbol().equals("KR_VOID")) {
             node.getChidlAt(0).visitNode(environment);
             RuleUtility.checkNotType(node.getChidlAt(0), Types.CONST_T);
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
@@ -37,12 +38,12 @@ public class FunctionDefinition extends RuleStrategy {
             if (environment.isDefinedFunction(functionName)) {
                 throw new RuntimeException();
             }
-            node.getChidlAt(2).visitNode(environment);
+            System.out.println(node.toString());
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
-            List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+            List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(3)).getProperty(
                     PropertyType.TYPES).getValue();
-            List<String> parameterNames = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+            List<String> parameterNames = ((NonTerminalNode) node.getChidlAt(3)).getProperty(
                     PropertyType.NAMES).getValue();
             checkFunctionsDeclarations(functionName, functionReturnType, parameterTypes,
                     environment);

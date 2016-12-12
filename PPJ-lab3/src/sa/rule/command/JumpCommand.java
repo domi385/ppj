@@ -2,6 +2,7 @@ package sa.rule.command;
 
 import sa.Environment;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Symbol;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
@@ -12,26 +13,35 @@ public class JumpCommand extends RuleStrategy {
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 2) {
             if (node.getChidlAt(0).getSymbol().equals(new Symbol.Terminal("KR_RETURN"))) {
-                checkParentFunction(node, "VOID");
+                if (!checkParentFunction(node, "VOID")) {
+                    throw new SemanticException(node.toString());
+                }
             } else {
-                checkParent(node, "<naredba_petlje>");
+                if (!checkParent(node, "<naredba_petlje>")) {
+                    throw new SemanticException(node.toString());
+                }
+
             }
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(1).visitNode(environment);
-            checkParentFunction(node,
+            if (!checkParentFunction(node,
                     ((NonTerminalNode) node.getChidlAt(1)).getProperty(PropertyType.TYPE)
-                    .getValue());
+                    .getValue())) {
+                throw new SemanticException(node.toString());
+            }
         } else {
             // loša produkcija
         }
     }
 
-    public static void checkParent(NonTerminalNode node, String string) {
+    public static boolean checkParent(NonTerminalNode node, String string) {
+        return false;
         // TODO Auto-generated method stub
 
     }
 
-    public static void checkParentFunction(NonTerminalNode node, String string) {
+    public static boolean checkParentFunction(NonTerminalNode node, String string) {
+        return false;
         // TODO Auto-generated method stub
 
     }

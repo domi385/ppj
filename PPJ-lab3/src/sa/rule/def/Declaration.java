@@ -13,8 +13,8 @@ public class Declaration extends RuleStrategy {
             node.getChidlAt(0).visitNode(environment);
             NonTerminalNode typeName = (NonTerminalNode) node.getChidlAt(0);
             NonTerminalNode initDeclarators = (NonTerminalNode) node.getChidlAt(1);
-            initDeclarators.getProperty(PropertyType.N_TYPE).setValue(
-                    typeName.getProperty(PropertyType.TYPE).getValue());
+            initDeclarators.setProperty(PropertyType.N_TYPE,
+                    typeName.getProperty(PropertyType.TYPE));
             initDeclarators.visitNode(environment);
         } else {
             // loša produkcija

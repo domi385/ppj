@@ -1,6 +1,7 @@
 package sa.rule.expression;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
 import sa.Types;
 import sa.node.NonTerminalNode;
@@ -13,16 +14,16 @@ public class TypeNameExpression extends RuleStrategy {
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
-            node.getProperty(PropertyType.TYPE).setValue(
-                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE)
-                    .getValue());
+            node.setProperty(PropertyType.TYPE,
+                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
         } else if (node.getChildNodeNumber() == 2) {
             node.getChidlAt(0).visitNode(environment);
             RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID);
 
-            node.getProperty(PropertyType.TYPE).setValue(
-                    Types.getConstType(((NonTerminalNode) node.getChidlAt(0)).getProperty(
-                            PropertyType.TYPE).getValue()));
+            node.setProperty(
+                    PropertyType.TYPE,
+                    new Property(Types.getConstType(((NonTerminalNode) node.getChidlAt(0))
+                            .getProperty(PropertyType.TYPE).getValue())));
         } else {
             // loša produkcija
         }

@@ -83,7 +83,7 @@ public class Environment {
         return functionsTable.get(name).defined;
     }
 
-    private static class FunctionTableEntry {
+    public static class FunctionTableEntry {
         String name;
         Types returnType;
         List<Types> parametersType;
@@ -146,7 +146,7 @@ public class Environment {
 
     }
 
-    private static class TableEntry {
+    public static class TableEntry {
         String name;
         Types type;
 
@@ -164,6 +164,11 @@ public class Environment {
             return type;
         }
 
+    }
+
+    public Types getIdentificatorType(String identificatorName) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
