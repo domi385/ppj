@@ -64,7 +64,7 @@ public class PrimaryExpression extends RuleStrategy {
     }
 
     public static boolean checkCharValue(String value) {
-        if (value.length() == 1) {
+        if (value.length() == 3 && value.startsWith("'") && value.endsWith("'")) {
             return true;
         }
         try {

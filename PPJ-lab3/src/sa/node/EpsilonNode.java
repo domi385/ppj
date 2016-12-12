@@ -19,7 +19,6 @@ public class EpsilonNode extends Node {
 
     @Override
     public void visitNode(Environment environment) {
-        // TODO Auto-generated method stub
-
+        // ignore
     }
 }

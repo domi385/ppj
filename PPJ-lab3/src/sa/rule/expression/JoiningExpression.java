@@ -21,7 +21,8 @@ public class JoiningExpression extends RuleStrategy {
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkProperty(node.getChidlAt(0), PropertyType.L_EXPRESSION, 1)) {
+            if (!RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0),
+                    PropertyType.L_EXPRESSION, 1)) {
                 throw new SemanticException(node.toString());
             }
             node.getChidlAt(2).visitNode(environment);

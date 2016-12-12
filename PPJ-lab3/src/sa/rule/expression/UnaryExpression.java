@@ -23,8 +23,8 @@ public class UnaryExpression extends RuleStrategy {
             NonTerminalNode secondChild = (NonTerminalNode) node.getChidlAt(1);
             if (secondChild.getSymbol().getSymbol().equals("<unarni_izraz>")) {
                 secondChild.visitNode(environment);
-                if (!checkProperty(secondChild, PropertyType.TYPE, Types.INT)
-                        || !checkProperty(secondChild, PropertyType.L_EXPRESSION, 1)) {
+                if (!RuleUtility.checkProperty(secondChild, PropertyType.TYPE, Types.INT)
+                        || !RuleUtility.checkProperty(secondChild, PropertyType.L_EXPRESSION, 1)) {
                     throw new SemanticException(node.toString());
                 }
 
@@ -45,8 +45,4 @@ public class UnaryExpression extends RuleStrategy {
         }
     }
 
-    public static boolean checkProperty(NonTerminalNode node, PropertyType type, Object value) {
-        Property property = node.getProperty(type);
-        return property.getValue().equals(value);
-    }
 }

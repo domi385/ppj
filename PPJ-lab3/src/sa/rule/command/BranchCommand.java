@@ -13,7 +13,7 @@ public class BranchCommand extends RuleStrategy {
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 5 || node.getChildNodeNumber() == 7) {
             node.getChidlAt(2).visitNode(environment);
-            if (!RuleUtility.checkType(node.getChidlAt(2), Types.INT)) {
+            if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.INT)) {
                 throw new SemanticException(node.toString());
             }
             node.getChidlAt(4).visitNode(environment);

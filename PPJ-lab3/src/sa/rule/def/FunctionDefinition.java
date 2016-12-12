@@ -20,7 +20,7 @@ public class FunctionDefinition extends RuleStrategy {
         if (node.getChildNodeNumber() == 6
                 && node.getChidlAt(3).getSymbol().getSymbol().equals("KR_VOID")) {
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkNotType(node.getChidlAt(0), Types.CONST_T)) {
+            if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.CONST_T)) {
                 throw new SemanticException(node.toString());
             }
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
@@ -38,7 +38,7 @@ public class FunctionDefinition extends RuleStrategy {
             node.getChidlAt(5).visitNode(environment);
         } else if (node.getChildNodeNumber() == 6) {
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkNotType(node.getChidlAt(0), Types.CONST_T)) {
+            if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.CONST_T)) {
                 throw new SemanticException(node.toString());
             }
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
@@ -71,7 +71,7 @@ public class FunctionDefinition extends RuleStrategy {
 
     public static boolean checkFunctionsDeclarations(String functionName, Types functionReturnType,
             List<Types> parameterTypes, Environment environment2) {
-        return false;
+        return true;
         // TODO Auto-generated method stub
 
     }

@@ -16,7 +16,7 @@ public class ParameterDeclaration extends RuleStrategy {
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 2) {
             node.getChidlAt(0).visitNode(environment);
-            RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID);
+            RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.VOID);
             node.setProperty(PropertyType.TYPE,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
             node.setProperty(PropertyType.NAME,
@@ -24,7 +24,7 @@ public class ParameterDeclaration extends RuleStrategy {
 
         } else if (node.getChildNodeNumber() == 5) {
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkNotType(node.getChidlAt(0), Types.VOID)) {
+            if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.VOID)) {
                 throw new SemanticException(node.toString());
             }
             node.setProperty(

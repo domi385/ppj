@@ -22,11 +22,11 @@ public class LogicalOrExpression extends RuleStrategy {
         } else if (node.getChildNodeNumber() == 3) {
 
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkType(node.getChidlAt(0), Types.INT)) {
+            if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.INT)) {
                 throw new SemanticException(node.toString());
             }
             node.getChidlAt(2).visitNode(environment);
-            if (!RuleUtility.checkType(node.getChidlAt(2), Types.INT)) {
+            if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.INT)) {
                 throw new SemanticException(node.toString());
             }
 

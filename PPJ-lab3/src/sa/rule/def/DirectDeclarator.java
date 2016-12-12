@@ -44,8 +44,7 @@ public class DirectDeclarator extends RuleStrategy {
                 if (numberValue < 1 || numberValue > 1024) {
                     throw new SemanticException(node.toString());
                 }
-                Types type = Types.getArrayType(Types
-                        .getType(identificator.getSymbol().getSymbol()));
+                Types type = Types.getArrayType(node.getProperty(PropertyType.N_TYPE).getValue());
                 environment.declareIdentificator(identificator.getValue(), type);
                 node.setProperty(PropertyType.TYPE, new Property(type));
                 node.setProperty(PropertyType.NUM_ELEM, new Property(numberValue));
@@ -84,7 +83,7 @@ public class DirectDeclarator extends RuleStrategy {
 
     private boolean checkFunctionDeclaration(String functionName, Types returnType,
             List<Types> parameterTypes) {
-        return false;
+        return true;
         // TODO Auto-generated method stub
 
     }

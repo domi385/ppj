@@ -41,7 +41,7 @@ public class CastExpression extends RuleStrategy {
     }
 
     public static boolean isCastable(Types originalType, Types castedType) {
-        return false;
+        return true;
         // TODO Auto-generated method stub
 
     }

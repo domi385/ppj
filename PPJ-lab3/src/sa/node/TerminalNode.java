@@ -36,8 +36,7 @@ public class TerminalNode extends Node {
 
     @Override
     public void visitNode(Environment environment) {
-        // TODO Auto-generated method stub
-
+        // ignore
     }
 
 }

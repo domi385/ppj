@@ -21,11 +21,11 @@ public class PostfixExpression extends RuleStrategy {
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
         } else if (node.getChildNodeNumber() == 4) {
             node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkType(node.getChidlAt(0), Types.ARRAY)) {
+            if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
                 throw new SemanticException(node.toString());
             }
             node.getChidlAt(2).visitNode(environment);
-            if (!RuleUtility.checkType(node.getChidlAt(2), Types.INT)) {
+            if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.INT)) {
                 throw new SemanticException(node.toString());
             }
 

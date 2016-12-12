@@ -1,9 +1,13 @@
 package sa.rule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import sa.Environment;
+import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.command.BranchCommand;
@@ -99,12 +103,27 @@ public class RuleUtility {
     }
 
     public static void checkEnvironment(Environment environment) {
+        if (!checkMain(Environment.getGlobalEnvironment(environment))) {
+            throw new SemanticException("main");
+        }
+        if (!checkFunctionDeclarations(Environment.getGlobalEnvironment(environment))) {
+            throw new SemanticException("funckija");
+        }
+    }
+
+    private static boolean checkFunctionDeclarations(Environment globalEnvironment) {
         // TODO Auto-generated method stub
+        return true;
+    }
+
+    private static boolean checkMain(Environment globalEnvironment) {
+        List<Types> parameterTypes = new ArrayList<>();
+        return globalEnvironment.checkFunctionDeclaration("main", Types.INT, parameterTypes)
+                && globalEnvironment.isDefinedFunction("main");
     }
 
     public static boolean checkNotType(NonTerminalNode node, Types type) {
-        // TODO
-        return false;
+        return true;
 
     }
 
@@ -115,7 +134,11 @@ public class RuleUtility {
 
     public static boolean checkType(Types originalType, Types finalType) {
         // TODO
-        return false;
+        return true;
     }
 
+    public static boolean checkProperty(NonTerminalNode node, PropertyType type, Object value) {
+        Property property = node.getProperty(type);
+        return property.getValue().equals(value);
+    }
 }

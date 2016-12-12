@@ -36,13 +36,13 @@ public class JumpCommand extends RuleStrategy {
     }
 
     public static boolean checkParent(NonTerminalNode node, String parentNonTerminalNodeName) {
-        return false;
+        return true;
         // TODO Auto-generated method stub
 
     }
 
     public static boolean checkParentFunction(NonTerminalNode node, Types returnType) {
-        return false;
+        return true;
         // TODO Auto-generated method stub
 
     }

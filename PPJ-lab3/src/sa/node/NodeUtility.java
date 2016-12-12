@@ -15,7 +15,7 @@ public class NodeUtility {
             line = sc.nextLine();
             int depth = calcDepth(line);
 
-            while (stack.peek().getDepth() >= depth) {
+            while (!stack.isEmpty() && stack.peek().getDepth() >= depth) {
                 stack.pop();
             }
             Node currNode = nodeFactory(line.trim(), depth, stack.peek());
