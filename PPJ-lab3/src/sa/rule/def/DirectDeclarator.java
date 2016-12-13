@@ -45,7 +45,8 @@ public class DirectDeclarator extends RuleStrategy {
                     throw new SemanticException(node.toString());
                 }
                 Types type = Types.getArrayType(node.getProperty(PropertyType.N_TYPE).getValue());
-                environment.declareIdentificator(identificator.getValue(), type);
+                environment.declareIdentificator(identificator.getValue(),
+                        node.getProperty(PropertyType.N_TYPE).getValue());
                 node.setProperty(PropertyType.TYPE, new Property(type));
                 node.setProperty(PropertyType.NUM_ELEM, new Property(numberValue));
             } else if (thirdChildNode.getSymbol().getSymbol().equals("KR_VOID")) {

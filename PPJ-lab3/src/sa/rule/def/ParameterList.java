@@ -36,9 +36,9 @@ public class ParameterList extends RuleStrategy {
                     .getProperty(PropertyType.TYPES).getValue();
             Types parameterDeclarationType = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                     PropertyType.TYPE).getValue();
-            List<Types> parameterListNames = (List<Types>) ((NonTerminalNode) node.getChidlAt(0))
+            List<String> parameterListNames = (List<String>) ((NonTerminalNode) node.getChidlAt(0))
                     .getProperty(PropertyType.NAMES).getValue();
-            Types parameterDeclarationName = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+            String parameterDeclarationName = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                     PropertyType.NAME).getValue();
 
             if (parameterListNames.contains(parameterDeclarationName)) {
@@ -50,7 +50,7 @@ public class ParameterList extends RuleStrategy {
             types.add(parameterDeclarationType);
             node.setProperty(PropertyType.TYPES, new Property(types));
 
-            List<Types> names = new ArrayList<>();
+            List<String> names = new ArrayList<>();
             names.addAll(parameterListNames);
             names.add(parameterDeclarationName);
             node.setProperty(PropertyType.NAMES, new Property(names));

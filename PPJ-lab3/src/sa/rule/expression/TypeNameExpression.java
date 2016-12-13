@@ -18,14 +18,14 @@ public class TypeNameExpression extends RuleStrategy {
             node.setProperty(PropertyType.TYPE,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
         } else if (node.getChildNodeNumber() == 2) {
-            node.getChidlAt(0).visitNode(environment);
-            if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.VOID)) {
+            node.getChidlAt(1).visitNode(environment);
+            if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(1), Types.VOID)) {
                 throw new SemanticException(node.toString());
             }
 
             node.setProperty(
                     PropertyType.TYPE,
-                    new Property(Types.getConstType(((NonTerminalNode) node.getChidlAt(0))
+                    new Property(Types.getConstType(((NonTerminalNode) node.getChidlAt(1))
                             .getProperty(PropertyType.TYPE).getValue())));
         } else {
             // loša produkcija

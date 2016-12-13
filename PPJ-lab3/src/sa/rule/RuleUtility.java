@@ -90,8 +90,8 @@ public class RuleUtility {
 
         // definitions and declarations
         ruleStrategyMap.put("<definicija_funkcije>", new FunctionDefinition());
-        ruleStrategyMap.put("<lista_paramterata>", new ParameterList());
-        ruleStrategyMap.put("<deklaracija_parametara>", new ParameterDeclaration());
+        ruleStrategyMap.put("<lista_parametara>", new ParameterList());
+        ruleStrategyMap.put("<deklaracija_parametra>", new ParameterDeclaration());
         ruleStrategyMap.put("<lista_deklaracija>", new DeclarationList());
         ruleStrategyMap.put("<deklaracija>", new Declaration());
         ruleStrategyMap.put("<lista_init_deklaratora>", new InitDeclaratorList());
@@ -193,6 +193,9 @@ public class RuleUtility {
      * @return
      */
     public static boolean checkType(Types originalType, Types finalType) {
+        if (originalType.equals(finalType)) {
+            return true;
+        }
         if (originalType.equals(Types.CHAR) && finalType.equals(Types.CONST_CHAR)
                 || originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.CHAR)) {
             return true;
@@ -209,8 +212,21 @@ public class RuleUtility {
                 || originalType.equals(Types.CHAR) && finalType.equals(Types.CONST_INT)) {
             return true;
         }
+        if (originalType.equals(Types.CHAR) && finalType.equals(Types.T)
+                || originalType.equals(Types.CHAR) && finalType.equals(Types.CONST_T)) {
+            return true;
+        }
+
         if (originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.CONST_INT)
                 || originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.INT)) {
+            return true;
+        }
+        if (originalType.equals(Types.CONST_INT) && finalType.equals(Types.CONST_T)
+                || originalType.equals(Types.CONST_T) && finalType.equals(Types.CONST_INT)) {
+            return true;
+        }
+        if (originalType.equals(Types.CONST_INT) && finalType.equals(Types.T)
+                || originalType.equals(Types.INT) && finalType.equals(Types.T)) {
             return true;
         }
         if (originalType.equals(Types.ARRAY_T) && finalType.equals(Types.ARRAY_CONST_T)

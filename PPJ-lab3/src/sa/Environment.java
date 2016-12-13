@@ -225,4 +225,15 @@ public class Environment {
         }
         return null;
     }
+
+    public List<Types> getFunctionParameters(String functionName) {
+        Environment currEnvironment = this;
+        while (currEnvironment != null) {
+            if (currEnvironment.functionsTable.containsKey(functionName)) {
+                return currEnvironment.functionsTable.get(functionName).parametersType;
+            }
+            currEnvironment = currEnvironment.parentEnvironment;
+        }
+        return null;
+    }
 }

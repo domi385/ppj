@@ -31,8 +31,7 @@ public class Initializer extends RuleStrategy {
                 // for (int i=0; i<length; i++){
                 // types.add(Types.CONST_CHAR);
                 // }
-                // node.setProperty(PropertyType.TYPE, new
-                // Property(Types.ARRAY_CONST_CHAR));
+                node.setProperty(PropertyType.TYPE, new Property(Types.ARRAY_CONST_CHAR));
                 // node.setProperty(PropertyType.TYPES, new Property(types));
 
             } else {

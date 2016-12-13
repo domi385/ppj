@@ -13,7 +13,7 @@ import sa.rule.RuleStrategy;
 import sa.rule.RuleUtility;
 
 public class PostfixExpression extends RuleStrategy {
-    // TODO dovršiti pravila za postfix izraz
+
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
@@ -66,12 +66,36 @@ public class PostfixExpression extends RuleStrategy {
                     throw new SemanticException(node.toString());
                 }
 
-                node.setProperty(PropertyType.TYPE, new Property(Types.INT));
-                node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
+                Types postfixExpressionType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
+                        PropertyType.TYPE).getValue();
+                node.setProperty(PropertyType.TYPE, new Property(postfixExpressionType));
+                node.setProperty(PropertyType.L_EXPRESSION, new Property(
+                        checkLExpression(postfixExpressionType)));
             } else if (node.getChidlAt(1).getSymbol().getSymbol().equals("L_ZAGRADA")) {
                 node.getChidlAt(0).visitNode(environment);
                 node.getChidlAt(2).visitNode(environment);
+                NonTerminalNode postfixExpression = (NonTerminalNode) node.getChidlAt(0);
 
+                if (!RuleUtility
+                        .checkProperty(postfixExpression, PropertyType.TYPE, Types.FUNCTION)) {
+                    throw new SemanticException(node.toString());
+                }
+                String functionName = postfixExpression.getProperty(PropertyType.FUNCTION_NAME)
+                        .getValue();
+                Types functionReturnType = environment.getFunctionReturnType(functionName);
+                List<Types> parametersType = environment.getFunctionParameters(functionName);
+                List<Types> argumentType = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+                        PropertyType.TYPES).getValue();
+                if (parametersType.size() != argumentType.size()) {
+                    throw new SemanticException(node.toString());
+                }
+                for (int i = 0, end = parametersType.size(); i < end; i++) {
+                    if (!RuleUtility.checkType(argumentType.get(i), parametersType.get(i))) {
+                        throw new SemanticException(node.toString());
+                    }
+                }
+
+                node.setProperty(PropertyType.TYPE, new Property(functionReturnType));
             } else {
                 // loša produkcija
             }
@@ -79,5 +103,13 @@ public class PostfixExpression extends RuleStrategy {
             // loša produkcija
         }
 
+    }
+
+    private Integer checkLExpression(Types postfixExpressionType) {
+        if (postfixExpressionType.equals(Types.CHAR) || postfixExpressionType.equals(Types.INT)
+                || postfixExpressionType.equals(Types.T)) {
+            return 1;
+        }
+        return 0;
     }
 }

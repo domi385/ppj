@@ -20,9 +20,9 @@ public class ParameterDeclaration extends RuleStrategy {
             node.setProperty(PropertyType.TYPE,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
             node.setProperty(PropertyType.NAME,
-                    new Property(((TerminalNode) node.getChidlAt(0)).getValue()));
+                    new Property(((TerminalNode) node.getChidlAt(1)).getValue()));
 
-        } else if (node.getChildNodeNumber() == 5) {
+        } else if (node.getChildNodeNumber() == 4) {
             node.getChidlAt(0).visitNode(environment);
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.VOID)) {
                 throw new SemanticException(node.toString());
@@ -32,7 +32,7 @@ public class ParameterDeclaration extends RuleStrategy {
                     new Property(Types.getArrayType(((NonTerminalNode) node.getChidlAt(0))
                             .getProperty(PropertyType.TYPE).getValue())));
             node.setProperty(PropertyType.NAME,
-                    new Property(((TerminalNode) node.getChidlAt(0)).getValue()));
+                    new Property(((TerminalNode) node.getChidlAt(1)).getValue()));
 
         } else {
             // loša produkcija

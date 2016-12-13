@@ -49,7 +49,7 @@ public class FunctionDefinition extends RuleStrategy {
             if (environment.isDefinedFunction(functionName)) {
                 throw new SemanticException(node.toString());
             }
-
+            node.getChidlAt(3).visitNode(environment);
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
             List<Types> parameterTypes = ((NonTerminalNode) node.getChidlAt(3)).getProperty(
@@ -65,8 +65,10 @@ public class FunctionDefinition extends RuleStrategy {
             Environment.getGlobalEnvironment(environment).defineFunction(functionName,
                     functionReturnType, parameterTypes);
 
-            node.setProperty(PropertyType.PARAMETER_NAMES, new Property(parameterNames));
-            node.setProperty(PropertyType.PARAMETER_TYPES, new Property(parameterTypes));
+            ((NonTerminalNode) node.getChidlAt(5)).setProperty(PropertyType.PARAMETER_NAMES,
+                    new Property(parameterNames));
+            ((NonTerminalNode) node.getChidlAt(5)).setProperty(PropertyType.PARAMETER_TYPES,
+                    new Property(parameterTypes));
 
             node.getChidlAt(5).visitNode(environment);
         } else {
