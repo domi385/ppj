@@ -15,7 +15,31 @@ public class Initializer extends RuleStrategy {
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
-            // TODO
+
+            node.getChidlAt(0).visitNode(environment);
+            NonTerminalNode child = (NonTerminalNode) node.getChidlAt(0);
+
+            if (child.getProperty(PropertyType.TYPE).getValue() == Types.ARRAY_CONST_CHAR) {
+
+                // TODO ne zaboravi +1 !!!!
+
+                // int length =
+                //
+                // node.setProperty(PropertyType.NUM_ELEM, new
+                // Property(length));
+                // List<Types> types = new ArrayList<>();
+                // for (int i=0; i<length; i++){
+                // types.add(Types.CONST_CHAR);
+                // }
+                // node.setProperty(PropertyType.TYPE, new
+                // Property(Types.ARRAY_CONST_CHAR));
+                // node.setProperty(PropertyType.TYPES, new Property(types));
+
+            } else {
+
+                node.setProperty(PropertyType.TYPE, child.getProperty(PropertyType.TYPE));
+            }
+
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(1).visitNode(environment);
 

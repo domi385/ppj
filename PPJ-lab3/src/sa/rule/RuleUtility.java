@@ -2,9 +2,12 @@ package sa.rule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import sa.Environment;
+import sa.Environment.FunctionTableEntry;
 import sa.Property;
 import sa.PropertyType;
 import sa.SemanticException;
@@ -112,8 +115,45 @@ public class RuleUtility {
     }
 
     private static boolean checkFunctionDeclarations(Environment globalEnvironment) {
+
+        List<Environment> environments = getAllEnvironments(globalEnvironment);
+
+        Set<FunctionTableEntry> definedFunctions = new HashSet<>();
+        Set<FunctionTableEntry> declaredFunctions = new HashSet<>();
+
+        for (Environment env : environments) {
+            Set<FunctionTableEntry> functions = new HashSet<>(env.getFunctionsTable().values());
+            for (FunctionTableEntry entry : functions) {
+                if (entry.getDefined() == true) {
+                    definedFunctions.add(entry);
+                } else {
+                    declaredFunctions.add(entry);
+                }
+            }
+        }
+
+        for (FunctionTableEntry entry : declaredFunctions) {
+            if (!definedFunctions.contains(entry)) {
+                return false;
+            }
+        }
+
         return true;
-        // TODO
+    }
+
+    private static List<Environment> getAllEnvironments(Environment environment) {
+
+        List<Environment> children = environment.getChildrenEnvironments();
+        List<Environment> environments = new ArrayList<>();
+        environments.add(environment);
+
+        if (children != null) {
+            for (Environment child : children) {
+                environments.addAll(getAllEnvironments(child));
+            }
+        }
+
+        return environments;
     }
 
     private static boolean checkMain(Environment globalEnvironment) {
@@ -183,7 +223,7 @@ public class RuleUtility {
     public static boolean checkProperty(NonTerminalNode node, PropertyType type, Object value) {
         Property property = node.getProperty(type);
         if (type.equals(PropertyType.TYPE)) {
-            return RuleUtility.checkType(property.getValue(), (Types) value);
+            return RuleUtility.checkType((Types) property.getValue(), (Types) value);
         }
         return property.getValue().equals(value);
     }

@@ -2,6 +2,7 @@ package sa.node;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import sa.Environment;
 import sa.Property;
@@ -30,6 +31,11 @@ public class NonTerminalNode extends Node {
 
     public void setProperty(PropertyType propertyType, Property property) {
         properties.put(propertyType, property);
+    }
+
+    public Set<PropertyType> getPropertyTypes() {
+
+        return properties.keySet();
     }
 
     @Override

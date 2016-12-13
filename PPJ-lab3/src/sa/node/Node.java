@@ -16,6 +16,7 @@ public abstract class Node {
     public Node(String value, int depth, Node parent) {
         childNodes = new ArrayList<>();
         this.depth = depth;
+        this.parentNode = parent;
     }
 
     public List<Node> getChildNodes() {

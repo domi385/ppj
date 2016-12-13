@@ -49,9 +49,20 @@ public class JumpCommand extends RuleStrategy {
     }
 
     public static boolean checkParentFunction(NonTerminalNode node, Types returnType) {
-        return true;
-        // TODO Auto-generated method stub
 
+        NonTerminalNode currNode = node;
+        while (currNode != null) {
+
+            if (currNode.hasProperty(PropertyType.RETURN_TYPE)) {
+
+                Types functionReturnType = currNode.getProperty(PropertyType.RETURN_TYPE)
+                        .getValue();
+
+                return functionReturnType.equals(returnType);
+            }
+            currNode = (NonTerminalNode) currNode.getParentNode();
+        }
+        return false;
     }
 
 }

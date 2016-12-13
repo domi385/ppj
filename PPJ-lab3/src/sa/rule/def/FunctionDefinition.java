@@ -31,6 +31,7 @@ public class FunctionDefinition extends RuleStrategy {
             }
             Types functionReturnType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
                     PropertyType.TYPE).getValue();
+            node.setProperty(PropertyType.RETURN_TYPE, new Property(functionReturnType));
             if (!checkFunctionsDeclarations(functionName, functionReturnType,
                     new ArrayList<Types>(), environment)) {
 
@@ -55,6 +56,8 @@ public class FunctionDefinition extends RuleStrategy {
                     PropertyType.TYPES).getValue();
             List<String> parameterNames = ((NonTerminalNode) node.getChidlAt(3)).getProperty(
                     PropertyType.NAMES).getValue();
+
+            node.setProperty(PropertyType.RETURN_TYPE, new Property(functionReturnType));
             if (!checkFunctionsDeclarations(functionName, functionReturnType, parameterTypes,
                     environment)) {
                 throw new SemanticException(node.toString());

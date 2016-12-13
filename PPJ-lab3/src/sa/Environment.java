@@ -35,6 +35,14 @@ public class Environment {
         childrenEnvironments = new ArrayList<Environment>();
     }
 
+    public Map<String, FunctionTableEntry> getFunctionsTable() {
+        return functionsTable;
+    }
+
+    public List<Environment> getChildrenEnvironments() {
+        return childrenEnvironments;
+    }
+
     public void addChildrenEvironment(Environment childEnvironment) {
         childrenEnvironments.add(childEnvironment);
     }
@@ -47,18 +55,34 @@ public class Environment {
         return currEnvironment;
     }
 
-    public boolean checkFunctionDeclaration(String name, Types returnType,
-            List<Types> parametersType) {
-        if (!functionsTable.containsKey(name)) {
+    public static boolean checkFunctionDeclaration(Environment environment, String name,
+            Types returnType, List<Types> parametersType) {
+        if (!environment.functionsTable.containsKey(name)) {
             return false;
         }
         FunctionTableEntry currFunction = new FunctionTableEntry(name, returnType, parametersType,
                 false);
-        return functionsTable.get(name).equals(currFunction);
+        return environment.functionsTable.get(name).equals(currFunction);
+    }
+
+    public boolean isFunctionDeclared(String name, Types returnType, List<Types> parametersType) {
+        Environment currEnvironment = this;
+        while (currEnvironment != null) {
+            if (checkFunctionDeclaration(currEnvironment, name, returnType, parametersType)) {
+                return true;
+            }
+            currEnvironment = currEnvironment.parentEnvironment;
+        }
+        return false;
     }
 
     public void declareFunction(String name, Types returnType, List<Types> parametersType) {
-        functionsTable.put(name, new FunctionTableEntry(name, returnType, parametersType, false));
+        FunctionTableEntry function = new FunctionTableEntry(name, returnType, parametersType,
+                false);
+        if (!functionsTable.containsKey(name)) {
+            functionsTable.put(name, function);
+        }
+
     }
 
     public void declareIdentificator(String name, Types type) {
@@ -104,6 +128,10 @@ public class Environment {
             this.returnType = returnType;
             this.parametersType = parametersType;
             this.defined = defined;
+        }
+
+        public Boolean getDefined() {
+            return defined;
         }
 
         @Override
