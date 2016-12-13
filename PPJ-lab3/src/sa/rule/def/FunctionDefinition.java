@@ -81,8 +81,8 @@ public class FunctionDefinition extends RuleStrategy {
         if (!globalEnvironment.isDeclared(functionName)) {
             return true;
         }
-        if (globalEnvironment.checkFunctionDeclaration(functionName, functionReturnType,
-                parameterTypes)) {
+        if (Environment.checkFunctionDeclaration(globalEnvironment, functionName,
+                functionReturnType, parameterTypes)) {
             return true;
         }
         return false;

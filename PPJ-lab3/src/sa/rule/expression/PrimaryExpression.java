@@ -22,7 +22,9 @@ public class PrimaryExpression extends RuleStrategy {
                 }
                 Types identificatorType = environment.getIdentificatorType(childNode.getValue());
                 node.setProperty(PropertyType.TYPE, new Property(identificatorType));
-
+                if (identificatorType.equals(Types.FUNCTION)) {
+                    node.setProperty(PropertyType.FUNCTION_NAME, new Property(childNode.getValue()));
+                }
                 node.setProperty(PropertyType.L_EXPRESSION,
                         new Property(isLExpression(environment, childNode.getValue())));
 

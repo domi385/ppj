@@ -86,6 +86,7 @@ public class DirectDeclarator extends RuleStrategy {
     private boolean checkFunctionDeclaration(String functionName, Types returnType,
             List<Types> parameterTypes, Environment environment) {
         return environment.isDeclared(functionName)
-                && !environment.checkFunctionDeclaration(functionName, returnType, parameterTypes);
+                && !Environment.checkFunctionDeclaration(environment, functionName, returnType,
+                        parameterTypes);
     }
 }

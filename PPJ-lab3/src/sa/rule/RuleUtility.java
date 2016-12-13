@@ -158,8 +158,8 @@ public class RuleUtility {
 
     private static boolean checkMain(Environment globalEnvironment) {
         List<Types> parameterTypes = new ArrayList<>();
-        return globalEnvironment.checkFunctionDeclaration("main", Types.INT, parameterTypes)
-                && globalEnvironment.isDefinedFunction("main");
+        return Environment.checkFunctionDeclaration(globalEnvironment, "main", Types.INT,
+                parameterTypes) && globalEnvironment.isDefinedFunction("main");
     }
 
     public static boolean checkNotType(NonTerminalNode node, Types type) {
