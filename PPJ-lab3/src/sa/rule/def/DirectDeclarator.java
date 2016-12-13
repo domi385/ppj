@@ -45,6 +45,7 @@ public class DirectDeclarator extends RuleStrategy {
                     throw new SemanticException(node.toString());
                 }
                 Types type = Types.getArrayType(node.getProperty(PropertyType.N_TYPE).getValue());
+                // TODO check
                 environment.declareIdentificator(identificator.getValue(),
                         node.getProperty(PropertyType.N_TYPE).getValue());
                 node.setProperty(PropertyType.TYPE, new Property(type));
