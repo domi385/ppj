@@ -20,6 +20,10 @@ public enum Types {
             return ARRAY_CONST_CHAR;
         case INT:
             return ARRAY;
+        case CONST_INT:
+            return ARRAY;
+        case CONST_CHAR:
+            return ARRAY_CONST_CHAR;
         default:
             throw new IllegalArgumentException();
         }

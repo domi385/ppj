@@ -236,6 +236,14 @@ public class RuleUtility {
                 || originalType.equals(Types.ARRAY) && finalType.equals(Types.ARRAY_CONST_T)) {
             return true;
         }
+        if (originalType.equals(Types.ARRAY_CONST_CHAR) && finalType.equals(Types.ARRAY_CONST_T)) {
+            return true;
+        }
+        if (originalType.equals(Types.ARRAY_T) && finalType.equals(Types.ARRAY)
+                || originalType.equals(Types.ARRAY_CONST_CHAR) && finalType.equals(Types.ARRAY)
+                || originalType.equals(Types.ARRAY_CONST_T) && finalType.equals(Types.ARRAY)) {
+            return true;
+        }
         return false;
     }
 

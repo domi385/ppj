@@ -7,7 +7,9 @@ import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
 import sa.Types;
+import sa.node.Node;
 import sa.node.NonTerminalNode;
+import sa.node.TerminalNode;
 import sa.rule.RuleStrategy;
 
 public class Initializer extends RuleStrategy {
@@ -23,17 +25,14 @@ public class Initializer extends RuleStrategy {
 
                 // TODO ne zaboravi +1 !!!!
 
-                // int length =
-                //
-                // node.setProperty(PropertyType.NUM_ELEM, new
-                // Property(length));
-                // List<Types> types = new ArrayList<>();
-                // for (int i=0; i<length; i++){
-                // types.add(Types.CONST_CHAR);
-                // }
+                int length = getCharArrayLength(node) + 1;
+                node.setProperty(PropertyType.NUM_ELEM, new Property(length));
+                List<Types> types = new ArrayList<>();
+                for (int i = 0; i < length; i++) {
+                    types.add(Types.CONST_CHAR);
+                }
                 node.setProperty(PropertyType.TYPE, new Property(Types.ARRAY_CONST_CHAR));
-                // node.setProperty(PropertyType.TYPES, new Property(types));
-
+                node.setProperty(PropertyType.TYPES, new Property(types));
             } else {
 
                 node.setProperty(PropertyType.TYPE, child.getProperty(PropertyType.TYPE));
@@ -46,7 +45,7 @@ public class Initializer extends RuleStrategy {
             List<Types> expressionListTypes = (List<Types>) ((NonTerminalNode) node.getChidlAt(1))
             .getProperty(PropertyType.TYPES).getValue();
 
-            node.getProperty(PropertyType.TYPES).setValue(new ArrayList<>(expressionListTypes));
+            node.setProperty(PropertyType.TYPES, new Property(expressionListTypes));
 
             Integer expressionListElementNumber = ((NonTerminalNode) node.getChidlAt(1))
                     .getProperty(PropertyType.NUM_ELEM).getValue();
@@ -54,6 +53,14 @@ public class Initializer extends RuleStrategy {
         } else {
             // loša produkcija
         }
+    }
+
+    private int getCharArrayLength(NonTerminalNode node) {
+        Node currNode = node;
+        while (!currNode.getSymbol().getSymbol().equals("NIZ_ZNAKOVA")) {
+            currNode = currNode.getChidlAt(0);
+        }
+        return ((TerminalNode) currNode).getValue().length() - 2;
     }
 
 }

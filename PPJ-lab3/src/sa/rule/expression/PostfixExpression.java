@@ -59,6 +59,7 @@ public class PostfixExpression extends RuleStrategy {
                 node.getChidlAt(0).visitNode(environment);
                 // TODO check checkType
                 if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
+
                     throw new SemanticException(node.toString());
                 }
 

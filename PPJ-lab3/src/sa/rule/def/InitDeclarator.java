@@ -40,7 +40,9 @@ public class InitDeclarator extends RuleStrategy {
                         ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE)
                         .getValue())
                         || !RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.T)) {
+
                     throw new SemanticException(node.toString());
+
                 }
             } else if (RuleUtility.checkType(directDeclaratorType, Types.ARRAY_CONST_T)
                     || RuleUtility.checkType(directDeclaratorType, Types.ARRAY_T)) {
@@ -50,13 +52,15 @@ public class InitDeclarator extends RuleStrategy {
                 Integer directDeclaratorElementNumber = directDeclarator.getProperty(
                         PropertyType.NUM_ELEM).getValue();
                 if (initializerElementNumber > directDeclaratorElementNumber) {
+
                     throw new SemanticException(node.toString());
                 }
-                List<Types> initializerElementTypes = (List<Types>) initializer
-                        .getProperty(PropertyType.TYPES);
+                List<Types> initializerElementTypes = (List<Types>) initializer.getProperty(
+                        PropertyType.TYPES).getValue();
                 for (Types type : initializerElementTypes) {
 
                     if (!RuleUtility.checkType(type, Types.T)) {
+
                         throw new SemanticException(node.toString());
                     }
                 }

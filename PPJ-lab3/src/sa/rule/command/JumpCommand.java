@@ -8,6 +8,7 @@ import sa.Types;
 import sa.node.Node;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class JumpCommand extends RuleStrategy {
 
@@ -58,8 +59,8 @@ public class JumpCommand extends RuleStrategy {
 
                 Types functionReturnType = currNode.getProperty(PropertyType.RETURN_TYPE)
                         .getValue();
+                return RuleUtility.checkType(returnType, functionReturnType);
 
-                return functionReturnType.equals(returnType);
             }
             currNode = (NonTerminalNode) currNode.getParentNode();
         }
