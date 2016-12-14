@@ -3,7 +3,7 @@ package sa;
 import java.io.Serializable;
 
 /**
- * Znakovi gramatike - završni i nezavršni
+ * Znakovi gramatike - zavrsni i nezavrsni
  *
  * @author Dominik Stanojevic
  */
@@ -40,7 +40,7 @@ public abstract class Symbol implements Serializable {
     }
 
     public static class Terminal extends Symbol {
-        public static final Terminal END_MARKER = new Terminal("÷");
+        public static final Terminal END_MARKER = new Terminal("~");
 
         private static final long serialVersionUID = -1278880143337778970L;
 

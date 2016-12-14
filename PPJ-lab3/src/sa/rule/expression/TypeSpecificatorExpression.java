@@ -21,10 +21,10 @@ public class TypeSpecificatorExpression extends RuleStrategy {
             } else if (childNode.getSymbol().getSymbol().equals("KR_INT")) {
                 node.setProperty(PropertyType.TYPE, new Property(Types.INT));
             } else {
-                // loša produkcija
+                // losa produkcija
             }
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

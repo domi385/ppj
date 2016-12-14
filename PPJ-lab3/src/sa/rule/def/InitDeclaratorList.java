@@ -23,7 +23,7 @@ public class InitDeclaratorList extends RuleStrategy {
             initDeclarator.setProperty(PropertyType.N_TYPE, node.getProperty(PropertyType.N_TYPE));
             initDeclarator.visitNode(environment);
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

@@ -41,7 +41,7 @@ public class JoinmentExpressionList extends RuleStrategy {
                     .getProperty(PropertyType.NUM_ELEM).getValue();
             node.setProperty(PropertyType.NUM_ELEM, new Property(expressionListElementNumber + 1));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

@@ -41,7 +41,7 @@ public class JoiningExpression extends RuleStrategy {
                     ((NonTerminalNode) node.getChidlAt(2)).getProperty(PropertyType.TYPE));
             node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
 
     }

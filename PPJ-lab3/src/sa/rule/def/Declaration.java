@@ -17,7 +17,7 @@ public class Declaration extends RuleStrategy {
                     typeName.getProperty(PropertyType.TYPE));
             initDeclarators.visitNode(environment);
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

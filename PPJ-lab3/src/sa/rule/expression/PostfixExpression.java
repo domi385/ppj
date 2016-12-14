@@ -99,10 +99,10 @@ public class PostfixExpression extends RuleStrategy {
 
                 node.setProperty(PropertyType.TYPE, new Property(functionReturnType));
             } else {
-                // loša produkcija
+                // losa produkcija
             }
         } else {
-            // loša produkcija
+            // losa produkcija
         }
 
     }

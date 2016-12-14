@@ -6,6 +6,7 @@ import java.util.List;
 import sa.Environment;
 import sa.Property;
 import sa.PropertyType;
+import sa.SemanticException;
 import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.rule.RuleStrategy;
@@ -42,7 +43,7 @@ public class ParameterList extends RuleStrategy {
                     PropertyType.NAME).getValue();
 
             if (parameterListNames.contains(parameterDeclarationName)) {
-                throw new RuntimeException();
+                throw new SemanticException(node.toString());
             }
 
             List<Types> types = new ArrayList<>();
@@ -55,7 +56,7 @@ public class ParameterList extends RuleStrategy {
             names.add(parameterDeclarationName);
             node.setProperty(PropertyType.NAMES, new Property(names));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

@@ -11,7 +11,7 @@ public class ExternalDeclarationCommand extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            // loša produkcija
+            // losa produkcija
         }
 
     }

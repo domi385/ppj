@@ -77,10 +77,10 @@ public class DirectDeclarator extends RuleStrategy {
                 }
                 node.setProperty(PropertyType.TYPE, new Property(Types.FUNCTION));
             } else {
-                // loša produkcija
+                // losa produkcija
             }
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

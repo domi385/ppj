@@ -48,7 +48,7 @@ public class PrimaryExpression extends RuleStrategy {
                 node.setProperty(PropertyType.TYPE, new Property(Types.ARRAY_CONST_CHAR));
                 node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
             } else {
-                // loša produkcija
+                // losa produkcija
             }
         } else if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(1).visitNode(environment);
@@ -57,7 +57,7 @@ public class PrimaryExpression extends RuleStrategy {
             node.setProperty(PropertyType.L_EXPRESSION,
                     ((NonTerminalNode) node.getChidlAt(1)).getProperty(PropertyType.L_EXPRESSION));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 
@@ -86,6 +86,7 @@ public class PrimaryExpression extends RuleStrategy {
     }
 
     public static boolean checkConstCharArray(String value) {
+        value = value.substring(1, value.length() - 1);
         return !value.replace("\\t", "").replace("\\n", "").replace("\\0", "").replace("\\'", "")
                 .replace("\\\"", "").replace("\\\\", "").contains("\\");
     }

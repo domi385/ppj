@@ -33,7 +33,7 @@ public class JumpCommand extends RuleStrategy {
                 throw new SemanticException(node.toString());
             }
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

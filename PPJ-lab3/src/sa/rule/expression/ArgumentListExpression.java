@@ -35,7 +35,7 @@ public class ArgumentListExpression extends RuleStrategy {
             types.add(argumentType);
             node.setProperty(PropertyType.TYPES, new Property(types));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

@@ -33,7 +33,7 @@ public class BinaryXorExpression extends RuleStrategy {
             node.setProperty(PropertyType.TYPE, new Property(Types.INT));
             node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 }

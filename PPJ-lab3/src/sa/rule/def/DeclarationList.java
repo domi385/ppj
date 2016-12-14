@@ -14,7 +14,7 @@ public class DeclarationList extends RuleStrategy {
             node.getChidlAt(0).visitNode(environment);
             node.getChidlAt(1).visitNode(environment);
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

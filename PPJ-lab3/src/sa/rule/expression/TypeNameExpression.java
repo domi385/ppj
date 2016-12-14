@@ -28,7 +28,7 @@ public class TypeNameExpression extends RuleStrategy {
                     new Property(Types.getConstType(((NonTerminalNode) node.getChidlAt(1))
                             .getProperty(PropertyType.TYPE).getValue())));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

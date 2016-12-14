@@ -69,7 +69,7 @@ public class InitDeclarator extends RuleStrategy {
             }
 
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 }

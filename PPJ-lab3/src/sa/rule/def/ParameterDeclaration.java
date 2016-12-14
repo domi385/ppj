@@ -35,7 +35,7 @@ public class ParameterDeclaration extends RuleStrategy {
                     new Property(((TerminalNode) node.getChidlAt(1)).getValue()));
 
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

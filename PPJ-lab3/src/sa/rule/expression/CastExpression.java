@@ -37,7 +37,7 @@ public class CastExpression extends RuleStrategy {
             node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
 
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 

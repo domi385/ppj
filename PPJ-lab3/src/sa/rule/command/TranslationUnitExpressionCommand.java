@@ -14,7 +14,7 @@ public class TranslationUnitExpressionCommand extends RuleStrategy {
             node.getChidlAt(0).visitNode(environment);
             node.getChidlAt(1).visitNode(environment);
         } else {
-            // Loša produkcija
+            // Losa produkcija
         }
     }
 

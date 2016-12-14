@@ -51,16 +51,23 @@ public class Initializer extends RuleStrategy {
                     .getProperty(PropertyType.NUM_ELEM).getValue();
             node.setProperty(PropertyType.NUM_ELEM, new Property(expressionListElementNumber));
         } else {
-            // loša produkcija
+            // losa produkcija
         }
     }
 
     private int getCharArrayLength(NonTerminalNode node) {
         Node currNode = node;
-        while (!currNode.getSymbol().getSymbol().equals("NIZ_ZNAKOVA")) {
+        while (!currNode.getSymbol().getSymbol().equals("NIZ_ZNAKOVA") && currNode != null
+                && currNode.getChildNodeNumber() > 0) {
+
             currNode = currNode.getChidlAt(0);
         }
+        if (currNode == null) {
+            return -1;
+        }
+
         return ((TerminalNode) currNode).getValue().length() - 2;
+
     }
 
 }
