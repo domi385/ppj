@@ -48,6 +48,15 @@ public class CastExpression extends RuleStrategy {
         if (originalType.equals(Types.INT) && castedType.equals(Types.CHAR)) {
             return true;
         }
+        if (originalType.equals(Types.INT) && castedType.equals(Types.CONST_CHAR)) {
+            return true;
+        }
+        if (originalType.equals(Types.CONST_INT) && castedType.equals(Types.CONST_CHAR)) {
+            return true;
+        }
+        if (originalType.equals(Types.CONST_INT) && castedType.equals(Types.CHAR)) {
+            return true;
+        }
         return false;
     }
 

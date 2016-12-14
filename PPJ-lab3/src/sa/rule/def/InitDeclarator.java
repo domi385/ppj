@@ -36,7 +36,10 @@ public class InitDeclarator extends RuleStrategy {
                     .getValue();
             if (RuleUtility.checkType(directDeclaratorType, Types.CONST_T)
                     || RuleUtility.checkType(directDeclaratorType, Types.T)) {
-                if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.T)) {
+                if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2),
+                        ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE)
+                        .getValue())
+                        || !RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.T)) {
                     throw new SemanticException(node.toString());
                 }
             } else if (RuleUtility.checkType(directDeclaratorType, Types.ARRAY_CONST_T)

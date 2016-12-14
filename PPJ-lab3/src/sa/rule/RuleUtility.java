@@ -200,6 +200,9 @@ public class RuleUtility {
                 || originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.CHAR)) {
             return true;
         }
+        if (originalType.equals(Types.CONST_CHAR) && finalType.equals(Types.T)) {
+            return true;
+        }
         if (originalType.equals(Types.INT) && finalType.equals(Types.CONST_INT)
                 || originalType.equals(Types.CONST_INT) && finalType.equals(Types.INT)) {
             return true;

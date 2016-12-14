@@ -28,8 +28,9 @@ public class UnaryExpression extends RuleStrategy {
                     throw new SemanticException(node.toString());
                 }
 
-                node.getProperty(PropertyType.TYPE).setValue(Types.INT);
-                node.getProperty(PropertyType.L_EXPRESSION).setValue(0);
+                node.setProperty(PropertyType.TYPE, new Property(Types.INT));
+                node.setProperty(PropertyType.L_EXPRESSION, new Property(0));
+                ;
             } else if (secondChild.getSymbol().getSymbol().equals("<cast_izraz>")) {
                 secondChild.visitNode(environment);
                 if (!RuleUtility.checkType(secondChild, Types.INT)) {

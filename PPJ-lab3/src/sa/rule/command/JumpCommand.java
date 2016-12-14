@@ -37,12 +37,13 @@ public class JumpCommand extends RuleStrategy {
     }
 
     public static boolean checkParent(NonTerminalNode node, String parentNonTerminalNodeName) {
-        Node currNode = node;
+        Node currNode = node.getParentNode();
         while (currNode != null) {
-            currNode = node.getParentNode();
+
             if (currNode.getSymbol().getSymbol().equals(parentNonTerminalNodeName)) {
                 return true;
             }
+            currNode = currNode.getParentNode();
         }
         return false;
 
