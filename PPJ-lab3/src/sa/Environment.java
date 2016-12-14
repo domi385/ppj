@@ -236,4 +236,22 @@ public class Environment {
         }
         return null;
     }
+
+    public static Types getDeclaredType(String name, Environment environment) {
+        Environment currentEnvironment = environment;
+        if (currentEnvironment.isDeclaredLocaly(name)) {
+            return currentEnvironment.getIdentificatorType(name);
+        }
+
+        currentEnvironment = currentEnvironment.parentEnvironment;
+
+        while (currentEnvironment != null) {
+            if (currentEnvironment.isDeclaredLocaly(name)) {
+                return currentEnvironment.getIdentificatorType(name);
+            }
+            currentEnvironment = currentEnvironment.parentEnvironment;
+        }
+        return null;
+
+    }
 }

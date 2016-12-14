@@ -243,4 +243,11 @@ public class RuleUtility {
         }
         return property.getValue().equals(value);
     }
+
+    public static boolean isLExpression(Types type) {
+        if (type == Types.INT || type == Types.CHAR || type == Types.T) {
+            return true;
+        }
+        return false;
+    }
 }

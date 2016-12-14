@@ -8,6 +8,7 @@ import sa.Types;
 import sa.node.NonTerminalNode;
 import sa.node.TerminalNode;
 import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class PrimaryExpression extends RuleStrategy {
 
@@ -61,7 +62,11 @@ public class PrimaryExpression extends RuleStrategy {
     }
 
     private Integer isLExpression(Environment environment, String identificatorName) {
-        // TODO Auto-generated method stub
+
+        Types type = Environment.getDeclaredType(identificatorName, environment);
+        if (RuleUtility.isLExpression(type)) {
+            return 1;
+        }
         return 0;
     }
 

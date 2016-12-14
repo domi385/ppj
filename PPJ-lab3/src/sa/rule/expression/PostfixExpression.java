@@ -58,16 +58,17 @@ public class PostfixExpression extends RuleStrategy {
             if (node.getChidlAt(1).getSymbol().getSymbol().equals("L_UGL_ZAGRADA")) {
                 node.getChidlAt(0).visitNode(environment);
                 // TODO check checkType
-                if (RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
+                if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
                     throw new SemanticException(node.toString());
                 }
+
                 node.getChidlAt(2).visitNode(environment);
                 if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(2), Types.INT)) {
                     throw new SemanticException(node.toString());
                 }
 
-                Types postfixExpressionType = ((NonTerminalNode) node.getChidlAt(0)).getProperty(
-                        PropertyType.TYPE).getValue();
+                Types postfixExpressionType = getBasicTypeFromArray(((NonTerminalNode) node
+                        .getChidlAt(0)).getProperty(PropertyType.TYPE).getValue());
                 node.setProperty(PropertyType.TYPE, new Property(postfixExpressionType));
                 node.setProperty(PropertyType.L_EXPRESSION, new Property(
                         checkLExpression(postfixExpressionType)));
@@ -103,6 +104,17 @@ public class PostfixExpression extends RuleStrategy {
             // loša produkcija
         }
 
+    }
+
+    private Types getBasicTypeFromArray(Types type) {
+        if (type.equals(Types.ARRAY)) {
+            return Types.INT;
+        } else if (type.equals(Types.ARRAY_CONST_CHAR)) {
+            return Types.CONST_CHAR;
+        } else if (type.equals(Types.ARRAY_CONST_T)) {
+            return Types.CONST_T;
+        }
+        return null;
     }
 
     private Integer checkLExpression(Types postfixExpressionType) {
