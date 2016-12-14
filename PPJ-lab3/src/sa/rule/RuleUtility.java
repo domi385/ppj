@@ -110,7 +110,7 @@ public class RuleUtility {
             throw new SemanticException("main");
         }
         if (!checkFunctionDeclarations(Environment.getGlobalEnvironment(environment))) {
-            throw new SemanticException("funckija");
+            throw new SemanticException("funkcija");
         }
     }
 
