@@ -109,7 +109,11 @@ public class PrimaryExpression extends RuleStrategy {
 
     public static boolean checkIntValue(String value) {
         try {
-            Integer.parseInt(value);
+            if ((value.startsWith("0x") || value.startsWith("0X")) && value.length() > 2) {
+                Integer.parseInt(value, 16);
+            } else {
+                Integer.parseInt(value);
+            }
         } catch (NumberFormatException ex) {
             return false;
         }
