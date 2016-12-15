@@ -1,5 +1,15 @@
 package sa.rule.def;
 
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.SemanticException;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.node.TerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
+
 public class ParameterDeclaration extends RuleStrategy {
 
     @Override
@@ -25,7 +35,7 @@ public class ParameterDeclaration extends RuleStrategy {
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.VOID)) {
                 throw new SemanticException(node.toString());
             }
-            
+
             node.setProperty(
                     PropertyType.TYPE,
                     new Property(Types.getArrayTypeFrom(((NonTerminalNode) node.getChidlAt(0))

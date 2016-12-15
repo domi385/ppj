@@ -1,8 +1,14 @@
 package sa.rule.def;
 
-
 import java.util.ArrayList;
 import java.util.List;
+
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
 
 public class JoinmentExpressionList extends RuleStrategy {
 
@@ -22,7 +28,7 @@ public class JoinmentExpressionList extends RuleStrategy {
 
             @SuppressWarnings("unchecked")
             List<Types> expressionListTypes = (List<Types>) ((NonTerminalNode) node.getChidlAt(0))
-            .getProperty(PropertyType.TYPES).getValue();
+                    .getProperty(PropertyType.TYPES).getValue();
             Types expressionType = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
                     PropertyType.TYPE).getValue();
 

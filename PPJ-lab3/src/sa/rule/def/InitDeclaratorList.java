@@ -1,6 +1,9 @@
 package sa.rule.def;
 
-
+import sa.Environment;
+import sa.PropertyType;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
 
 public class InitDeclaratorList extends RuleStrategy {
 

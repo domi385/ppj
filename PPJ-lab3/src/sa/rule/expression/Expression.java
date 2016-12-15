@@ -1,5 +1,10 @@
+package sa.rule.expression;
 
-
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
 
 public class Expression extends RuleStrategy {
 

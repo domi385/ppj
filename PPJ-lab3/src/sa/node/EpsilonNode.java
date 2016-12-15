@@ -1,6 +1,7 @@
 package sa.node;
 
-
+import sa.Environment;
+import sa.Symbol;
 
 public class EpsilonNode extends Node {
 

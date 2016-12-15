@@ -1,5 +1,13 @@
+package sa.rule.expression;
 
-
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.SemanticException;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class TypeNameExpression extends RuleStrategy {
 
@@ -9,11 +17,11 @@ public class TypeNameExpression extends RuleStrategy {
             node.getChidlAt(0).visitNode(environment);
             node.setProperty(PropertyType.TYPE,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
-            
+
         } else if (node.getChildNodeNumber() == 2) {
-        	
+
             node.getChidlAt(1).visitNode(environment);
-            
+
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(1), Types.VOID)) {
                 throw new SemanticException(node.toString());
             }

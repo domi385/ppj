@@ -1,6 +1,11 @@
 package sa.rule.command;
 
-
+import sa.Environment;
+import sa.SemanticException;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class BranchCommand extends RuleStrategy {
 

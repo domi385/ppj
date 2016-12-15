@@ -1,6 +1,14 @@
 package sa.rule.command;
 
-
+import sa.Environment;
+import sa.PropertyType;
+import sa.SemanticException;
+import sa.Symbol;
+import sa.Types;
+import sa.node.Node;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class JumpCommand extends RuleStrategy {
 

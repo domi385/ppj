@@ -1,17 +1,26 @@
 package sa.rule.def;
 
-
 import java.util.ArrayList;
 import java.util.List;
+
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.SemanticException;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.node.TerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class FunctionDefinition extends RuleStrategy {
 
     @Override
     public void evaluate(NonTerminalNode node, Environment environment) {
-    	
+
         if (node.getChildNodeNumber() == 6
                 && node.getChidlAt(3).getSymbol().getSymbol().equals("KR_VOID")) {
-        	
+
             node.getChidlAt(0).visitNode(environment);
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.CONST_T)) {
 
@@ -33,9 +42,9 @@ public class FunctionDefinition extends RuleStrategy {
             Environment.getGlobalEnvironment(environment).defineFunction(functionName,
                     functionReturnType, new ArrayList<Types>());
             node.getChidlAt(5).visitNode(environment);
-            
+
         } else if (node.getChildNodeNumber() == 6) {
-        	
+
             node.getChidlAt(0).visitNode(environment);
             if (!RuleUtility.checkNotType((NonTerminalNode) node.getChidlAt(0), Types.CONST_T)) {
                 throw new SemanticException(node.toString());

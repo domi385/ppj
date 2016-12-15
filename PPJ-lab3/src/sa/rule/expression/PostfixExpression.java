@@ -1,5 +1,16 @@
+package sa.rule.expression;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.SemanticException;
+import sa.Types;
+import sa.node.NonTerminalNode;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class PostfixExpression extends RuleStrategy {
 

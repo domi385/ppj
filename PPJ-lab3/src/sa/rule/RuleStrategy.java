@@ -1,6 +1,7 @@
 package sa.rule;
 
-
+import sa.Environment;
+import sa.node.NonTerminalNode;
 
 public abstract class RuleStrategy {
 

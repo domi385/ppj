@@ -1,9 +1,15 @@
 package sa.node;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import sa.Environment;
+import sa.Property;
+import sa.PropertyType;
+import sa.Symbol;
+import sa.rule.RuleStrategy;
+import sa.rule.RuleUtility;
 
 public class NonTerminalNode extends Node {
 

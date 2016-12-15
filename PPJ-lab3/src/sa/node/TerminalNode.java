@@ -1,6 +1,7 @@
 package sa.node;
 
-
+import sa.Environment;
+import sa.Symbol;
 
 public class TerminalNode extends Node {
 
@@ -18,7 +19,7 @@ public class TerminalNode extends Node {
 
     public TerminalNode(String value, int depth, Node parent) {
         super(value, depth, parent);
-        String[] valueParts = value.split(" ",3);
+        String[] valueParts = value.split(" ", 3);
         type = new Symbol.Terminal(valueParts[0]);
         row = Integer.parseInt(valueParts[1]);
         this.value = valueParts[2];
