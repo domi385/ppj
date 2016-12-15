@@ -22,6 +22,7 @@ public class PrimaryExpression extends RuleStrategy {
                         new Property(isLExpression(environment, childNode.getValue())));
 
             } else if (childNode.getSymbol().getSymbol().equals("BROJ")) {
+
                 if (!checkIntValue(childNode.getValue())) {
                     throw new SemanticException(node.toString());
                 }
@@ -110,7 +111,7 @@ public class PrimaryExpression extends RuleStrategy {
     public static boolean checkIntValue(String value) {
         try {
             if ((value.startsWith("0x") || value.startsWith("0X")) && value.length() > 2) {
-                Integer.parseInt(value, 16);
+                Integer.parseInt(value.substring(2), 16);
             } else {
                 Integer.parseInt(value);
             }
