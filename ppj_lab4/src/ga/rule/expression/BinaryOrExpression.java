@@ -4,6 +4,7 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.SemantickiAnalizator;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -43,7 +44,15 @@ public class BinaryOrExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: 3 children
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            if(!SemantickiAnalizator.init) {
+                System.out.println("\t POP R1");
+                System.out.println("\t POP R0");
+                System.out.println("\t OR R0, R1, R0");
+                System.out.println("\t PUSH R0");
+            }
         }
     }
 }

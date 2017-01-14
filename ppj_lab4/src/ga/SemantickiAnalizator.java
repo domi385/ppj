@@ -1,15 +1,10 @@
 package ga;
 
-import com.sun.org.apache.regexp.internal.RE;
 import ga.node.Node;
 import ga.node.NodeUtility;
-import ga.rule.RuleUtility;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
 public class SemantickiAnalizator {
