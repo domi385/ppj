@@ -71,7 +71,7 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;nextLineNum = lineNum + 1;;nextState = LexerState.S_pocetno;
+nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;nextState = LexerState.S_pocetno;nextLineNum = lineNum + 1;;
  } 
  }if(state == LexerState.S_jednolinijskiKomentar && input.matches("^((\\(|\\)|\\{|\\}|\\||\\*|\\\\|\\|\\t|\\n| |!|\"|#|%|&|'|\\+|,|\\-|\\.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|\\?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|\\[|\\]|\\^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~))(.|\\s)*$")){ 
 int length = 0; 
@@ -137,7 +137,7 @@ if(length > maxLen){
 maxLen = length; 
 nextTokenType = TokenType.REJECT; 
 nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;nextCurrIndex = currIndex + 0; nextTokenName = nextTokenName.substring(0,0);nextState = LexerState.S_string;
+nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;nextState = LexerState.S_string;nextCurrIndex = currIndex + 0; nextTokenName = nextTokenName.substring(0,0);
  } 
  }if(state == LexerState.S_string && input.matches("^(\"((\\(|\\)|\\{|\\}|\\||\\*|\\\\|\\|\\t| |!|#|%|&|'|\\+|,|\\-|\\.|/|0|1|2|3|4|5|6|7|8|9|:|;|<|=|>|\\?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|\\[|\\]|\\^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|~)|\\\\\")*\")(.|\\s)*$")){ 
 int length = 0; 
