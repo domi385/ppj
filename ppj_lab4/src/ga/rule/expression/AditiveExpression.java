@@ -16,8 +16,7 @@ public class AditiveExpression extends RuleStrategy {
 
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
-            node.setProperty(PropertyType.TYPE,
-                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
+            node.setProperty(PropertyType.TYPE, ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
             node.setProperty(PropertyType.L_EXPRESSION,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
         } else if (node.getChildNodeNumber() == 3) {
@@ -43,7 +42,18 @@ public class AditiveExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: 3 children
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            System.out.println("\t POP R1");
+            System.out.println("\t POP R0");
+            if (node.getChidlAt(1).getSymbol().getSymbol().equals("PLUS")) {
+
+                System.out.println("\t ADD R0, R1, R0");
+            } else {
+                System.out.println("\t SUB R0, R1, R0");
+            }
+            System.out.println("\t PUSH R0");
         }
     }
 }

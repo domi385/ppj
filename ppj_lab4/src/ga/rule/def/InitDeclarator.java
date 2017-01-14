@@ -94,6 +94,8 @@ public class InitDeclarator extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
+        SemantickiAnalizator.init = true;
+
         node.getChidlAt(0).visitNode(environment);
         if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(2).visitNode(environment);
@@ -106,5 +108,7 @@ public class InitDeclarator extends RuleStrategy {
                 System.out.println("G_" + name + "\t" + SemantickiAnalizator.defineWord(size, konst));
             }
         }
+
+        SemantickiAnalizator.init = false;
     }
 }

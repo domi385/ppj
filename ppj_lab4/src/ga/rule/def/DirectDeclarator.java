@@ -109,9 +109,7 @@ public class DirectDeclarator extends RuleStrategy {
         if(node.getChildNodeNumber() == 1) {
             TerminalNode identificator = (TerminalNode) node.getChidlAt(0);
             Environment.TableEntry entry = environment.declareLocalVariable(identificator.getValue(), 1);
-            SemantickiAnalizator.init = true;
             SemantickiAnalizator.currentEntry = entry;
-            SemantickiAnalizator.init = false;
 
             //if (type)
         }
