@@ -205,17 +205,6 @@ nextTokenType = TokenType.KR_ELSE;
 nextTokenName = tokenName; 
 nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
  } 
- }if(state == LexerState.S_pocetno && input.matches("^(float)(.|\\s)*$")){ 
-int length = 0; 
-String tokenName = ""; 
-tokenName = findLongest(input, "(float)"); 
-length = tokenName.length(); 
-if(length > maxLen){ 
-maxLen = length; 
-nextTokenType = TokenType.KR_FLOAT; 
-nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
- } 
  }if(state == LexerState.S_pocetno && input.matches("^(for)(.|\\s)*$")){ 
 int length = 0; 
 String tokenName = ""; 
@@ -257,17 +246,6 @@ length = tokenName.length();
 if(length > maxLen){ 
 maxLen = length; 
 nextTokenType = TokenType.KR_RETURN; 
-nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
- } 
- }if(state == LexerState.S_pocetno && input.matches("^(struct)(.|\\s)*$")){ 
-int length = 0; 
-String tokenName = ""; 
-tokenName = findLongest(input, "(struct)"); 
-length = tokenName.length(); 
-if(length > maxLen){ 
-maxLen = length; 
-nextTokenType = TokenType.KR_STRUCT; 
 nextTokenName = tokenName; 
 nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
  } 
@@ -319,28 +297,6 @@ nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
 int length = 0; 
 String tokenName = ""; 
 tokenName = findLongest(input, "(0(X|x)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)*)"); 
-length = tokenName.length(); 
-if(length > maxLen){ 
-maxLen = length; 
-nextTokenType = TokenType.BROJ; 
-nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
- } 
- }if(state == LexerState.S_pocetno && input.matches("^((0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*\\.(0|1|2|3|4|5|6|7|8|9)*(|((e|E)(|\\+|\\-)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*)))(.|\\s)*$")){ 
-int length = 0; 
-String tokenName = ""; 
-tokenName = findLongest(input, "((0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*\\.(0|1|2|3|4|5|6|7|8|9)*(|((e|E)(|\\+|\\-)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*)))"); 
-length = tokenName.length(); 
-if(length > maxLen){ 
-maxLen = length; 
-nextTokenType = TokenType.BROJ; 
-nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
- } 
- }if(state == LexerState.S_pocetno && input.matches("^((0|1|2|3|4|5|6|7|8|9)*\\.(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*(|((e|E)(|\\+|\\-)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*)))(.|\\s)*$")){ 
-int length = 0; 
-String tokenName = ""; 
-tokenName = findLongest(input, "((0|1|2|3|4|5|6|7|8|9)*\\.(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*(|((e|E)(|\\+|\\-)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*)))"); 
 length = tokenName.length(); 
 if(length > maxLen){ 
 maxLen = length; 
@@ -421,7 +377,7 @@ tokenName = findLongest(input, "(\\*)");
 length = tokenName.length(); 
 if(length > maxLen){ 
 maxLen = length; 
-nextTokenType = TokenType.ASTERISK; 
+nextTokenType = TokenType.OP_PUTA; 
 nextTokenName = tokenName; 
 nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
  } 
@@ -575,7 +531,7 @@ tokenName = findLongest(input, "(&)");
 length = tokenName.length(); 
 if(length > maxLen){ 
 maxLen = length; 
-nextTokenType = TokenType.AMPERSAND; 
+nextTokenType = TokenType.OP_BIN_I; 
 nextTokenName = tokenName; 
 nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
  } 
@@ -620,17 +576,6 @@ length = tokenName.length();
 if(length > maxLen){ 
 maxLen = length; 
 nextTokenType = TokenType.TOCKAZAREZ; 
-nextTokenName = tokenName; 
-nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
- } 
- }if(state == LexerState.S_pocetno && input.matches("^(\\.)(.|\\s)*$")){ 
-int length = 0; 
-String tokenName = ""; 
-tokenName = findLongest(input, "(\\.)"); 
-length = tokenName.length(); 
-if(length > maxLen){ 
-maxLen = length; 
-nextTokenType = TokenType.TOCKA; 
 nextTokenName = tokenName; 
 nextState = state;nextLineNum = lineNum;nextCurrIndex = currIndex + length;
  } 

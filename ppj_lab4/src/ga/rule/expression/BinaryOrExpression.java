@@ -52,6 +52,8 @@ public class BinaryOrExpression extends RuleStrategy {
                 System.out.println("\t POP R0");
                 System.out.println("\t OR R0, R1, R0");
                 System.out.println("\t PUSH R0");
+            } else {
+                //TODO
             }
         }
     }
