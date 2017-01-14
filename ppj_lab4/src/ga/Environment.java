@@ -224,7 +224,7 @@ public class Environment {
 
     public static class TableEntry {
         String name;
-        Object[] definedValue;
+        Object value;
         int size;
         String pointer;
 
@@ -238,8 +238,8 @@ public class Environment {
             return name;
         }
 
-        public Object[] getDefinedValue() {
-            return definedValue;
+        public Object getValue() {
+            return value;
         }
 
         public String getPointer() {
