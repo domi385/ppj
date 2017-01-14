@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class describes code environment (scope).
@@ -133,6 +134,10 @@ public class Environment {
 
     public boolean isDeclaredLocaly(String name) {
         return localTable.containsKey(name) || functionsTable.containsKey(name);
+    }
+
+    public boolean isParameter(String name) {
+        return parameterTable.containsKey(name);
     }
 
     public boolean isDefinedFunction(String name) {
@@ -279,4 +284,33 @@ public class Environment {
         return null;
     }
 
+    public int findParameterOffset(String parameter) {
+        List<TableEntry> entries = parameterTable.entrySet().stream().map(Map.Entry::getValue).collect(Collectors
+                .toList());
+
+        int offset = totalLocalOffset();
+        for(int n = entries.size(), i = n - 1; i >= 0; i++) {
+            TableEntry entry = entries.get(i);
+            if(entry.name.equals(parameter)) {
+                break;
+            }
+
+            offset += 4 * entry.size;
+        }
+
+        return offset;
+    }
+
+    private int totalLocalOffset() {
+        int offset = 0;
+        for(TableEntry entry : localTable.values()) {
+            if(entry.size == 1) {
+                offset += 4;
+            } else {
+                offset += 4 * (entry.size + 1);
+            }
+        }
+
+        return offset;
+    }
 }

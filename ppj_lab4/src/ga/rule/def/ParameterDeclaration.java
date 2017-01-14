@@ -4,6 +4,8 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.SemantickiAnalizator;
+import ga.Symbol;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.node.TerminalNode;
@@ -49,4 +51,9 @@ public class ParameterDeclaration extends RuleStrategy {
         }
     }
 
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        String name = ((TerminalNode) node.getChidlAt(1)).getValue();
+        environment.declareParameter(name, 1);
+    }
 }

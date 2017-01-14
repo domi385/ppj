@@ -5,6 +5,7 @@ import ga.node.NodeUtility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.StringJoiner;
 
 public class SemantickiAnalizator {
@@ -15,6 +16,9 @@ public class SemantickiAnalizator {
     private static List<Integer> big = new ArrayList<>();
 
     public static boolean functionCall = false;
+
+    public static boolean parameters = false;
+    public static Integer numberOfParameters;
 
     public static void main(String[] args) {
 

@@ -3,6 +3,7 @@ package ga.rule.expression;
 import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
+import ga.SemantickiAnalizator;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -39,4 +40,15 @@ public class ArgumentListExpression extends RuleStrategy {
         }
     }
 
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        if(node.getChildNodeNumber() == 1) {
+            node.getChidlAt(0).visitNode(environment);
+            SemantickiAnalizator.numberOfParameters++;
+        } else {
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(1).visitNode(environment);
+            SemantickiAnalizator.numberOfParameters++;
+        }
+    }
 }

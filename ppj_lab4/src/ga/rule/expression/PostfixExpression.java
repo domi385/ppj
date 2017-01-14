@@ -155,12 +155,23 @@ public class PostfixExpression extends RuleStrategy {
             SemantickiAnalizator.functionCall = true;
             node.getChidlAt(0).visitNode(environment);
             SemantickiAnalizator.functionCall = false;
+
+            System.out.println("\t PUSH R6");
         } else if (children == 4) {
             if (node.getChidlAt(2).getSymbol().getSymbol().equals("<lista_argumenata>")) {
-                SemantickiAnalizator.functionCall = true;
+                SemantickiAnalizator.parameters = true;
+                SemantickiAnalizator.numberOfParameters = 0;
                 node.getChidlAt(2).visitNode(environment);
+                SemantickiAnalizator.parameters = false;
+                SemantickiAnalizator.functionCall = true;
                 node.getChidlAt(0).visitNode(environment);
                 SemantickiAnalizator.functionCall = false;
+
+                String offset = Integer.toHexString(4 * SemantickiAnalizator.numberOfParameters);
+                System.out.println("\t ADD R7, " + offset + ", R7");
+                SemantickiAnalizator.numberOfParameters = null;
+
+                System.out.println("\t PUSH R6");
             } else {
                 //TODO
             }
