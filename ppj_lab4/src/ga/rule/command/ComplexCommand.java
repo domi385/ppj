@@ -46,11 +46,11 @@ public class ComplexCommand extends RuleStrategy {
         }
 
         if (node.getChildNodeNumber() == 3) {
-            System.out.println("\t MOVE R7, R5");
+            //TODO
             node.getChidlAt(1).visitNode(localEnvironment);
         } else {
             node.getChidlAt(1).visitNode(localEnvironment);
-            System.out.println("\t MOVE R7, R5");
+            //TODO
             node.getChidlAt(2).visitNode(localEnvironment);
         }
     }

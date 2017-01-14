@@ -55,7 +55,7 @@ public class JumpCommand extends RuleStrategy {
 
             long local = environment.numberOfLocalVariables();
             String offset = Long.toHexString(local * 4).toUpperCase();
-            System.out.println("\t ADD R5, " + offset + ", R7");
+            System.out.println("\t ADD R7, " + offset + ", R7");
 
             System.out.println("\t RET");
         }

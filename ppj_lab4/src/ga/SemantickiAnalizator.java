@@ -14,6 +14,8 @@ public class SemantickiAnalizator {
 
     private static List<Integer> big = new ArrayList<>();
 
+    public static boolean functionCall = false;
+
     public static void main(String[] args) {
 
         Node root = NodeUtility.buildTree();

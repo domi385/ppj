@@ -5,6 +5,7 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.SemantickiAnalizator;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -22,26 +23,23 @@ public class PostfixExpression extends RuleStrategy {
 
             node.getChidlAt(0).visitNode(environment);
 
-            node.setProperty(PropertyType.TYPE,
-                    ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
+            node.setProperty(PropertyType.TYPE, ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE));
 
             node.setProperty(PropertyType.L_EXPRESSION,
                     ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.L_EXPRESSION));
 
             if (((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE).getValue()
                     .equals(Types.FUNCTION)) {
-                node.setProperty(PropertyType.FUNCTION_NAME, ((NonTerminalNode) node.getChidlAt(0))
-                        .getProperty(PropertyType.FUNCTION_NAME));
+                node.setProperty(PropertyType.FUNCTION_NAME,
+                        ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.FUNCTION_NAME));
             }
 
         } else if (node.getChildNodeNumber() == 2) {
 
             node.getChidlAt(0).visitNode(environment);
 
-            if (!RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0),
-                    PropertyType.L_EXPRESSION, 1)
-                    || !RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0),
-                            PropertyType.TYPE, Types.INT)) {
+            if (!RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0), PropertyType.L_EXPRESSION, 1) ||
+                !RuleUtility.checkProperty((NonTerminalNode) node.getChidlAt(0), PropertyType.TYPE, Types.INT)) {
 
                 throw new SemanticException(node.toString());
             }
@@ -57,8 +55,7 @@ public class PostfixExpression extends RuleStrategy {
             if (!RuleUtility.checkProperty(postfixExpression, PropertyType.TYPE, Types.FUNCTION)) {
                 throw new SemanticException(node.toString());
             }
-            String functionName = postfixExpression.getProperty(PropertyType.FUNCTION_NAME)
-                    .getValue();
+            String functionName = postfixExpression.getProperty(PropertyType.FUNCTION_NAME).getValue();
             Types functionReturnType = environment.getFunctionReturnType(functionName);
             List<Types> parametersType = new ArrayList<>();
             if (!environment.isFunctionDeclared(functionName, functionReturnType, parametersType)) {
@@ -75,8 +72,7 @@ public class PostfixExpression extends RuleStrategy {
                 // TODO check checkType
                 if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY)) {
 
-                    if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0),
-                            Types.ARRAY_CHAR)) {
+                    if (!RuleUtility.checkType((NonTerminalNode) node.getChidlAt(0), Types.ARRAY_CHAR)) {
 
                         throw new SemanticException(node.toString());
                     }
@@ -99,12 +95,11 @@ public class PostfixExpression extends RuleStrategy {
                         throw new SemanticException(node.toString());
                     }
 
-                    Types postfixExpressionType = getBasicTypeFromArray(((NonTerminalNode) node
-                            .getChidlAt(0)).getProperty(PropertyType.TYPE).getValue());
+                    Types postfixExpressionType = getBasicTypeFromArray(
+                            ((NonTerminalNode) node.getChidlAt(0)).getProperty(PropertyType.TYPE).getValue());
                     node.setProperty(PropertyType.TYPE, new Property(postfixExpressionType));
 
-                    node.setProperty(PropertyType.L_EXPRESSION, new Property(
-                            checkLExpression(postfixExpressionType)));
+                    node.setProperty(PropertyType.L_EXPRESSION, new Property(checkLExpression(postfixExpressionType)));
                 }
 
             } else if (node.getChidlAt(1).getSymbol().getSymbol().equals("L_ZAGRADA")) {
@@ -114,19 +109,17 @@ public class PostfixExpression extends RuleStrategy {
 
                 NonTerminalNode postfixExpression = (NonTerminalNode) node.getChidlAt(0);
 
-                if (!RuleUtility
-                        .checkProperty(postfixExpression, PropertyType.TYPE, Types.FUNCTION)) {
+                if (!RuleUtility.checkProperty(postfixExpression, PropertyType.TYPE, Types.FUNCTION)) {
                     // System.err.println("1");
                     throw new SemanticException(node.toString());
                 }
 
-                String functionName = postfixExpression.getProperty(PropertyType.FUNCTION_NAME)
-                        .getValue();
+                String functionName = postfixExpression.getProperty(PropertyType.FUNCTION_NAME).getValue();
 
                 Types functionReturnType = environment.getFunctionReturnType(functionName);
                 List<Types> parametersType = environment.getFunctionParameters(functionName);
-                List<Types> argumentType = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
-                        PropertyType.TYPES).getValue();
+                List<Types> argumentType =
+                        ((NonTerminalNode) node.getChidlAt(2)).getProperty(PropertyType.TYPES).getValue();
 
                 if (parametersType.size() != argumentType.size()) {
                     // System.err.println("2");
@@ -154,14 +147,23 @@ public class PostfixExpression extends RuleStrategy {
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
         int children = node.getChildNodeNumber();
-        if(children == 1) {
+        if (children == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else if (children == 2) {
             //TODO
         } else if (children == 3) {
-            //TODO
+            SemantickiAnalizator.functionCall = true;
+            node.getChidlAt(0).visitNode(environment);
+            SemantickiAnalizator.functionCall = false;
         } else if (children == 4) {
-            //TODO
+            if (node.getChidlAt(2).getSymbol().getSymbol().equals("<lista_argumenata>")) {
+                SemantickiAnalizator.functionCall = true;
+                node.getChidlAt(2).visitNode(environment);
+                node.getChidlAt(0).visitNode(environment);
+                SemantickiAnalizator.functionCall = false;
+            } else {
+                //TODO
+            }
         }
     }
 
@@ -179,8 +181,8 @@ public class PostfixExpression extends RuleStrategy {
     }
 
     private Integer checkLExpression(Types postfixExpressionType) {
-        if (postfixExpressionType.equals(Types.CHAR) || postfixExpressionType.equals(Types.INT)
-                || postfixExpressionType.equals(Types.T)) {
+        if (postfixExpressionType.equals(Types.CHAR) || postfixExpressionType.equals(Types.INT) ||
+            postfixExpressionType.equals(Types.T)) {
             return 1;
         }
         return 0;
