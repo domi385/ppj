@@ -67,5 +67,7 @@ public class ParameterList extends RuleStrategy {
         if(node.getChildNodeNumber() == 3) {
             node.getChidlAt(2).visitNode(environment);
         }
+
+        System.out.println("\t MOVE R7, R5");
     }
 }

@@ -14,6 +14,7 @@ import javafx.scene.control.Tab;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class DirectDeclarator extends RuleStrategy {
 
@@ -103,6 +104,7 @@ public class DirectDeclarator extends RuleStrategy {
             // losa produkcija
         }
     }
+
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {

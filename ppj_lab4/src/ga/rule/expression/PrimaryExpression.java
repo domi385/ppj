@@ -81,19 +81,21 @@ public class PrimaryExpression extends RuleStrategy {
             if (childNode.getSymbol().getSymbol().equals("IDN")) {
                 if(SemantickiAnalizator.functionCall) {
                     System.out.println("\t CALL F_" + childNode.getValue().toUpperCase());
-                } else if (SemantickiAnalizator.parameters) {
-
-                } else {
+                }  else {
                     String id = childNode.getValue();
                     if(environment.isDeclaredLocaly(id)) {
-
+                        int offset = environment.findLocalOffset(id);
+                        String hex = Integer.toHexString(offset);
+                        System.out.println("\t LOAD R0, (R5 + 0" + hex + ")");
                     } else if (environment.isParameter(id)) {
                         //TODO local offset
                         int offset = environment.findParameterOffset(id);
                         String hex = Integer.toHexString(offset + 4);
-                        System.out.println("\t LOAD R0, (R7 + " + hex + ")");
-                    } else if (Environment.getGlobalEnvironment(environment).isDeclared(id)) {
+                        System.out.println("\t LOAD R0, (R5 + 0" + hex + ")");
+                    } else if (environment.isDeclaredGlobaly(id)) {
                         System.out.println("\t LOAD R0, (G_" + id.toUpperCase() + ")");
+                    } else {
+                        throw new RuntimeException();
                     }
                     System.out.println("\t PUSH R0");
                 }

@@ -53,9 +53,14 @@ public class JumpCommand extends RuleStrategy {
             node.getChidlAt(1).visitNode(environment);
             System.out.println("\t POP R6");
 
-            long local = environment.numberOfLocalVariables();
-            String offset = Long.toHexString(local * 4).toUpperCase();
-            System.out.println("\t ADD R7, " + offset + ", R7");
+            Environment env = environment;
+            while(env.getParentEnvironment() != null) {
+                String offset = Integer.toHexString(env.totalLocalOffset());
+                System.out.println("\t ADD R5, " + offset + ", R7");
+
+                System.out.println("\t POP R5");
+                env = env.getParentEnvironment();
+            }
 
             System.out.println("\t RET");
         }

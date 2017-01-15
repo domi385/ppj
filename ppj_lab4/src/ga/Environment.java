@@ -121,6 +121,15 @@ public class Environment {
         functionsTable.put(name, new FunctionTableEntry(name, returnType, parametersType, true));
     }
 
+    public boolean isDeclaredGlobaly(String name) {
+        Environment env = this;
+        while(env.parentEnvironment != null) {
+            env = env.parentEnvironment;
+        }
+
+        return env.localTable.containsKey(name);
+    }
+
     public boolean isDeclared(String name) {
         Environment currentEnvironment = this;
         while (currentEnvironment != null) {
@@ -133,7 +142,16 @@ public class Environment {
     }
 
     public boolean isDeclaredLocaly(String name) {
-        return localTable.containsKey(name) || functionsTable.containsKey(name);
+        Environment env = this;
+        while(env.parentEnvironment != null) {
+            if(env.localTable.containsKey(name)) {
+                return true;
+            }
+
+            env = env.parentEnvironment;
+        }
+
+        return false;
     }
 
     public boolean isParameter(String name) {
@@ -223,10 +241,6 @@ public class Environment {
 
     }
 
-    public enum DeclarationType {
-        PARAM, LOCAL
-    }
-
     public static class TableEntry {
         String name;
         Object value;
@@ -260,8 +274,6 @@ public class Environment {
         }
     }
 
-
-
     public Types getFunctionReturnType(String functionName) {
         Environment currEnvironment = this;
         while (currEnvironment != null) {
@@ -285,13 +297,13 @@ public class Environment {
     }
 
     public int findParameterOffset(String parameter) {
-        List<TableEntry> entries = parameterTable.entrySet().stream().map(Map.Entry::getValue).collect(Collectors
-                .toList());
+        List<TableEntry> entries =
+                parameterTable.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
 
         int offset = totalLocalOffset();
-        for(int n = entries.size(), i = n - 1; i >= 0; i++) {
+        for (int n = entries.size(), i = n - 1; i >= 0; i++) {
             TableEntry entry = entries.get(i);
-            if(entry.name.equals(parameter)) {
+            if (entry.name.equals(parameter)) {
                 break;
             }
 
@@ -301,16 +313,30 @@ public class Environment {
         return offset;
     }
 
-    private int totalLocalOffset() {
+    public int findLocalOffset(String local) {
         int offset = 0;
-        for(TableEntry entry : localTable.values()) {
-            if(entry.size == 1) {
-                offset += 4;
-            } else {
-                offset += 4 * (entry.size + 1);
-            }
+        Environment env = this;
+        while(!env.localTable.containsKey(local)) {
+            offset += totalLocalOffset() + 4;
+            env = env.parentEnvironment;
         }
 
+        List<String> entries = env.localTable.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+
+        offset += (entries.size() - 1 - entries.indexOf(local)) * 4;
         return offset;
+    }
+
+    public int totalLocalOffset() {
+        return localTable.size() * 4;
+    }
+
+    public int returnOffset() {
+        Environment env = this;
+        while(env.parentEnvironment.parentEnvironment != null) {
+            env = env.parentEnvironment;
+        }
+
+        return 4 * env.localTable.size();
     }
 }

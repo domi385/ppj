@@ -11,6 +11,7 @@ import ga.rule.RuleStrategy;
 import ga.rule.RuleUtility;
 
 import java.util.List;
+import java.util.SimpleTimeZone;
 import java.util.StringJoiner;
 
 public class InitDeclarator extends RuleStrategy {
@@ -106,6 +107,10 @@ public class InitDeclarator extends RuleStrategy {
                 int[] konst = SemantickiAnalizator.konst;
 
                 System.out.println("G_" + name + "\t" + SemantickiAnalizator.defineWord(size, konst));
+            } else {
+                int size = SemantickiAnalizator.currentEntry.getSize();
+                int[] konst = SemantickiAnalizator.konst;
+                DeclarationList.params.put(size, konst);
             }
         }
 

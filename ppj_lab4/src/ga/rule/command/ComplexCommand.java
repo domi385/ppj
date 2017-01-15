@@ -18,7 +18,7 @@ public class ComplexCommand extends RuleStrategy {
             List<String> parameterNames = node.getProperty(PropertyType.PARAMETER_NAMES).getValue();
             List<Types> parameterTypes = node.getProperty(PropertyType.PARAMETER_TYPES).getValue();
             for (int i = 0, end = parameterNames.size(); i < end; i++) {
-               // localEnvironment.declareParameter(parameterNames.get(i), parameterTypes.get(i));
+                // localEnvironment.declareParameter(parameterNames.get(i), parameterTypes.get(i));
             }
         }
 
@@ -35,15 +35,25 @@ public class ComplexCommand extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
+        Environment localEnvironment = new Environment(environment);
+        environment.addChildrenEvironment(localEnvironment);
 
+        System.out.println("\t PUSH R5");
 
         if (node.getChildNodeNumber() == 3) {
             //TODO
-            node.getChidlAt(1).visitNode(environment);
+            System.out.println("\t MOVE R7, R5");
+            node.getChidlAt(1).visitNode(localEnvironment);
         } else {
-            node.getChidlAt(1).visitNode(environment);
+            node.getChidlAt(1).visitNode(localEnvironment);
+            System.out.println("\t MOVE R7, R5");
+
             //TODO
-            node.getChidlAt(2).visitNode(environment);
+            node.getChidlAt(2).visitNode(localEnvironment);
+            System.out.println("\t POP R5");
         }
+
+        int offset = localEnvironment.totalLocalOffset();
+        System.out.println("\t ADD R7, %D " + offset + ", R7");
     }
 }

@@ -170,7 +170,6 @@ public class PostfixExpression extends RuleStrategy {
                 String offset = Integer.toHexString(4 * SemantickiAnalizator.numberOfParameters);
                 System.out.println("\t ADD R7, " + offset + ", R7");
                 SemantickiAnalizator.numberOfParameters = null;
-
                 System.out.println("\t PUSH R6");
             } else {
                 //TODO

@@ -78,23 +78,21 @@ public class FunctionDefinition extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
-        Environment localEnvironment = new Environment(environment);
-        environment.addChildrenEvironment(localEnvironment);
         if (node.getChildNodeNumber() == 6 && node.getChidlAt(3).getSymbol().getSymbol().equals("KR_VOID")) {
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
 
             System.out.println();
             System.out.print("F_" + functionName.toUpperCase() + " ");
-            node.getChidlAt(5).visitNode(localEnvironment);
+            node.getChidlAt(5).visitNode(environment);
             System.out.println();
         } else {
-            node.getChidlAt(3).visitNode(localEnvironment);
+            node.getChidlAt(3).visitNode(environment);
 
             String functionName = ((TerminalNode) node.getChidlAt(1)).getValue();
 
             System.out.println();
             System.out.print("F_" + functionName.toUpperCase() + " ");
-            node.getChidlAt(5).visitNode(localEnvironment);
+            node.getChidlAt(5).visitNode(environment);
             System.out.println();
         }
     }
