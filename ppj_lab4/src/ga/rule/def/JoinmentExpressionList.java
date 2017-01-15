@@ -45,4 +45,13 @@ public class JoinmentExpressionList extends RuleStrategy {
         }
     }
 
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        if(node.getChildNodeNumber() == 1) {
+            node.getChidlAt(0).visitNode(environment);
+        } else {
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+        }
+    }
 }

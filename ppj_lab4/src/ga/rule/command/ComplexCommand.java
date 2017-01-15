@@ -5,7 +5,11 @@ import ga.PropertyType;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
+import ga.rule.def.Declaration;
+import ga.rule.def.DeclarationList;
+import ga.rule.def.ParameterList;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ComplexCommand extends RuleStrategy {
@@ -38,14 +42,24 @@ public class ComplexCommand extends RuleStrategy {
         Environment localEnvironment = new Environment(environment);
         environment.addChildrenEvironment(localEnvironment);
 
+        if(ParameterList.parameters != null) {
+            for(String name : ParameterList.parameters) {
+                localEnvironment.declareParameter(name, 1);
+            }
+            ParameterList.parameters = null;
+        }
+
         System.out.println("\t PUSH R5");
 
         if (node.getChildNodeNumber() == 3) {
             //TODO
             System.out.println("\t MOVE R7, R5");
             node.getChidlAt(1).visitNode(localEnvironment);
+            System.out.println("\t POP R5");
         } else {
+            DeclarationList.params = new LinkedHashMap<>();
             node.getChidlAt(1).visitNode(localEnvironment);
+            DeclarationList.params = null;
             System.out.println("\t MOVE R7, R5");
 
             //TODO

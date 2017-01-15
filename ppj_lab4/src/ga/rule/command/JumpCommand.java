@@ -56,7 +56,7 @@ public class JumpCommand extends RuleStrategy {
             Environment env = environment;
             while(env.getParentEnvironment() != null) {
                 String offset = Integer.toHexString(env.totalLocalOffset());
-                System.out.println("\t ADD R5, " + offset + ", R7");
+                System.out.println("\t ADD R5, 0" + offset + ", R7");
 
                 System.out.println("\t POP R5");
                 env = env.getParentEnvironment();

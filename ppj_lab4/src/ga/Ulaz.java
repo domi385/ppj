@@ -3,12 +3,25 @@ package ga;
 import ga.node.Node;
 import ga.node.NodeUtility;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.StringJoiner;
 
-public class SemantickiAnalizator {
+public class Ulaz {
+    static {
+        try {
+            System.setOut(new PrintStream(
+                    new FileOutputStream("a.frisc", true)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int label = 0;
+
     public static Environment.TableEntry currentEntry;
     public static boolean init = false;
     public static int[] konst;

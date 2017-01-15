@@ -34,7 +34,8 @@ public class Expression extends RuleStrategy {
         if (childrenNumber == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: with 3 children
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
         }
     }
 }

@@ -4,6 +4,7 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -43,7 +44,28 @@ public class EqualitiyExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: 3 children
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            System.out.println("\t POP R1"); //y
+            System.out.println("\t POP R0"); //x
+            System.out.println("\t CMP R0, R1");
+
+            String first = "LABEL" + Ulaz.label++;
+            String second = "LABEL" + Ulaz.label++;
+
+            String op = node.getChidlAt(1).getSymbol().getSymbol();
+            if(op.equals("OP_EQ")) {
+                System.out.println("\t JP_EQ " + first);
+            } else {
+                System.out.println("\t JP_NEQ " + first);
+            }
+
+            System.out.println("\t MOVE 0, R0");
+            System.out.println("\t JP " + second);
+
+            System.out.println(first + "\t MOVE 1, R0");
+            System.out.println(second + "\t PUSH R0");
         }
     }
 }

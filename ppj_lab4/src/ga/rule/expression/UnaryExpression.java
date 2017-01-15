@@ -54,8 +54,19 @@ public class UnaryExpression extends RuleStrategy {
             if(node.getChidlAt(0).getSymbol().getSymbol().equals("<unarni_operator>")) {
                 node.getChidlAt(1).visitNode(environment);
                 node.getChidlAt(0).visitNode(environment);
+            } else if(node.getChidlAt(0).getSymbol().getSymbol().equals("OP_INC")) {
+                node.getChidlAt(1).visitNode(environment);
+
+                System.out.println("\t POP R0");
+                System.out.println("\t SUB R0, 1, R0");
+                System.out.println("\t PUSH R0");
+            } else {
+                node.getChidlAt(1).visitNode(environment);
+
+                System.out.println("\t POP R0");
+                System.out.println("\t SUB R0, 1, R0");
+                System.out.println("\t PUSH R0");
             }
-            //TODO ostale
         }
     }
 }

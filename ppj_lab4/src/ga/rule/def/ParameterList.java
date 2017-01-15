@@ -4,7 +4,6 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
-import ga.SemantickiAnalizator;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -61,13 +60,16 @@ public class ParameterList extends RuleStrategy {
         }
     }
 
+    public static List<String> parameters;
+
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
+        parameters = new ArrayList<>();
         node.getChidlAt(0).visitNode(environment);
         if(node.getChildNodeNumber() == 3) {
             node.getChidlAt(2).visitNode(environment);
         }
 
-        System.out.println("\t MOVE R7, R5");
+        //System.out.println("\t MOVE R7, R5");
     }
 }

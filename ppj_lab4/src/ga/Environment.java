@@ -123,7 +123,7 @@ public class Environment {
 
     public boolean isDeclaredGlobaly(String name) {
         Environment env = this;
-        while(env.parentEnvironment != null) {
+        while (env.parentEnvironment != null) {
             env = env.parentEnvironment;
         }
 
@@ -143,8 +143,8 @@ public class Environment {
 
     public boolean isDeclaredLocaly(String name) {
         Environment env = this;
-        while(env.parentEnvironment != null) {
-            if(env.localTable.containsKey(name)) {
+        while (env.parentEnvironment != null) {
+            if (env.localTable.containsKey(name)) {
                 return true;
             }
 
@@ -154,8 +154,33 @@ public class Environment {
         return false;
     }
 
+    public int parameterOffset(String name) {
+        Environment env = this;
+        int offset = 0;
+        while(env.parentEnvironment.parentEnvironment != null) {
+            offset += (env.localTable.size() + 1) * 4;
+            env = env.parentEnvironment;
+        }
+
+        offset += (env.localTable.size() + 2) * 4;
+
+        List<String> entries = env.parameterTable.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
+
+        offset += (entries.size() - 1 - entries.indexOf(name)) * 4;
+        return offset;
+    }
+
     public boolean isParameter(String name) {
-        return parameterTable.containsKey(name);
+        Environment env = this;
+        while (env.parentEnvironment != null) {
+            if (env.parameterTable.containsKey(name)) {
+                return true;
+            }
+
+            env = env.parentEnvironment;
+        }
+
+        return false;
     }
 
     public boolean isDefinedFunction(String name) {
@@ -316,7 +341,7 @@ public class Environment {
     public int findLocalOffset(String local) {
         int offset = 0;
         Environment env = this;
-        while(!env.localTable.containsKey(local)) {
+        while (!env.localTable.containsKey(local)) {
             offset += totalLocalOffset() + 4;
             env = env.parentEnvironment;
         }
@@ -333,7 +358,7 @@ public class Environment {
 
     public int returnOffset() {
         Environment env = this;
-        while(env.parentEnvironment.parentEnvironment != null) {
+        while (env.parentEnvironment.parentEnvironment != null) {
             env = env.parentEnvironment;
         }
 

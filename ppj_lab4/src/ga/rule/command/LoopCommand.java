@@ -2,6 +2,7 @@ package ga.rule.command;
 
 import ga.Environment;
 import ga.SemanticException;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -38,4 +39,22 @@ public class LoopCommand extends RuleStrategy {
         }
     }
 
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        if(node.getChidlAt(0).getSymbol().getSymbol().equals("KR_WHILE")) {
+            String first = "LABEL" + Ulaz.label++;
+            String second = "LABEL" + Ulaz.label++;
+
+            System.out.print(first + " ");
+            node.getChidlAt(2).visitNode(environment);
+            System.out.println("\t POP R0");
+            System.out.println("\t CMP R0, 0");
+            System.out.println("\t JP_Z " + second);
+
+            node.getChidlAt(4).visitNode(environment);
+            System.out.println("\t JP " + first);
+
+            System.out.print(second + " ");
+        }
+    }
 }

@@ -22,4 +22,12 @@ public class ExpressionCommand extends RuleStrategy {
         }
     }
 
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        node.getChidlAt(0).visitNode(environment);
+
+        if(node.getChildNodeNumber() == 2) {
+            node.getChidlAt(1).visitNode(environment);
+        }
+    }
 }

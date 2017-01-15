@@ -1,11 +1,10 @@
 package ga.rule.expression;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
-import ga.SemantickiAnalizator;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -152,24 +151,24 @@ public class PostfixExpression extends RuleStrategy {
         } else if (children == 2) {
             //TODO
         } else if (children == 3) {
-            SemantickiAnalizator.functionCall = true;
+            Ulaz.functionCall = true;
             node.getChidlAt(0).visitNode(environment);
-            SemantickiAnalizator.functionCall = false;
+            Ulaz.functionCall = false;
 
             System.out.println("\t PUSH R6");
         } else if (children == 4) {
             if (node.getChidlAt(2).getSymbol().getSymbol().equals("<lista_argumenata>")) {
-                SemantickiAnalizator.parameters = true;
-                SemantickiAnalizator.numberOfParameters = 0;
+                Ulaz.parameters = true;
+                Ulaz.numberOfParameters = 0;
                 node.getChidlAt(2).visitNode(environment);
-                SemantickiAnalizator.parameters = false;
-                SemantickiAnalizator.functionCall = true;
+                Ulaz.parameters = false;
+                Ulaz.functionCall = true;
                 node.getChidlAt(0).visitNode(environment);
-                SemantickiAnalizator.functionCall = false;
+                Ulaz.functionCall = false;
 
-                String offset = Integer.toHexString(4 * SemantickiAnalizator.numberOfParameters);
+                String offset = Integer.toHexString(4 * Ulaz.numberOfParameters);
                 System.out.println("\t ADD R7, " + offset + ", R7");
-                SemantickiAnalizator.numberOfParameters = null;
+                Ulaz.numberOfParameters = null;
                 System.out.println("\t PUSH R6");
             } else {
                 //TODO

@@ -4,17 +4,15 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
-import ga.SemantickiAnalizator;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.Node;
 import ga.node.NonTerminalNode;
 import ga.node.TerminalNode;
 import ga.rule.RuleStrategy;
-import javafx.scene.control.Tab;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class DirectDeclarator extends RuleStrategy {
 
@@ -108,12 +106,21 @@ public class DirectDeclarator extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
+        Ulaz.konst = null;
         if(node.getChildNodeNumber() == 1) {
             TerminalNode identificator = (TerminalNode) node.getChidlAt(0);
             Environment.TableEntry entry = environment.declareLocalVariable(identificator.getValue(), 1);
-            SemantickiAnalizator.currentEntry = entry;
+            Ulaz.currentEntry = entry;
 
             //if (type)
+        } else if (node.getChidlAt(2).getSymbol().getSymbol().equals("BROJ")) {
+            TerminalNode id = (TerminalNode) node.getChidlAt(0);
+            int broj = Integer.parseInt(((TerminalNode) node.getChidlAt(2)).getValue());
+            Environment.TableEntry entry = environment.declareLocalVariable(id.getValue(), broj);
+        } else {
+            TerminalNode identificator = (TerminalNode) node.getChidlAt(0);
+            Environment.TableEntry entry = environment.declareLocalVariable(identificator.getValue(), 1);
+            Ulaz.currentEntry = entry;
         }
 
         //TODO: Ostale

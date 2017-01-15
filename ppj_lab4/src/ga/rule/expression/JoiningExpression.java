@@ -52,12 +52,18 @@ public class JoiningExpression extends RuleStrategy {
 
     }
 
+    public static boolean left = false;
+
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: Node with 3 children
+            node.getChidlAt(2).visitNode(environment);
+
+            left = true;
+            node.getChidlAt(0).visitNode(environment);
+            left = false;
         }
     }
 }

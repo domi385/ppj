@@ -4,15 +4,13 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
-import ga.SemantickiAnalizator;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
 import ga.rule.RuleUtility;
 
 import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.StringJoiner;
 
 public class InitDeclarator extends RuleStrategy {
 
@@ -95,25 +93,27 @@ public class InitDeclarator extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
-        SemantickiAnalizator.init = true;
+        Ulaz.init = true;
 
         node.getChidlAt(0).visitNode(environment);
         if (node.getChildNodeNumber() == 3) {
             node.getChidlAt(2).visitNode(environment);
 
             if(environment.getParentEnvironment() == null) {
-                String name = SemantickiAnalizator.currentEntry.getName().toUpperCase();
-                int size = SemantickiAnalizator.currentEntry.getSize();
-                int[] konst = SemantickiAnalizator.konst;
+                String name = Ulaz.currentEntry.getName().toUpperCase();
+                int size = Ulaz.currentEntry.getSize();
+                int[] konst = Ulaz.konst;
 
-                System.out.println("G_" + name + "\t" + SemantickiAnalizator.defineWord(size, konst));
+                System.out.println("G_" + name + "\t" + Ulaz.defineWord(size, konst));
             } else {
-                int size = SemantickiAnalizator.currentEntry.getSize();
-                int[] konst = SemantickiAnalizator.konst;
-                DeclarationList.params.put(size, konst);
+               if(Ulaz.konst != null) {
+                   int size = Ulaz.currentEntry.getSize();
+                   int[] konst = Ulaz.konst;
+                   DeclarationList.params.put(size, konst);
+               }
             }
         }
 
-        SemantickiAnalizator.init = false;
+        Ulaz.init = false;
     }
 }

@@ -4,6 +4,7 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -42,7 +43,56 @@ public class MultiplicativeExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: 3 children
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            System.out.println("\t POP R1"); //y
+            System.out.println("\t POP R0"); //x
+
+            if(node.getChidlAt(1).getSymbol().getSymbol().equals("OP_MOD")) {
+                mod();
+            } else if (node.getChidlAt(1).getSymbol().getSymbol().equals("OP_PUTA")) {
+                mul();
+            } else {
+                div();
+            }
         }
+    }
+
+    private void div() {
+        System.out.println("\t MOVE %D 0, R2");
+        String first = "LABEL" + Ulaz.label++;
+        System.out.println(first + "\t CMP R0, R1");
+
+        String second = "LABEL" + Ulaz.label++;
+        System.out.println("\tJP_SLT " + second);
+        System.out.println("\t SUB R0, R1, R0");
+        System.out.println("\t ADD R2, %D 1, R2");
+        System.out.println("\t JP " + first);
+        System.out.println(second + "\t PUSH R2");
+    }
+
+    private void mul() {
+        System.out.println("\t MOVE %D 0, R2");
+        String first = "LABEL" + Ulaz.label++;
+        System.out.println(first + "\t CMP R1, 0");
+
+        String second = "LABEL" + Ulaz.label++;
+        System.out.println("\tJP_Z " + second);
+        System.out.println("\t ADD R2, R0, R2");
+        System.out.println("\t SUB R1, %D 1, R1");
+        System.out.println("\t JP " + first);
+        System.out.println(second + "\t PUSH R2");
+    }
+
+    private void mod() {
+        String first = "LABEL" + Ulaz.label++;
+        System.out.println(first + "\t CMP R0, R1");
+
+        String second = "LABEL" + Ulaz.label++;
+        System.out.println("\t JP_SLT " + second);
+        System.out.println("\t SUB R0, R1, R0");
+        System.out.println("\t JP " + first);
+        System.out.println(second + "\t PUSH R0");
     }
 }

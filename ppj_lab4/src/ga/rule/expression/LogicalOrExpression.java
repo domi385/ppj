@@ -4,6 +4,7 @@ import ga.Environment;
 import ga.Property;
 import ga.PropertyType;
 import ga.SemanticException;
+import ga.Ulaz;
 import ga.Types;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
@@ -41,7 +42,28 @@ public class LogicalOrExpression extends RuleStrategy {
         if (node.getChildNodeNumber() == 1) {
             node.getChidlAt(0).visitNode(environment);
         } else {
-            //TODO: Node with 3 children
+            node.getChidlAt(0).visitNode(environment);
+
+            String first = "LABEL" + Ulaz.label++;
+            String second = "LABEL" + Ulaz.label++;
+
+            System.out.println("\t POP R0");
+            System.out.println("\t CMP R0, 0");
+            System.out.println("\t JP_NZ " + first);
+
+            node.getChidlAt(1).visitNode(environment);
+
+            System.out.println("\t POP R0");
+            System.out.println("\t CMP R0, 0");
+            System.out.println("\t JP_NZ " + first);
+
+            System.out.println("\t MOVE 0, R0");
+            System.out.println("\t PUSH R0");
+            System.out.println("\t JP " + second);
+
+            System.out.println(first + "\t MOVE 1, R0");
+            System.out.println("\t PUSH R0");
+            System.out.print(second + " ");
         }
     }
 }

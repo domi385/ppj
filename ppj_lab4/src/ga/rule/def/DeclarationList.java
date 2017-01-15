@@ -1,10 +1,10 @@
 package ga.rule.def;
 
 import ga.Environment;
+import ga.Ulaz;
 import ga.node.NonTerminalNode;
 import ga.rule.RuleStrategy;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DeclarationList extends RuleStrategy {
@@ -25,9 +25,10 @@ public class DeclarationList extends RuleStrategy {
 
     @Override
     public void emit(NonTerminalNode node, Environment environment) {
-        params = new LinkedHashMap<>();
         if (node.getChildNodeNumber() == 1) {
+            Ulaz.currentEntry = null;
             node.getChidlAt(0).visitNode(environment);
+            Ulaz.currentEntry = null;
         } else if (node.getChildNodeNumber() == 2) {
             node.getChidlAt(0).visitNode(environment);
             node.getChidlAt(1).visitNode(environment);
@@ -40,7 +41,6 @@ public class DeclarationList extends RuleStrategy {
             System.out.println("\t MOVE %D " + val + ", R2");
             System.out.println("\t PUSH R2");
         }
-
-        params = null;
+        params.clear();
     }
 }
