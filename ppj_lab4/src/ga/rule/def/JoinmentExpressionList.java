@@ -1,0 +1,57 @@
+package ga.rule.def;
+
+import ga.Environment;
+import ga.Property;
+import ga.PropertyType;
+import ga.Types;
+import ga.node.NonTerminalNode;
+import ga.rule.RuleStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class JoinmentExpressionList extends RuleStrategy {
+
+    @Override
+    public void evaluate(NonTerminalNode node, Environment environment) {
+        if (node.getChildNodeNumber() == 1) {
+
+            node.getChidlAt(0).visitNode(environment);
+            List<Types> expressionsTypes = new ArrayList<Types>();
+            expressionsTypes.add(((NonTerminalNode) node.getChidlAt(0)).getProperty(
+                    PropertyType.TYPE).getValue());
+            node.setProperty(PropertyType.TYPES, new Property(expressionsTypes));
+            node.setProperty(PropertyType.NUM_ELEM, new Property(1));
+        } else if (node.getChildNodeNumber() == 3) {
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+
+            @SuppressWarnings("unchecked")
+            List<Types> expressionListTypes = (List<Types>) ((NonTerminalNode) node.getChidlAt(0))
+                    .getProperty(PropertyType.TYPES).getValue();
+            Types expressionType = ((NonTerminalNode) node.getChidlAt(2)).getProperty(
+                    PropertyType.TYPE).getValue();
+
+            List<Types> types = new ArrayList<>();
+            types.addAll(expressionListTypes);
+            types.add(expressionType);
+            node.setProperty(PropertyType.TYPES, new Property(types));
+
+            Integer expressionListElementNumber = ((NonTerminalNode) node.getChidlAt(0))
+                    .getProperty(PropertyType.NUM_ELEM).getValue();
+            node.setProperty(PropertyType.NUM_ELEM, new Property(expressionListElementNumber + 1));
+        } else {
+            // losa produkcija
+        }
+    }
+
+    @Override
+    public void emit(NonTerminalNode node, Environment environment) {
+        if(node.getChildNodeNumber() == 1) {
+            node.getChidlAt(0).visitNode(environment);
+        } else {
+            node.getChidlAt(0).visitNode(environment);
+            node.getChidlAt(2).visitNode(environment);
+        }
+    }
+}
