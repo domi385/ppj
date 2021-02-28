@@ -1,4 +1,4 @@
-# ppj
+# Code compiler
 Translating Programming Languages ("Prevođenje programskih jezika"), a course at University of Zagreb.
 The final goal of the exercises is to implement a compiler for a language somewhat simpler than C.
 
